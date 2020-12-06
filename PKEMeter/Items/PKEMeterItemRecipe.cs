@@ -24,7 +24,8 @@ namespace PKEMeter.Items {
 		}
 
 		public override bool RecipeAvailable() {
-			return PKEMeterConfig.Instance.PKEMeterRecipeEnabled;
+			var config = PKEMeterConfig.Instance;
+			return config.Get<bool>( nameof(config.PKEMeterRecipeEnabled) );
 		}
 	}
 }

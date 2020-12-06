@@ -61,9 +61,11 @@ namespace PKEMeter.HUD {
 
 		public void DrawHUD( SpriteBatch sb ) {
 			var config = PKEMeterConfig.Instance;
+			int posX = config.Get<int>( nameof(config.PKEMeterHUDPositionX) );
+			int posY = config.Get<int>( nameof(config.PKEMeterHUDPositionY) );
 			var pos = new Vector2(
-				config.PKEMeterHUDPositionX < 0 ? Main.screenWidth + config.PKEMeterHUDPositionX : config.PKEMeterHUDPositionX,
-				config.PKEMeterHUDPositionY < 0 ? Main.screenHeight + config.PKEMeterHUDPositionY : config.PKEMeterHUDPositionY
+				posX < 0 ? Main.screenWidth + posX : posX,
+				posY < 0 ? Main.screenHeight + posY : posY
 			);
 
 			Player plr = Main.LocalPlayer;
