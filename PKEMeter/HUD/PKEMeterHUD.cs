@@ -6,17 +6,20 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Loadable;
 using PKEMeter.Items;
+using PKEMeter.Logic;
 
 
 namespace PKEMeter.HUD {
-	class PKEMeterHUD : ILoadable {
+	partial class PKEMeterHUD : ILoadable {
 		public static PKEMeterHUD Instance { get; private set; }
 
 
 
 		////////////////
 
+		private Texture2D MinFont;
 		private Texture2D MeterBody;
+		private Texture2D MeterDisplay;
 		private Texture2D MeterWires;
 		private Texture2D MeterDisplayB;
 		private Texture2D MeterDisplayG;
@@ -33,7 +36,9 @@ namespace PKEMeter.HUD {
 
 		void ILoadable.OnPostModsLoad() {
 			if( Main.netMode != NetmodeID.Server && !Main.dedServ ) {
+				this.MinFont = PKEMeterMod.Instance.GetTexture( "HUD/MinFont" );
 				this.MeterBody = PKEMeterMod.Instance.GetTexture( "HUD/MeterBody" );
+				this.MeterDisplay = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplay" );
 				this.MeterWires = PKEMeterMod.Instance.GetTexture( "HUD/MeterWires" );
 				this.MeterDisplayB = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayB" );
 				this.MeterDisplayG = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayG" );
@@ -60,6 +65,7 @@ namespace PKEMeter.HUD {
 		}
 
 		public void DrawHUD( SpriteBatch sb ) {
+			var logic = PKEMeterLogic.Instance;
 			var config = PKEMeterConfig.Instance;
 			int posX = config.Get<int>( nameof(config.PKEMeterHUDPositionX) );
 			int posY = config.Get<int>( nameof(config.PKEMeterHUDPositionY) );
@@ -73,72 +79,28 @@ namespace PKEMeter.HUD {
 			Color plrColor = myplayer.MyColor;
 
 			sb.Draw(
+				texture: this.MeterDisplay,
+				position: pos,
+				color: Color.White
+			);
+
+			(float b, float g, float y, float r) gauge = logic.GetGauges( plr, plr.Center );
+			this.DrawHUDGauges( sb, pos, gauge.b, gauge.g, gauge.y, gauge.r );
+
+			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
+			this.DrawHUDText( sb, pos, msg.text, msg.color, msg.offset );
+
+			sb.Draw(
 				texture: this.MeterBody,
 				position: pos,
 				color: plrColor
 			);
-
-			(float b, float g, float y, float r) gauge = PKEMeterMod.Instance.CurrentGauge?.Invoke( plr, plr.Center )
-				?? (0, 0, 0, 0);
-			this.DrawHUDGauges( sb, pos, gauge.b, gauge.g, gauge.y, gauge.r );
 
 			sb.Draw(
 				texture: this.MeterWires,
 				position: pos,
 				color: plrColor
 			);
-		}
-
-
-		public void DrawHUDGauges( SpriteBatch sb, Vector2 pos, float b, float g, float y, float r ) {
-			pos.X += 22;
-			pos.Y += 16;
-
-			var destRect = new Rectangle( (int)pos.X, (int)pos.Y + 42, 6, 4 );
-			var bDestRect = destRect;
-			var gDestRect = destRect;
-			var yDestRect = destRect;
-			var rDestRect = destRect;
-
-			//bDestRect.X += 0;
-			gDestRect.X += 8;
-			yDestRect.X += 16;
-			rDestRect.X += 24;
-
-			float bTicks = 7f * b;
-			float gTicks = 7f * g;
-			float yTicks = 7f * y;
-			float rTicks = 7f * r;
-
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayB, bDestRect, bTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, gDestRect, gTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, yDestRect, yTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, rDestRect, rTicks );
-		}
-
-
-		private void DrawHUDGaugeTicks( SpriteBatch sb, Texture2D tickTex, Rectangle rect, float ticks ) {
-			for( int i=0; i<(int)ticks; i++ ) {
-				rect.Y -= 6;
-
-				sb.Draw(
-					texture: tickTex,
-					destinationRectangle: rect,
-					color: Color.White
-				);
-			}
-
-			float tickFrac = ticks - (float)(int)ticks;
-
-			if( Main.rand.NextFloat() < tickFrac ) {
-				rect.Y -= 6;
-
-				sb.Draw(
-					texture: tickTex,
-					destinationRectangle: rect,
-					color: Color.White
-				);
-			}
 		}
 	}
 }

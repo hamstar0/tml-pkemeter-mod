@@ -1,14 +1,23 @@
 ﻿using System;
+using PKEMeter.Logic;
 
 
 namespace PKEMeter {
 	public static class PKEMeterAPI {
 		public static PKEGauge GetGauge() {
-			return PKEMeterMod.Instance.CurrentGauge;
+			return PKEMeterLogic.Instance.CurrentGauge;
 		}
 
 		public static void SetGauge( PKEGauge gauge ) {
-			PKEMeterMod.Instance.CurrentGauge = gauge;
+			PKEMeterLogic.Instance.CurrentGauge = gauge;
+		}
+
+		public static PKEText GetMeterText() {
+			return PKEMeterLogic.Instance.CurrentText;
+		}
+
+		public static void SetMeterText( PKEText text ) {
+			PKEMeterLogic.Instance.CurrentText = gauge;
 		}
 	}
 }

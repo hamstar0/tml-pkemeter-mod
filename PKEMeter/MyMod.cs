@@ -19,16 +19,8 @@ namespace PKEMeter {
 
 		////////////////
 
-		public PKEGauge CurrentGauge { get; internal set; }
-
-
-
-		////////////////
-
 		public PKEMeterMod() {
 			PKEMeterMod.Instance = this;
-
-			this.InitializeDefaultGauge();
 		}
 
 		////
