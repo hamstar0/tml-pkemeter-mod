@@ -17,7 +17,7 @@ namespace PKEMeter {
 		}
 
 		public static void SetMeterText( PKEText text ) {
-			PKEMeterLogic.Instance.CurrentText = gauge;
+			PKEMeterLogic.Instance.CurrentText = text;
 		}
 	}
 }
