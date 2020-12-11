@@ -43,6 +43,29 @@ namespace PKEMeter.HUD {
 			x *= 8;
 			int y = isNumber ? 12 : 0;
 
+			switch( textChar ) {
+			case '.':
+				x = 21 * 8;
+				y = 12;
+				break;
+			case '?':
+				x = 22 * 8;
+				y = 12;
+				break;
+			case '!':
+				x = 23 * 8;
+				y = 12;
+				break;
+			case '+':
+				x = 24 * 8;
+				y = 12;
+				break;
+			case '-':
+				x = 25 * 8;
+				y = 12;
+				break;
+			}
+
 			Rectangle srcFrame = new Rectangle( x, y, 8, 12 );
 			if( offset < 0 ) {
 				srcFrame.X -= offset;
