@@ -11,6 +11,12 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
+		private (float b, float g, float y, float r) GaugeSnapshot = (0, 0, 0, 0);
+
+
+
+		////////////////
+
 		void ILoadable.OnModsLoad() {
 			PKEMeterLogic.Instance = this;
 		}
