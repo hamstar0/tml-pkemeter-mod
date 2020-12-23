@@ -11,7 +11,20 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
+		public PKEGauge CurrentGauge { get; internal set; }
+
+		public PKEText CurrentText { get; internal set; }
+
+
+		////////////////
+
+
 		private (float b, float g, float y, float r) GaugeSnapshot = (0, 0, 0, 0);
+
+
+		////////////////
+
+		private int TextScrollPos = -6;
 
 
 
@@ -19,11 +32,12 @@ namespace PKEMeter.Logic {
 
 		void ILoadable.OnModsLoad() {
 			PKEMeterLogic.Instance = this;
+
+			this.InitializeDefaultGauge();
+			this.InitializeDefaultText();
 		}
 
 		void ILoadable.OnPostModsLoad() {
-			this.InitializeDefaultGauge();
-			this.InitializeDefaultText();
 		}
 
 		void ILoadable.OnModsUnload() {

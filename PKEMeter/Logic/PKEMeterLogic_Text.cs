@@ -17,18 +17,9 @@ namespace PKEMeter.Logic {
 
 
 	partial class PKEMeterLogic : ILoadable {
-		public PKEText CurrentText { get; internal set; }
-
-
-		////////////////
-
-		private int TextScrollPos = -6;
-
-
-
-		////////////////
-
 		private void InitializeDefaultText() {
+			if( this.CurrentText != null ) { return; }
+
 			this.CurrentText = ( _, __, ____ ) => {
 				Color color = Color.Red * (0.5f + (Main.rand.NextFloat() * 0.5f));
 				string text = "";
@@ -39,6 +30,8 @@ namespace PKEMeter.Logic {
 				);
 
 				switch( bossNpc?.type ?? -1 ) {
+				case -1:
+					break;
 				case NPCID.EyeofCthulhu:
 					text = "WARNING - CLASS V FREEROAM CORPOREAL FLOATER";
 					break;
@@ -92,7 +85,7 @@ namespace PKEMeter.Logic {
 					text = "WARNING - CLASS X FULLTORSO ULTRADIM DEITY REMNANT";
 					break;
 				default:
-					text = "WARNING - UNKNOWN CLASS V+ PKE-RADIANT ENTITY";
+					text = "WARNING - UNKNOWN CLASS V+ PKE-EMITTING ENTITY";
 					break;
 				}
 

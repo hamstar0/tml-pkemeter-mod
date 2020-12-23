@@ -14,13 +14,9 @@ namespace PKEMeter.Logic {
 
 
 	partial class PKEMeterLogic : ILoadable {
-		public PKEGauge CurrentGauge { get; internal set; }
-
-
-
-		////////////////
-
 		private void InitializeDefaultGauge() {
+			if( this.CurrentGauge != null ) { return; }
+
 			float b = 0, g = 0, y = 0, r = 0;
 			int proxCheckTimer = 0;
 
@@ -32,7 +28,7 @@ namespace PKEMeter.Logic {
 					r = Main.rand.NextFloat();
 				}*/
 
-				// Report proximity to nearest boss
+				// Report proximity to first found boss
 				if( proxCheckTimer++ > 5 ) {
 					proxCheckTimer = 0;
 					NPC npc = Main.npc.FirstOrDefault( n =>
