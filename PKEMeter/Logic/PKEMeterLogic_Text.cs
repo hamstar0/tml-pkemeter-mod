@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using HamstarHelpers.Classes.Loadable;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Services.Timers;
 
 
@@ -94,14 +95,16 @@ namespace PKEMeter.Logic {
 		////////////////
 
 		private void InitializeDefaultText() {
-			Timers.SetTimer( 4, true, () => {
+			if( this.CurrentText == null ) {
+				this.CurrentText = ( _, __, ___ ) => PKEMeterLogic.DefaultTextDisplay();
+			}
+		}
+
+		private void PostInitializeDefaultText() {
+			Timers.SetTimer( 3, true, () => {
 				this.TextScrollPos += 2;
 				return true;
 			} );
-
-			if( this.CurrentText == null ) {
-				this.CurrentText = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay();
-			}
 		}
 
 
@@ -116,7 +119,7 @@ namespace PKEMeter.Logic {
 				this.TextScrollPos = -6;
 			}
 
-			return (msg.text, msg.color, this.TextScrollPos);
+			return ( msg.text, msg.color, this.TextScrollPos );
 		}
 	}
 }

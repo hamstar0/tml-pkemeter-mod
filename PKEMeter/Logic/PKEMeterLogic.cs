@@ -38,6 +38,7 @@ namespace PKEMeter.Logic {
 		}
 
 		void ILoadable.OnPostModsLoad() {
+			this.PostInitializeDefaultText();
 		}
 
 		void ILoadable.OnModsUnload() {
