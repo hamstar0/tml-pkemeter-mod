@@ -58,10 +58,18 @@ namespace PKEMeter.HUD {
 			if( Main.playerInventory ) {
 				return;
 			}
-			if( Main.LocalPlayer.HeldItem?.type != ModContent.ItemType<PKEMeterItem>() ) {
-				return;
+
+			int meterType = ModContent.ItemType<PKEMeterItem>();
+
+			Item heldItem = Main.LocalPlayer.HeldItem;
+			heldItem = heldItem?.active == true ? heldItem : null;
+
+			Item mouseItem = Main.mouseItem;
+			mouseItem = mouseItem?.active == true ? mouseItem : null;
+
+			if( heldItem?.type == meterType || mouseItem?.type == meterType ) {
+				this.DrawHUD( sb );
 			}
-			this.DrawHUD( sb );
 		}
 
 		public void DrawHUD( SpriteBatch sb ) {
