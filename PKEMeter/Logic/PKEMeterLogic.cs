@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using HamstarHelpers.Classes.Loadable;
 
@@ -13,7 +15,13 @@ namespace PKEMeter.Logic {
 
 		public PKEGauge CurrentGauge { get; internal set; }
 
-		public PKEText CurrentText { get; internal set; }
+		public (string text, Color color, float priority) CurrentText { get; internal set; } = ("", Color.White, 0f);
+
+		public int CurrentTextTickDuration { get; private set; } = 0;
+
+		////
+
+		public IList<PKEText> TextSources { get; internal set; } = new List<PKEText>();
 
 
 		////////////////

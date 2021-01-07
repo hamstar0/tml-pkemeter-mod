@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using PKEMeter.Logic;
 
 
@@ -12,12 +13,18 @@ namespace PKEMeter {
 			PKEMeterLogic.Instance.CurrentGauge = gauge;
 		}
 
-		public static PKEText GetMeterText() {
-			return PKEMeterLogic.Instance.CurrentText;
+		////
+
+		public static PKEText[] GetMeterTexts() {
+			return PKEMeterLogic.Instance.TextSources.ToArray();
 		}
 
-		public static void SetMeterText( PKEText text ) {
-			PKEMeterLogic.Instance.CurrentText = text;
+		public static void AddMeterText( PKEText text ) {
+			PKEMeterLogic.Instance.TextSources.Add( text );
+		}
+
+		public static bool RemoveMeterText( PKEText text ) {
+			return PKEMeterLogic.Instance.TextSources.Remove( text );
 		}
 	}
 }

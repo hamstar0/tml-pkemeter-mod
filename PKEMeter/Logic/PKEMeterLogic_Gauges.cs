@@ -13,6 +13,8 @@ namespace PKEMeter.Logic {
 
 
 
+	////////////////
+
 	partial class PKEMeterLogic : ILoadable {
 		private static (float b, float g, float y, float r) DefaultGaugeGet(
 					ref int proxCheckTimer,
