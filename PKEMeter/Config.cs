@@ -22,7 +22,7 @@ namespace PKEMeter {
 
 		////////////////
 
-		public bool DebugModeFakeSignals { get; set; } = false;
+		//public bool DebugModeFakeSignals { get; set; } = false;
 
 
 		////////////////

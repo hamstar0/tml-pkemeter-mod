@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Loadable;
+using HamstarHelpers.Helpers.Players;
 using PKEMeter.Items;
 using PKEMeter.Logic;
 
@@ -57,11 +59,18 @@ namespace PKEMeter.HUD {
 		////////////////
 
 		public void DrawHUDIf( SpriteBatch sb ) {
-			if( Main.playerInventory ) {
+			if( Main.playerInventory || Main.LocalPlayer.dead ) {
 				return;
 			}
 
 			int meterType = ModContent.ItemType<PKEMeterItem>();
+
+			if( PKEMeterItem.DisplayHUDMeter ) {
+				if( PlayerItemFinderHelpers.CountTotalOfEach(Main.LocalPlayer, new HashSet<int> { meterType }, false) > 0 ) {
+					this.DrawHUD( sb );
+				}
+				return;
+			}
 
 			Item heldItem = Main.LocalPlayer.HeldItem;
 			heldItem = heldItem?.active == true ? heldItem : null;

@@ -31,31 +31,36 @@ namespace PKEMeter.HUD {
 			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, gDestRect, gTicks );
 			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, yDestRect, yTicks );
 			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, rDestRect, rTicks );
-			
-			if( b >= 0.99f ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2(), 0 );
-			}
-			if( g >= 0.99f ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2(8, 0), 1 );
-			}
-			if( y >= 0.99f ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2(16, 0), 2 );
-			}
-			if( r >= 0.99f ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2(24, 0), 3 );
-			}
 
-			if( b >= 0.99f ) {
+			bool bLit = b >= 0.99f;
+			bool gLit = g >= 0.99f;
+			bool yLit = y >= 0.99f;
+			bool rLit = r >= 0.99f;
+
+			if( bLit ) {
 				this.DrawHUDGaugeLight2( sb, pos + new Vector2(), Color.Blue );
 			}
-			if( g >= 0.99f ) {
+			if( gLit ) {
 				this.DrawHUDGaugeLight2( sb, pos + new Vector2(8, 0), Color.Lime );
 			}
-			if( y >= 0.99f ) {
+			if( yLit ) {
 				this.DrawHUDGaugeLight2( sb, pos + new Vector2(16, 0), Color.Yellow );
 			}
-			if( r >= 0.99f ) {
+			if( rLit ) {
 				this.DrawHUDGaugeLight2( sb, pos + new Vector2(16, 0), Color.Red );
+			}
+
+			if( bLit ) {
+				this.DrawHUDGaugeLight1( sb, pos + new Vector2(), 0 );
+			}
+			if( gLit ) {
+				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 8, 0 ), 1 );
+			}
+			if( yLit ) {
+				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 16, 0 ), 2 );
+			}
+			if( rLit ) {
+				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 24, 0 ), 3 );
 			}
 		}
 
@@ -84,38 +89,6 @@ namespace PKEMeter.HUD {
 					color: Color.White
 				);
 			}
-		}
-
-
-		////
-
-		private void DrawHUDGaugeLight1( SpriteBatch sb, Vector2 pos, int frameX ) {
-			var destRect = new Rectangle( (int)pos.X, (int)pos.Y, 6, 6 );
-			var srcRect = new Rectangle( frameX * 6, 0, 6, 6 );
-
-			sb.Draw(
-				texture: this.MeterLights,
-				destinationRectangle: destRect,
-				sourceRectangle: srcRect,
-				color: Color.White
-			);
-		}
-
-		private void DrawHUDGaugeLight2( SpriteBatch sb, Vector2 pos, Color color ) {
-			var airDestRect = new Rectangle( (int)pos.X - 4, (int)pos.Y - 4, 14, 14 );
-			var backDestRect = new Rectangle( (int)pos.X - 2, (int)pos.Y + 6, 10, 4 );
-
-			sb.Draw(
-				texture: Main.magicPixel,
-				destinationRectangle: airDestRect,
-				color: color * 0.1f
-			);
-
-			sb.Draw(
-				texture: Main.magicPixel,
-				destinationRectangle: backDestRect,
-				color: color * 0.2f
-			);
 		}
 	}
 }
