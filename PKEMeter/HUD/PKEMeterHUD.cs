@@ -115,6 +115,8 @@ namespace PKEMeter.HUD {
 				color: plrColor
 			);
 
+			this.DrawHUDGaugeLights( sb, pos, gauge.b > 0.99f, gauge.g > 0.99f, gauge.y > 0.99f, gauge.r > 0.99f );
+
 			sb.Draw(
 				texture: this.MeterWires,
 				position: pos,

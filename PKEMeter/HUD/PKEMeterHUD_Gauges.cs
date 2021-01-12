@@ -31,37 +31,6 @@ namespace PKEMeter.HUD {
 			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, gDestRect, gTicks );
 			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, yDestRect, yTicks );
 			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, rDestRect, rTicks );
-
-			bool bLit = b >= 0.99f;
-			bool gLit = g >= 0.99f;
-			bool yLit = y >= 0.99f;
-			bool rLit = r >= 0.99f;
-
-			if( bLit ) {
-				this.DrawHUDGaugeLight2( sb, pos + new Vector2(), Color.Blue );
-			}
-			if( gLit ) {
-				this.DrawHUDGaugeLight2( sb, pos + new Vector2(8, 0), Color.Lime );
-			}
-			if( yLit ) {
-				this.DrawHUDGaugeLight2( sb, pos + new Vector2(16, 0), Color.Yellow );
-			}
-			if( rLit ) {
-				this.DrawHUDGaugeLight2( sb, pos + new Vector2(16, 0), Color.Red );
-			}
-
-			if( bLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2(), 0 );
-			}
-			if( gLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 8, 0 ), 1 );
-			}
-			if( yLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 16, 0 ), 2 );
-			}
-			if( rLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 24, 0 ), 3 );
-			}
 		}
 
 

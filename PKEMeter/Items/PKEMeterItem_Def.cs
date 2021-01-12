@@ -7,7 +7,7 @@ using HamstarHelpers.Services.Timers;
 
 namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
-		public static bool DisplayHUDMeter { get; private set; } = false;
+		public static bool DisplayHUDMeter { get; internal set; } = false;
 
 
 
