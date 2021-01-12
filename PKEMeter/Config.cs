@@ -22,6 +22,11 @@ namespace PKEMeter {
 
 		////////////////
 
+		public bool DebugModeFakeSignals { get; set; } = false;
+
+
+		////////////////
+
 		[DefaultValue( true )]
 		public bool PKEMeterRecipeEnabled { get; set; } = true;
 

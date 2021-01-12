@@ -16,15 +16,15 @@ namespace PKEMeter {
 		////
 
 		public static PKEText[] GetMeterTexts() {
-			return PKEMeterLogic.Instance.TextSources.ToArray();
+			return PKEMeterLogic.Instance.TextSources.Values.ToArray();
 		}
 
-		public static void AddMeterText( PKEText text ) {
-			PKEMeterLogic.Instance.TextSources.Add( text );
+		public static void SetMeterText( string id, PKEText text ) {
+			PKEMeterLogic.Instance.TextSources[ id ] = text;
 		}
 
-		public static bool RemoveMeterText( PKEText text ) {
-			return PKEMeterLogic.Instance.TextSources.Remove( text );
+		public static bool RemoveMeterText( string id ) {
+			return PKEMeterLogic.Instance.TextSources.Remove( id );
 		}
 	}
 }

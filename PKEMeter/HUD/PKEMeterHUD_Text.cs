@@ -15,7 +15,7 @@ namespace PKEMeter.HUD {
 			text = text.ToUpper();
 
 			pos.X += 22;
-			pos.Y += 14;
+			pos.Y += 16;
 
 			for( int i=0; i<text.Length; i++ ) {
 				int charOffset = (i * 8) - offset;

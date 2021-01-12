@@ -21,6 +21,7 @@ namespace PKEMeter.HUD {
 		private Texture2D MeterBody;
 		private Texture2D MeterDisplay;
 		private Texture2D MeterWires;
+		private Texture2D MeterLights;
 		private Texture2D MeterDisplayB;
 		private Texture2D MeterDisplayG;
 		private Texture2D MeterDisplayY;
@@ -40,6 +41,7 @@ namespace PKEMeter.HUD {
 				this.MeterBody = PKEMeterMod.Instance.GetTexture( "HUD/MeterBody" );
 				this.MeterDisplay = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplay" );
 				this.MeterWires = PKEMeterMod.Instance.GetTexture( "HUD/MeterWires" );
+				this.MeterLights = PKEMeterMod.Instance.GetTexture( "HUD/MeterLights" );
 				this.MeterDisplayB = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayB" );
 				this.MeterDisplayG = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayG" );
 				this.MeterDisplayY = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayY" );

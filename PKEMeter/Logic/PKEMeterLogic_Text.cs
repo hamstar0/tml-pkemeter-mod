@@ -10,18 +10,8 @@ using HamstarHelpers.Services.Timers;
 
 
 namespace PKEMeter.Logic {
-	public delegate (string text, Color color, float priority) PKEText(
-				Player player,
-				Vector2 position,
-				(float b, float g, float y, float r) gauges );
-
-
-
-
-	////////////////
-
 	partial class PKEMeterLogic : ILoadable {
-		private static (string text, Color color, float priority) DefaultTextDisplay() {
+		private static PKETextMessage DefaultTextDisplay() {
 			Color color = Color.Red * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) );
 			string text = "";
 
@@ -110,7 +100,7 @@ namespace PKEMeter.Logic {
 				break;
 			}
 
-			return (text, color, priority);
+			return new PKETextMessage( text, color, priority );
 		}
 
 
@@ -119,7 +109,7 @@ namespace PKEMeter.Logic {
 
 		private void InitializeDefaultText() {
 			if( this.TextSources == null ) {
-				this.TextSources.Add( (_, __, ___) => PKEMeterLogic.DefaultTextDisplay() );
+				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay();
 			}
 		}
 
@@ -134,34 +124,51 @@ namespace PKEMeter.Logic {
 		////////////////
 
 		public (string text, Color color, int offset) GetText( Player player, Vector2 position ) {
-			IEnumerable<(string text, Color color, float priority)> msgs = this.TextSources.Select(
-				m => m.Invoke( player, position, this.GaugeSnapshot )
+			IDictionary<string, PKETextMessage> msgs = this.TextSources.ToDictionary(
+				kv => kv.Key,
+				kv => kv.Value.Invoke( player, position, this.GaugeSnapshot )
 			);
 
-			(string text, Color color, float priority) msg;
+			//
+
+			KeyValuePair<string, PKETextMessage> priorityMsg;
 			if( msgs.Count() > 0 ) {
-				msg = msgs.Aggregate(
-					( l, r ) => l.priority > r.priority ? l : r
+				priorityMsg = msgs.Aggregate(
+					( kvL, kvR ) => kvL.Value.Priority > kvR.Value.Priority ? kvL : kvR
 				);
 			} else {
-				msg = ( "", Color.White, 0f );
+				priorityMsg = PKETextMessage.EmptyMessage;
 			}
 
-			if( msg != this.CurrentText ) {
-				if( msg.priority > this.CurrentText.priority || this.CurrentTextTickDuration <= 0 ) {
+			PKETextMessage existingMsg;
+			if( !msgs.TryGetValue(this.CurrentMessageId, out existingMsg) ) {
+				existingMsg = PKETextMessage.EmptyMessage.Value;
+			}
+
+			PKETextMessage newMessage = existingMsg;
+
+			//
+
+			if( priorityMsg.Key != this.CurrentMessageId ) {
+				if( priorityMsg.Value.Priority > existingMsg.Priority || this.CurrentTextTickDuration <= 0 ) {
 					this.CurrentTextTickDuration = 60 * 3;
-					this.CurrentText = msg;
+					this.CurrentMessageId = priorityMsg.Key;
+					newMessage = priorityMsg.Value;
 				}
 			}
 
+			//
+
 			this.CurrentTextTickDuration--;
 
-			int textWid = msg.text.Length * 8;
+			int textWid = priorityMsg.Value.Message.Length * 8;
 			if( this.TextScrollPos > textWid ) {
 				this.TextScrollPos = -6;
 			}
 
-			return ( msg.text, msg.color, this.TextScrollPos );
+			//
+
+			return (newMessage.Message, newMessage.Color, this.TextScrollPos );
 		}
 	}
 }
