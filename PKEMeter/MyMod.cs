@@ -50,10 +50,10 @@ namespace PKEMeter {
 
 			//
 
-			var debugLayer = new LegacyGameInterfaceLayer( "PKE Meter: HUD Display",
+			var hudLayer = new LegacyGameInterfaceLayer( "PKE Meter: HUD Display",
 				drawHUDMeter,
 				InterfaceScaleType.UI );
-			layers.Insert( idx, debugLayer );
+			layers.Insert( idx, hudLayer );
 		}
 	}
 }

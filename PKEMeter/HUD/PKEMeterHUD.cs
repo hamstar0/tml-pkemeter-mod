@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Loadable;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.Players;
 using PKEMeter.Items;
 using PKEMeter.Logic;
@@ -28,6 +29,8 @@ namespace PKEMeter.HUD {
 		private Texture2D MeterDisplayG;
 		private Texture2D MeterDisplayY;
 		private Texture2D MeterDisplayR;
+
+		private Color LastVisiblePlayerColor;
 
 
 
@@ -95,7 +98,14 @@ namespace PKEMeter.HUD {
 
 			Player plr = Main.LocalPlayer;
 			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
+
 			Color plrColor = myplayer.MyColor;
+			if( plrColor.A == 0 ) {
+				plrColor = this.LastVisiblePlayerColor;
+				plrColor.A = 255;
+			} else {
+				this.LastVisiblePlayerColor = plrColor;
+			}
 
 			sb.Draw(
 				texture: this.MeterDisplay,
@@ -116,7 +126,7 @@ namespace PKEMeter.HUD {
 			);
 
 			this.DrawHUDGaugeLights( sb, pos, gauge.b > 0.99f, gauge.g > 0.99f, gauge.y > 0.99f, gauge.r > 0.99f );
-
+			
 			sb.Draw(
 				texture: this.MeterWires,
 				position: pos,
