@@ -13,10 +13,10 @@ namespace PKEMeter.Logic {
 	////////////////
 
 	public class PKEGaugeValues {
-		public float BluePercent { get; }
-		public float GreenPercent { get; }
-		public float YellowPercent { get; }
-		public float RedPercent { get; }
+		public float BluePercent { get; set; }
+		public float GreenPercent { get; set; }
+		public float YellowPercent { get; set; }
+		public float RedPercent { get; set; }
 
 
 
