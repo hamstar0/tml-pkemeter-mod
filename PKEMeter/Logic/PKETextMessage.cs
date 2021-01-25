@@ -35,12 +35,14 @@ namespace PKEMeter.Logic {
 		////////////////
 
 		public PKETextMessage( string title, string message, Color color, float priority ) {
+			this.Title = title;
 			this.Message = message;
 			this.Color = color;
 			this.Priority = priority;
 		}
 
 		public PKETextMessage( PKETextMessage msg ) {
+			this.Title = msg.Title;
 			this.Message = msg.Message;
 			this.Color = msg.Color;
 			this.Priority = msg.Priority;
@@ -50,13 +52,17 @@ namespace PKEMeter.Logic {
 
 		public override bool Equals( object obj ) {
 			var myobj = obj as PKETextMessage;
-			return myobj?.Message == this.Message
+			return myobj?.Title == this.Title
+				&& myobj.Message == this.Message
 				&& myobj.Color == this.Color
 				&& myobj.Priority == this.Priority;
 		}
 
 		public override int GetHashCode() {
-			return this.Message.GetHashCode() + this.Color.GetHashCode() + this.Priority.GetHashCode();
+			return this.Title.GetHashCode()
+				+ this.Message.GetHashCode()
+				+ this.Color.GetHashCode()
+				+ this.Priority.GetHashCode();
 		}
 	}
 }

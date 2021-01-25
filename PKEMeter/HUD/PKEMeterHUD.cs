@@ -116,10 +116,7 @@ namespace PKEMeter.HUD {
 
 			if( meterArea.Contains( Main.MouseScreen.ToPoint() ) ) {
 				PKEText[] texts = PKEMeterAPI.GetMeterTexts();
-
-				if( texts.Length > 0 ) {
-					this.DrawHUDHoverText( sb, pos, plr, texts );
-				}
+				this.DrawHUDHoverText( sb, pos, plr, texts );
 			}
 		}
 
@@ -168,24 +165,27 @@ namespace PKEMeter.HUD {
 
 		private void DrawHUDHoverText( SpriteBatch sb, Vector2 pos, Player plr, PKEText[] texts ) {
 			Vector2 textPos = pos;
-			pos.X -= 128;
+			textPos.X -= 128;
 
 			for( int i=0; i<texts.Length; i++ ) {
 				PKEText text = texts[i];
-				PKETextMessage msg = text.Invoke( plr, pos, (0f, 0f, 0f, 0f) );
+				PKETextMessage msg = text.Invoke( plr, textPos, (0f, 0f, 0f, 0f) );
+				if( string.IsNullOrEmpty(msg.Title) ) {
+					continue;
+				}
 
 				Utils.DrawBorderStringFourWay(
 					sb: sb,
 					font: Main.fontMouseText,
 					text: msg.Title,
-					x: pos.X,
-					y: pos.Y,
+					x: textPos.X,
+					y: textPos.Y,
 					textColor: msg.Color,
 					borderColor: Color.Black,
 					origin: Vector2.Zero
 				);
 
-				pos.Y += 12;
+				textPos.Y += 12;
 			}
 		}
 	}
