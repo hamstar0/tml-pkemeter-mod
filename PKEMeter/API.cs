@@ -6,12 +6,22 @@ using PKEMeter.Logic;
 
 namespace PKEMeter {
 	public static class PKEMeterAPI {
-		public static void SetPKETooltips( string blueLabel, string greenLabel, string yellowLabel, string redLabel ) {
-			PKEMeterItem.BlueTooltip = blueLabel;
-			PKEMeterItem.GreenLabel = greenLabel;
-			PKEMeterItem.YellowLabel = yellowLabel;
-			PKEMeterItem.RedLabel = redLabel;
+		public static void SetPKEBlueTooltip( Func<string> blueLabelGetter ) {
+			PKEMeterItem.BlueTooltipGetter = blueLabelGetter;
 		}
+
+		public static void SetPKEGreenTooltip( Func<string> greenLabelGetter ) {
+			PKEMeterItem.GreenLabelGetter = greenLabelGetter;
+		}
+
+		public static void SetPKEYellowTooltip( Func<string> yellowLabelGetter ) {
+			PKEMeterItem.YellowLabelGetter = yellowLabelGetter;
+		}
+
+		public static void SetPKERedTooltip( Func<string> redLabelGetter ) {
+			PKEMeterItem.RedLabelGetter = redLabelGetter;
+		}
+
 
 		////
 

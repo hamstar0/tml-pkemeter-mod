@@ -12,7 +12,7 @@ using PKEMeter.Items;
 
 namespace PKEMeter.Logic {
 	partial class PKEMeterLogic : ILoadable {
-		private static PKETextMessage DefaultTextDisplay( out string redTooltip ) {
+		private static PKETextMessage DefaultTextDisplay( out Func<string> redTooltipGetter ) {
 			Color color = Color.Red * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) );
 			string text = "";
 
@@ -101,7 +101,7 @@ namespace PKEMeter.Logic {
 				break;
 			}
 
-			redTooltip = "DOMINANT ENTITIES";
+			redTooltipGetter = () => "DOMINANT ENTITIES";
 			return new PKETextMessage( text, color, priority );
 		}
 
@@ -111,7 +111,7 @@ namespace PKEMeter.Logic {
 
 		private void InitializeDefaultText() {
 			if( this.TextSources == null ) {
-				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay( out PKEMeterItem.RedLabel );
+				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay( out PKEMeterItem.RedLabelGetter );
 			}
 		}
 
