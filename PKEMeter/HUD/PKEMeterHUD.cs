@@ -112,12 +112,12 @@ namespace PKEMeter.HUD {
 
 			//
 
-			var meterArea = new Rectangle( (int)pos.X, (int)pos.Y, this.MeterBody.Width, this.MeterBody.Height );
+			/*var meterArea = new Rectangle( (int)pos.X, (int)pos.Y, this.MeterBody.Width, this.MeterBody.Height );
 
 			if( meterArea.Contains( Main.MouseScreen.ToPoint() ) ) {
-				PKEText[] texts = PKEMeterAPI.GetMeterTexts();
+				PKETextGetter[] texts = PKEMeterAPI.GetMeterTexts();
 				this.DrawHUDHoverText( sb, pos, plr, texts );
-			}
+			}*/
 		}
 
 
@@ -132,10 +132,10 @@ namespace PKEMeter.HUD {
 				color: Color.White
 			);
 
-			(float b, float g, float y, float r) gauge = logic.GetGauges( plr, plr.Center );
-			this.DrawHUDGauges( sb, pos, gauge.b, gauge.g, gauge.y, gauge.r );
+			PKEGaugeValues gauge = logic.GetGauges( plr, plr.Center );
+			this.DrawHUDGauges( sb, pos, gauge.BluePercent, gauge.GreenPercent, gauge.YellowPercent, gauge.RedPercent );
 
-			(string title, string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
+			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
 			this.DrawHUDText( sb, pos, msg.text, msg.color, msg.offset );
 
 			sb.Draw(
@@ -147,10 +147,10 @@ namespace PKEMeter.HUD {
 			this.DrawHUDGaugeLights(
 				sb: sb,
 				pos: pos,
-				bLit: gauge.b > 0.99f,
-				gLit: gauge.g > 0.99f,
-				yLit: gauge.y > 0.99f,
-				rLit: gauge.r > 0.99f
+				bLit: gauge.BluePercent > 0.99f,
+				gLit: gauge.GreenPercent > 0.99f,
+				yLit: gauge.YellowPercent > 0.99f,
+				rLit: gauge.RedPercent > 0.99f
 			);
 
 			sb.Draw(
@@ -163,12 +163,12 @@ namespace PKEMeter.HUD {
 
 		////
 
-		private void DrawHUDHoverText( SpriteBatch sb, Vector2 pos, Player plr, PKEText[] texts ) {
+		/*private void DrawHUDHoverText( SpriteBatch sb, Vector2 pos, Player plr, PKETextGetter[] texts ) {
 			Vector2 textPos = pos;
-			textPos.X -= 128;
+			textPos.X -= 168;
 
 			for( int i=0; i<texts.Length; i++ ) {
-				PKEText text = texts[i];
+				PKETextGetter text = texts[i];
 				PKETextMessage msg = text.Invoke( plr, textPos, (0f, 0f, 0f, 0f) );
 				if( string.IsNullOrEmpty(msg.Title) ) {
 					continue;
@@ -185,8 +185,8 @@ namespace PKEMeter.HUD {
 					origin: Vector2.Zero
 				);
 
-				textPos.Y += 12;
+				textPos.Y += 18;
 			}
-		}
+		}*/
 	}
 }

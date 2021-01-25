@@ -9,6 +9,11 @@ namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
 		public static bool DisplayHUDMeter { get; internal set; } = false;
 
+		internal static string BlueTooltip;
+		internal static string GreenLabel;
+		internal static string YellowLabel;
+		internal static string RedLabel;
+
 
 
 		////////////////
@@ -58,6 +63,19 @@ namespace PKEMeter.Items {
 				"PKEHUDState",
 				"HUD display status: "+(PKEMeterItem.DisplayHUDMeter ? "[c/00FF00:On]" : "[c/FF0000:Off]")
 			) );
+
+			if( !string.IsNullOrEmpty(PKEMeterItem.BlueTooltip) ) {
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeBlue", PKEMeterItem.BlueTooltip ) );
+			}
+			if( !string.IsNullOrEmpty(PKEMeterItem.GreenLabel) ) {
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeGreen", PKEMeterItem.GreenLabel ) );
+			}
+			if( !string.IsNullOrEmpty(PKEMeterItem.YellowLabel) ) {
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeYellow", PKEMeterItem.YellowLabel ) );
+			}
+			if( !string.IsNullOrEmpty(PKEMeterItem.RedLabel) ) {
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeRed", PKEMeterItem.RedLabel ) );
+			}
 		}
 	}
 }

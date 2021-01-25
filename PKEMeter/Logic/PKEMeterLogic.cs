@@ -12,7 +12,7 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public PKEGauge CurrentGauge { get; internal set; }
+		public PKEGaugesGetter CurrentGauge { get; internal set; }
 
 		public string CurrentMessageId { get; internal set; } = PKETextMessage.EmptyMessage.Key;
 
@@ -20,13 +20,13 @@ namespace PKEMeter.Logic {
 
 		////
 
-		public IDictionary<string, PKEText> TextSources { get; internal set; } = new Dictionary<string, PKEText>();
+		public IDictionary<string, PKETextGetter> TextSources { get; internal set; } = new Dictionary<string, PKETextGetter>();
 
 
 		////////////////
 
 
-		private (float b, float g, float y, float r) GaugeSnapshot = (0, 0, 0, 0);
+		private PKEGaugeValues GaugeSnapshot = new PKEGaugeValues( 0, 0, 0, 0);
 
 
 		////////////////

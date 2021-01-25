@@ -7,11 +7,12 @@ using Terraria.ID;
 using HamstarHelpers.Classes.Loadable;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Services.Timers;
+using PKEMeter.Items;
 
 
 namespace PKEMeter.Logic {
 	partial class PKEMeterLogic : ILoadable {
-		private static PKETextMessage DefaultTextDisplay() {
+		private static PKETextMessage DefaultTextDisplay( out string redTooltip ) {
 			Color color = Color.Red * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) );
 			string text = "";
 
@@ -100,7 +101,8 @@ namespace PKEMeter.Logic {
 				break;
 			}
 
-			return new PKETextMessage( "RED: DOMINANT ENTITIES", text, color, priority );
+			redTooltip = "DOMINANT ENTITIES";
+			return new PKETextMessage( text, color, priority );
 		}
 
 
@@ -109,7 +111,7 @@ namespace PKEMeter.Logic {
 
 		private void InitializeDefaultText() {
 			if( this.TextSources == null ) {
-				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay();
+				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay( out PKEMeterItem.RedLabel );
 			}
 		}
 
@@ -123,7 +125,7 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public (string title, string text, Color color, int offset) GetText( Player player, Vector2 position ) {
+		public (string text, Color color, int offset) GetText( Player player, Vector2 position ) {
 			IDictionary<string, PKETextMessage> msgs = this.TextSources.ToDictionary(
 				kv => kv.Key,
 				kv => kv.Value.Invoke( player, position, this.GaugeSnapshot )
@@ -168,7 +170,7 @@ namespace PKEMeter.Logic {
 
 			//
 
-			return (newMessage.Title, newMessage.Message, newMessage.Color, this.TextScrollPos );
+			return (newMessage.Message, newMessage.Color, this.TextScrollPos );
 		}
 	}
 }

@@ -6,10 +6,10 @@ using HamstarHelpers.Helpers.Debug;
 
 
 namespace PKEMeter.Logic {
-	public delegate PKETextMessage PKEText(
+	public delegate PKETextMessage PKETextGetter(
 		Player player,
 		Vector2 position,
-		(float b, float g, float y, float r) gauges
+		PKEGaugeValues gaugeVals
 	);
 
 
@@ -19,13 +19,13 @@ namespace PKEMeter.Logic {
 
 	public class PKETextMessage {
 		public static KeyValuePair<string, PKETextMessage> EmptyMessage { get; }
-				= new KeyValuePair<string, PKETextMessage>( "Default", new PKETextMessage( "", "", Color.White, 0f ) );
+				= new KeyValuePair<string, PKETextMessage>( "Default", new PKETextMessage( "", Color.White, 0f ) );
 
 
 
 		////////////////
 
-		public string Title { get; }
+		//public string Title { get; }
 		public string Message { get; }
 		public Color Color { get; }
 		public float Priority { get; }
@@ -34,15 +34,14 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public PKETextMessage( string title, string message, Color color, float priority ) {
-			this.Title = title;
+		public PKETextMessage( string message, Color color, float priority ) {
+			//this.Title = title;
 			this.Message = message;
 			this.Color = color;
 			this.Priority = priority;
 		}
 
 		public PKETextMessage( PKETextMessage msg ) {
-			this.Title = msg.Title;
 			this.Message = msg.Message;
 			this.Color = msg.Color;
 			this.Priority = msg.Priority;
@@ -52,15 +51,13 @@ namespace PKEMeter.Logic {
 
 		public override bool Equals( object obj ) {
 			var myobj = obj as PKETextMessage;
-			return myobj?.Title == this.Title
-				&& myobj.Message == this.Message
+			return myobj?.Message == this.Message
 				&& myobj.Color == this.Color
 				&& myobj.Priority == this.Priority;
 		}
 
 		public override int GetHashCode() {
-			return this.Title.GetHashCode()
-				+ this.Message.GetHashCode()
+			return this.Message.GetHashCode()
 				+ this.Color.GetHashCode()
 				+ this.Priority.GetHashCode();
 		}

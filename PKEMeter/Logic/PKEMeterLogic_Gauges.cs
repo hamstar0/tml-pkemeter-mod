@@ -7,21 +7,13 @@ using HamstarHelpers.Classes.Loadable;
 
 
 namespace PKEMeter.Logic {
-	public delegate (float bluePercent, float greenPercent, float yellowPercent, float redPercent)
-		PKEGauge( Player player, Vector2 position );
-
-
-
-
-	////////////////
-
 	partial class PKEMeterLogic : ILoadable {
-		private static (float b, float g, float y, float r) DefaultGaugeGet(
+		private static PKEGaugeValues DefaultGaugeGet(
 					ref int proxCheckTimer,
-					ref float b,
-					ref float g,
-					ref float y,
-					ref float r ) {
+					float b,
+					float g,
+					float y,
+					float r ) {
 			/*if( Main.rand.NextFloat() < (1f / 60f) ) {
 				b = Main.rand.NextFloat();
 				g = Main.rand.NextFloat();
@@ -46,7 +38,7 @@ namespace PKEMeter.Logic {
 				}
 			}
 
-			return (b, g, y, r);
+			return new PKEGaugeValues( b, g, y, r );
 		}
 
 
@@ -55,16 +47,16 @@ namespace PKEMeter.Logic {
 			int proxCheckTimer = 0;
 
 			if( this.CurrentGauge == null ) {
-				this.CurrentGauge = ( _, __ ) => PKEMeterLogic.DefaultGaugeGet( ref proxCheckTimer, ref b, ref g, ref y, ref r );
+				this.CurrentGauge = ( _, __ ) => PKEMeterLogic.DefaultGaugeGet( ref proxCheckTimer, b, g, y, r );
 			}
 		}
 
 
 		////
 
-		public (float b, float g, float y, float r) GetGauges( Player player, Vector2 position ) {
+		public PKEGaugeValues GetGauges( Player player, Vector2 position ) {
 			this.GaugeSnapshot = this.CurrentGauge?.Invoke( player, position )
-				?? (0f, 0f, 0f, 0f);
+				?? new PKEGaugeValues( 0f, 0f, 0f, 0f);
 			return this.GaugeSnapshot;
 		}
 	}
