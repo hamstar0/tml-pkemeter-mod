@@ -65,16 +65,20 @@ namespace PKEMeter.Items {
 			) );
 
 			if( !string.IsNullOrEmpty(PKEMeterItem.BlueTooltip) ) {
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeBlue", PKEMeterItem.BlueTooltip ) );
+				string text = "[c/8888FF:Blue] gauge label: [c/8888FF:"+PKEMeterItem.BlueTooltip+"]";
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeBlue", text ) );
 			}
 			if( !string.IsNullOrEmpty(PKEMeterItem.GreenLabel) ) {
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeGreen", PKEMeterItem.GreenLabel ) );
+				string text = "[c/88FF88:Blue] gauge label: [c/88FF88:"+PKEMeterItem.GreenLabel+"]";
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeGreen", text ) );
 			}
 			if( !string.IsNullOrEmpty(PKEMeterItem.YellowLabel) ) {
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeYellow", PKEMeterItem.YellowLabel ) );
+				string text = "[c/DDDD88:Blue] gauge label: [c/DDDD88:"+PKEMeterItem.YellowLabel+"]";
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeYellow", text ) );
 			}
 			if( !string.IsNullOrEmpty(PKEMeterItem.RedLabel) ) {
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeRed", PKEMeterItem.RedLabel ) );
+				string text = "[c/FF8888:Red] gauge label: [c/FF8888:"+PKEMeterItem.RedLabel+"]";
+				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeRed", text ) );
 			}
 		}
 	}
