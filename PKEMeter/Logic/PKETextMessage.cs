@@ -19,12 +19,13 @@ namespace PKEMeter.Logic {
 
 	public class PKETextMessage {
 		public static KeyValuePair<string, PKETextMessage> EmptyMessage { get; }
-				= new KeyValuePair<string, PKETextMessage>( "Default", new PKETextMessage( "", Color.White, 0f ) );
+				= new KeyValuePair<string, PKETextMessage>( "Default", new PKETextMessage( "", "", Color.White, 0f ) );
 
 
 
 		////////////////
 
+		public string Title { get; }
 		public string Message { get; }
 		public Color Color { get; }
 		public float Priority { get; }
@@ -33,7 +34,7 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public PKETextMessage( string message, Color color, float priority ) {
+		public PKETextMessage( string title, string message, Color color, float priority ) {
 			this.Message = message;
 			this.Color = color;
 			this.Priority = priority;

@@ -100,7 +100,7 @@ namespace PKEMeter.Logic {
 				break;
 			}
 
-			return new PKETextMessage( text, color, priority );
+			return new PKETextMessage( "RED: DOMINANT ENTITIES", text, color, priority );
 		}
 
 
@@ -123,7 +123,7 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public (string text, Color color, int offset) GetText( Player player, Vector2 position ) {
+		public (string title, string text, Color color, int offset) GetText( Player player, Vector2 position ) {
 			IDictionary<string, PKETextMessage> msgs = this.TextSources.ToDictionary(
 				kv => kv.Key,
 				kv => kv.Value.Invoke( player, position, this.GaugeSnapshot )
@@ -168,7 +168,7 @@ namespace PKEMeter.Logic {
 
 			//
 
-			return (newMessage.Message, newMessage.Color, this.TextScrollPos );
+			return (newMessage.Title, newMessage.Message, newMessage.Color, this.TextScrollPos );
 		}
 	}
 }

@@ -69,9 +69,10 @@ namespace PKEMeter.HUD {
 			int meterType = ModContent.ItemType<PKEMeterItem>();
 
 			if( PKEMeterItem.DisplayHUDMeter ) {
-				if( PlayerItemFinderHelpers.CountTotalOfEach(Main.LocalPlayer, new HashSet<int> { meterType }, false) > 0 ) {
+				if( PlayerItemFinderHelpers.CountTotalOfEach( Main.LocalPlayer, new HashSet<int> { meterType }, false ) > 0 ) {
 					this.DrawHUD( sb );
 				}
+
 				return;
 			}
 
@@ -87,10 +88,9 @@ namespace PKEMeter.HUD {
 		}
 
 		public void DrawHUD( SpriteBatch sb ) {
-			var logic = PKEMeterLogic.Instance;
 			var config = PKEMeterConfig.Instance;
-			int posX = config.Get<int>( nameof(config.PKEMeterHUDPositionX) );
-			int posY = config.Get<int>( nameof(config.PKEMeterHUDPositionY) );
+			int posX = config.Get<int>( nameof( config.PKEMeterHUDPositionX ) );
+			int posY = config.Get<int>( nameof( config.PKEMeterHUDPositionY ) );
 			var pos = new Vector2(
 				posX < 0 ? Main.screenWidth + posX : posX,
 				posY < 0 ? Main.screenHeight + posY : posY
@@ -100,12 +100,34 @@ namespace PKEMeter.HUD {
 			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
 
 			Color plrColor = myplayer.MyColor;
-			if( plrColor.A == 0 ) {
+			if( plrColor.A < 255 ) {
 				plrColor = this.LastVisiblePlayerColor;
-				plrColor.A = 255;
 			} else {
 				this.LastVisiblePlayerColor = plrColor;
 			}
+
+			//
+
+			this.DrawHUDComponents( sb, pos, plr, plrColor );
+
+			//
+
+			var meterArea = new Rectangle( (int)pos.X, (int)pos.Y, this.MeterBody.Width, this.MeterBody.Height );
+
+			if( meterArea.Contains( Main.MouseScreen.ToPoint() ) ) {
+				PKEText[] texts = PKEMeterAPI.GetMeterTexts();
+
+				if( texts.Length > 0 ) {
+					this.DrawHUDHoverText( sb, pos, plr, texts );
+				}
+			}
+		}
+
+
+		////
+
+		private void DrawHUDComponents( SpriteBatch sb, Vector2 pos, Player plr, Color plrColor ) {
+			var logic = PKEMeterLogic.Instance;
 
 			sb.Draw(
 				texture: this.MeterDisplay,
@@ -116,7 +138,7 @@ namespace PKEMeter.HUD {
 			(float b, float g, float y, float r) gauge = logic.GetGauges( plr, plr.Center );
 			this.DrawHUDGauges( sb, pos, gauge.b, gauge.g, gauge.y, gauge.r );
 
-			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
+			(string title, string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
 			this.DrawHUDText( sb, pos, msg.text, msg.color, msg.offset );
 
 			sb.Draw(
@@ -125,13 +147,46 @@ namespace PKEMeter.HUD {
 				color: plrColor
 			);
 
-			this.DrawHUDGaugeLights( sb, pos, gauge.b > 0.99f, gauge.g > 0.99f, gauge.y > 0.99f, gauge.r > 0.99f );
-			
+			this.DrawHUDGaugeLights(
+				sb: sb,
+				pos: pos,
+				bLit: gauge.b > 0.99f,
+				gLit: gauge.g > 0.99f,
+				yLit: gauge.y > 0.99f,
+				rLit: gauge.r > 0.99f
+			);
+
 			sb.Draw(
 				texture: this.MeterWires,
 				position: pos,
 				color: plrColor
 			);
+		}
+
+
+		////
+
+		private void DrawHUDHoverText( SpriteBatch sb, Vector2 pos, Player plr, PKEText[] texts ) {
+			Vector2 textPos = pos;
+			pos.X -= 128;
+
+			for( int i=0; i<texts.Length; i++ ) {
+				PKEText text = texts[i];
+				PKETextMessage msg = text.Invoke( plr, pos, (0f, 0f, 0f, 0f) );
+
+				Utils.DrawBorderStringFourWay(
+					sb: sb,
+					font: Main.fontMouseText,
+					text: msg.Title,
+					x: pos.X,
+					y: pos.Y,
+					textColor: msg.Color,
+					borderColor: Color.Black,
+					origin: Vector2.Zero
+				);
+
+				pos.Y += 12;
+			}
 		}
 	}
 }
