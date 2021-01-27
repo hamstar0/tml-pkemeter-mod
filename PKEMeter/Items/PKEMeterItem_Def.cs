@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -53,34 +52,6 @@ namespace PKEMeter.Items {
 				return false;
 			} );
 			return false;
-		}
-
-
-		////////////////
-
-		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
-			tooltips.Add( new TooltipLine(
-				this.mod,
-				"PKEHUDState",
-				"HUD display status: "+(PKEMeterItem.DisplayHUDMeter ? "[c/00FF00:On]" : "[c/FF0000:Off]")
-			) );
-
-			if( PKEMeterItem.BlueTooltipGetter != null ) {
-				string text = "[c/8888FF:Blue] gauge label: [c/8888FF:"+PKEMeterItem.BlueTooltipGetter.Invoke()+"]";
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeBlue", text ) );
-			}
-			if( PKEMeterItem.GreenLabelGetter != null ) {
-				string text = "[c/88FF88:Blue] gauge label: [c/88FF88:"+PKEMeterItem.GreenLabelGetter.Invoke()+"]";
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeGreen", text ) );
-			}
-			if( PKEMeterItem.YellowLabelGetter != null ) {
-				string text = "[c/DDDD88:Blue] gauge label: [c/DDDD88:"+PKEMeterItem.YellowLabelGetter.Invoke()+"]";
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeYellow", text ) );
-			}
-			if( PKEMeterItem.RedLabelGetter != null ) {
-				string text = "[c/FF8888:Red] gauge label: [c/FF8888:"+PKEMeterItem.RedLabelGetter.Invoke()+"]";
-				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeRed", text ) );
-			}
 		}
 	}
 }
