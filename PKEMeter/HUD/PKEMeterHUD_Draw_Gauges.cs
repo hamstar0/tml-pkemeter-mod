@@ -7,7 +7,7 @@ using HamstarHelpers.Classes.Loadable;
 
 namespace PKEMeter.HUD {
 	partial class PKEMeterHUD : ILoadable {
-		public void DrawHUDGauges( SpriteBatch sb, Vector2 pos, float b, float g, float y, float r ) {
+		public void DrawHUDGauges( SpriteBatch sb, Vector2 pos, float opacity, float b, float g, float y, float r ) {
 			pos.X += 22;
 			pos.Y += 28;//16;
 
@@ -27,23 +27,23 @@ namespace PKEMeter.HUD {
 			float yTicks = 7f * y;
 			float rTicks = 7f * r;
 
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayB, bDestRect, bTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, gDestRect, gTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, yDestRect, yTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, rDestRect, rTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayB, opacity, bDestRect, bTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, opacity, gDestRect, gTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, opacity, yDestRect, yTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, opacity, rDestRect, rTicks );
 		}
 
 
 		////
 
-		private void DrawHUDGaugeTicks( SpriteBatch sb, Texture2D tickTex, Rectangle rect, float ticks ) {
+		private void DrawHUDGaugeTicks( SpriteBatch sb, Texture2D tickTex, float opacity, Rectangle rect, float ticks ) {
 			for( int i=0; i<(int)ticks; i++ ) {
 				rect.Y -= 6;
 
 				sb.Draw(
 					texture: tickTex,
 					destinationRectangle: rect,
-					color: Color.White
+					color: Color.White * opacity
 				);
 			}
 
@@ -55,7 +55,7 @@ namespace PKEMeter.HUD {
 				sb.Draw(
 					texture: tickTex,
 					destinationRectangle: rect,
-					color: Color.White
+					color: Color.White * opacity
 				);
 			}
 		}

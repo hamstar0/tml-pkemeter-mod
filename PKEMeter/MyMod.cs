@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -37,23 +38,40 @@ namespace PKEMeter {
 
 		////////////////
 
+		public override void UpdateUI( GameTime gameTime ) {
+			PKEMeterHUD.Instance.Update();
+		}
+
+
+		////////////////
+
 		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
-			int idx = layers.FindIndex( layer => layer.Name.Equals("Vanilla: Mouse Text") );
-			if( idx == -1 ) { return; }
-
-			//
-
 			GameInterfaceDrawMethod drawHUDMeter = () => {
-				PKEMeterHUD.Instance.DrawHUDIf( Main.spriteBatch );
+				var hud = PKEMeterHUD.Instance;
+				if( hud.CanDrawPKE() ) {
+					hud.DrawHUD( Main.spriteBatch );
+				}
 				return true;
 			};
 
 			//
 
+			int infoAccBarIdx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Info Accessories Bar" ) );	//"Vanilla: Mouse Text"
+			if( infoAccBarIdx == -1 ) { return; }
+
 			var hudLayer = new LegacyGameInterfaceLayer( "PKE Meter: HUD Display",
 				drawHUDMeter,
 				InterfaceScaleType.UI );
-			layers.Insert( idx, hudLayer );
+			layers.Insert( infoAccBarIdx, hudLayer );
+
+			//
+
+			int cursorIdx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Cursor" ) );
+			if( cursorIdx == -1 ) { return; }
+
+			if( PKEMeterHUD.Instance.ConsumesCursor() ) {
+				layers.RemoveAt( cursorIdx );
+			}
 		}
 	}
 }

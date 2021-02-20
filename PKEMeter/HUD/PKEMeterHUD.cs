@@ -1,20 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 using HamstarHelpers.Classes.Loadable;
 using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Players;
-using PKEMeter.Items;
-using PKEMeter.Logic;
 
 
 namespace PKEMeter.HUD {
 	partial class PKEMeterHUD : ILoadable {
 		public static PKEMeterHUD Instance { get; private set; }
+
+
+
+		////////////////
+
+		public static Vector2 GetHUDPosition() {
+			var config = PKEMeterConfig.Instance;
+			int posX = config.Get<int>( nameof( config.PKEMeterHUDBasePositionX ) );
+			int posY = config.Get<int>( nameof( config.PKEMeterHUDBasePositionY ) );
+			var pos = new Vector2(
+				posX < 0 ? Main.screenWidth + posX : posX,
+				posY < 0 ? Main.screenHeight + posY : posY
+			);
+
+			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
+			return pos + myplayer.PKEDisplayOffset;
+		}
+
 
 
 
@@ -31,6 +44,8 @@ namespace PKEMeter.HUD {
 		private Texture2D MeterDisplayR;
 
 		private Color LastVisiblePlayerColor;
+
+		private bool IsHovering = false;
 
 
 
@@ -61,132 +76,26 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		public void DrawHUDIf( SpriteBatch sb ) {
-			if( Main.playerInventory || Main.LocalPlayer.dead ) {
-				return;
-			}
-
-			int meterType = ModContent.ItemType<PKEMeterItem>();
-
-			if( PKEMeterItem.DisplayHUDMeter ) {
-				if( PlayerItemFinderHelpers.CountTotalOfEach( Main.LocalPlayer, new HashSet<int> { meterType }, false ) > 0 ) {
-					this.DrawHUD( sb );
+		public void Update() {
+			if( Main.playerInventory ) {
+				if( !this.CanDrawPKE() ) {
+					return;
 				}
 
-				return;
-			}
+				this.RunHUDEditor( out bool isHovering );
 
-			Item heldItem = Main.LocalPlayer.HeldItem;
-			heldItem = heldItem?.active == true ? heldItem : null;
-
-			Item mouseItem = Main.mouseItem;
-			mouseItem = mouseItem?.active == true ? mouseItem : null;
-
-			if( heldItem?.type == meterType || mouseItem?.type == meterType ) {
-				this.DrawHUD( sb );
-			}
-		}
-
-		public void DrawHUD( SpriteBatch sb ) {
-			var config = PKEMeterConfig.Instance;
-			int posX = config.Get<int>( nameof( config.PKEMeterHUDPositionX ) );
-			int posY = config.Get<int>( nameof( config.PKEMeterHUDPositionY ) );
-			var pos = new Vector2(
-				posX < 0 ? Main.screenWidth + posX : posX,
-				posY < 0 ? Main.screenHeight + posY : posY
-			);
-
-			Player plr = Main.LocalPlayer;
-			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
-
-			Color plrColor = myplayer.MyColor;
-			if( plrColor.A < 255 ) {
-				plrColor = this.LastVisiblePlayerColor;
+				Main.LocalPlayer.mouseInterface = Main.LocalPlayer.mouseInterface || isHovering;
+				this.IsHovering = isHovering;
 			} else {
-				this.LastVisiblePlayerColor = plrColor;
+				this.IsHovering = false;
 			}
-
-			//
-
-			this.DrawHUDComponents( sb, pos, plr, plrColor );
-
-			//
-
-			/*var meterArea = new Rectangle( (int)pos.X, (int)pos.Y, this.MeterBody.Width, this.MeterBody.Height );
-
-			if( meterArea.Contains( Main.MouseScreen.ToPoint() ) ) {
-				PKETextGetter[] texts = PKEMeterAPI.GetMeterTexts();
-				this.DrawHUDHoverText( sb, pos, plr, texts );
-			}*/
 		}
 
 
-		////
+		////////////////
 
-		private void DrawHUDComponents( SpriteBatch sb, Vector2 pos, Player plr, Color plrColor ) {
-			var logic = PKEMeterLogic.Instance;
-
-			sb.Draw(
-				texture: this.MeterDisplay,
-				position: pos,
-				color: Color.White
-			);
-
-			PKEGaugeValues gauge = logic.GetGauges( plr, plr.Center );
-			this.DrawHUDGauges( sb, pos, gauge.BluePercent, gauge.GreenPercent, gauge.YellowPercent, gauge.RedPercent );
-
-			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
-			this.DrawHUDText( sb, pos, msg.text, msg.color, msg.offset );
-
-			sb.Draw(
-				texture: this.MeterBody,
-				position: pos,
-				color: plrColor
-			);
-
-			this.DrawHUDGaugeLights(
-				sb: sb,
-				pos: pos,
-				bLit: gauge.BluePercent > 0.99f,
-				gLit: gauge.GreenPercent > 0.99f,
-				yLit: gauge.YellowPercent > 0.99f,
-				rLit: gauge.RedPercent > 0.99f
-			);
-
-			sb.Draw(
-				texture: this.MeterWires,
-				position: pos,
-				color: plrColor
-			);
+		public bool ConsumesCursor() {
+			return this.IsHovering;
 		}
-
-
-		////
-
-		/*private void DrawHUDHoverText( SpriteBatch sb, Vector2 pos, Player plr, PKETextGetter[] texts ) {
-			Vector2 textPos = pos;
-			textPos.X -= 168;
-
-			for( int i=0; i<texts.Length; i++ ) {
-				PKETextGetter text = texts[i];
-				PKETextMessage msg = text.Invoke( plr, textPos, (0f, 0f, 0f, 0f) );
-				if( string.IsNullOrEmpty(msg.Title) ) {
-					continue;
-				}
-
-				Utils.DrawBorderStringFourWay(
-					sb: sb,
-					font: Main.fontMouseText,
-					text: msg.Title,
-					x: textPos.X,
-					y: textPos.Y,
-					textColor: msg.Color,
-					borderColor: Color.Black,
-					origin: Vector2.Zero
-				);
-
-				textPos.Y += 18;
-			}
-		}*/
 	}
 }

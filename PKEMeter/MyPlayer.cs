@@ -7,20 +7,39 @@ using PKEMeter.Items;
 
 namespace PKEMeter {
 	public class PKEMeterPlayer : ModPlayer {
-		public Color MyColor { get; private set; } = default(Color);
+		public Color MyColor { get; private set; } = default;
+
+		public Vector2 PKEDisplayOffset { get; internal set; } = default;
 
 
 
 		////////////////
 
+		public override void Initialize() {
+			this.PKEDisplayOffset = default;
+		}
+
 		public override void Load( TagCompound tag ) {
+			this.PKEDisplayOffset = default;
+
 			if( tag.ContainsKey("pke_hud") ) {
 				PKEMeterItem.DisplayHUDMeter = tag.GetBool( "pke_hud" );
+			}
+
+			if( tag.ContainsKey("pke_offset_x") ) {
+				this.PKEDisplayOffset = new Vector2(
+					tag.GetInt( "pke_offset_x" ),
+					tag.GetInt( "pke_offset_y" )
+				);
 			}
 		}
 
 		public override TagCompound Save() {
-			return new TagCompound { { "pke_hud", PKEMeterItem.DisplayHUDMeter } };
+			return new TagCompound {
+				{ "pke_hud", PKEMeterItem.DisplayHUDMeter },
+				{ "pke_offset_x", (int)this.PKEDisplayOffset.X },
+				{ "pke_offset_y", (int)this.PKEDisplayOffset.Y }
+			};
 		}
 
 

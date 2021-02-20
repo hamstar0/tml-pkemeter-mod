@@ -32,9 +32,9 @@ namespace PKEMeter {
 
 
 		[DefaultValue( -128 )]
-		public int PKEMeterHUDPositionX { get; set; } = -128;
+		public int PKEMeterHUDBasePositionX { get; set; } = -128;
 
 		[DefaultValue( -144 )]
-		public int PKEMeterHUDPositionY { get; set; } = -96;
+		public int PKEMeterHUDBasePositionY { get; set; } = -96;
 	}
 }
