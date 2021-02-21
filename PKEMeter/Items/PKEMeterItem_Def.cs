@@ -21,7 +21,8 @@ namespace PKEMeter.Items {
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "PKE Meter" );
 			this.Tooltip.SetDefault(
-				"Detects spiritual energies."
+				"Detects spiritual energy signals."
+				+"\nGauges indicate signal intensity (usually due to proximity)"
 				+"\nRight-click to toggle permanent HUD display"
 			);
 		}

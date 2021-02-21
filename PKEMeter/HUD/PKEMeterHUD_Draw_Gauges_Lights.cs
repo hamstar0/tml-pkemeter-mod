@@ -9,7 +9,7 @@ namespace PKEMeter.HUD {
 	partial class PKEMeterHUD : ILoadable {
 		private void DrawHUDGaugeLights( SpriteBatch sb, Vector2 pos, bool bLit, bool gLit, bool yLit, bool rLit ) {
 			if( bLit ) {
-				this.DrawHUDGaugeLight2( sb, pos, 0, Color.Blue );
+				this.DrawHUDGaugeLight2( sb, pos, 0, new Color(16, 32, 255) );
 			}
 			if( gLit ) {
 				this.DrawHUDGaugeLight2( sb, pos, 1, Color.Lime );
