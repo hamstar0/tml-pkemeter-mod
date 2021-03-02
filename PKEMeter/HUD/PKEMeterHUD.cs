@@ -30,7 +30,6 @@ namespace PKEMeter.HUD {
 
 
 
-
 		////////////////
 
 		private Texture2D MinFont;
@@ -46,6 +45,7 @@ namespace PKEMeter.HUD {
 		private Color LastVisiblePlayerColor;
 
 		private bool IsHovering = false;
+		private bool IsInteracting = false;
 
 
 
@@ -82,12 +82,10 @@ namespace PKEMeter.HUD {
 					return;
 				}
 
-				this.RunHUDEditor( out bool isHovering );
-
-				Main.LocalPlayer.mouseInterface = Main.LocalPlayer.mouseInterface || isHovering;
-				this.IsHovering = isHovering;
+				this.IsInteracting = this.RunHUDEditor( out this.IsHovering );
 			} else {
 				this.IsHovering = false;
+				this.IsInteracting = false;
 			}
 		}
 
@@ -95,7 +93,7 @@ namespace PKEMeter.HUD {
 		////////////////
 
 		public bool ConsumesCursor() {
-			return this.IsHovering;
+			return this.IsInteracting;
 		}
 	}
 }

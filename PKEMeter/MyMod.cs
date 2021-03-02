@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
+using HamstarHelpers.Services.Messages.Inbox;
 using PKEMeter.HUD;
 
 
@@ -33,6 +34,13 @@ namespace PKEMeter {
 		public override void Unload() {
 			PKEMeterConfig.Instance = null;
 			PKEMeterMod.Instance = null;
+		}
+
+
+		////////////////
+
+		public override void PostSetupContent() {
+			InboxMessages.SetMessage( "DraggableHUDItem", "Drag custom HUD elements around with shift+left click.", false );
 		}
 
 
