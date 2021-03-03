@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Terraria;
 using HamstarHelpers.Classes.Loadable;
 using HamstarHelpers.Helpers.Debug;
@@ -14,7 +15,7 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		private bool RunHUDEditor( out bool isHovering ) {
+		private bool RunHUDEditorIf( out bool isHovering ) {
 			Vector2 basePos = PKEMeterHUD.GetHUDPosition();
 			var area = new Rectangle(
 				(int)basePos.X,
@@ -24,8 +25,10 @@ namespace PKEMeter.HUD {
 			);
 
 			isHovering = area.Contains( Main.MouseScreen.ToPoint() );
+			bool isAlt = Main.keyState.IsKeyDown( Keys.LeftAlt )
+				|| Main.keyState.IsKeyDown( Keys.RightAlt );
 
-			if( Main.mouseLeft && Main.keyState.PressingShift() ) {
+			if( Main.mouseLeft && isAlt ) {
 				if( this.BaseDragOffset.HasValue || isHovering ) {
 					this.RunHUDEditor_Drag( basePos );
 				}
@@ -38,8 +41,6 @@ namespace PKEMeter.HUD {
 
 
 		private void RunHUDEditor_Drag( Vector2 basePos ) {
-			Main.LocalPlayer.mouseInterface = true;
-
 			if( !this.BaseDragOffset.HasValue ) {
 				this.BaseDragOffset = basePos - Main.MouseScreen;
 				this.PreviousDragMousePos = Main.MouseScreen;

@@ -45,7 +45,6 @@ namespace PKEMeter.HUD {
 		private Color LastVisiblePlayerColor;
 
 		private bool IsHovering = false;
-		private bool IsInteracting = false;
 
 
 
@@ -76,24 +75,25 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		public void Update() {
-			if( Main.playerInventory ) {
-				if( !this.CanDrawPKE() ) {
-					return;
-				}
+		public bool Update() {
+			bool isInterfacing = false;
 
-				this.IsInteracting = this.RunHUDEditor( out this.IsHovering );
+			if( Main.playerInventory ) {
+				if( this.CanDrawPKE() ) {
+					isInterfacing = this.RunHUDEditorIf( out this.IsHovering );
+				}
 			} else {
 				this.IsHovering = false;
-				this.IsInteracting = false;
 			}
+
+			return isInterfacing;
 		}
 
 
 		////////////////
 
 		public bool ConsumesCursor() {
-			return this.IsInteracting;
+			return this.BaseDragOffset.HasValue;
 		}
 	}
 }

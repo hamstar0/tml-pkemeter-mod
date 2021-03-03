@@ -47,7 +47,9 @@ namespace PKEMeter {
 		////////////////
 
 		public override void UpdateUI( GameTime gameTime ) {
-			PKEMeterHUD.Instance.Update();
+			if( PKEMeterHUD.Instance.Update() ) {
+				Main.LocalPlayer.mouseInterface = true;
+			}
 		}
 
 
