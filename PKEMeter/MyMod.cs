@@ -20,7 +20,7 @@ namespace PKEMeter {
 
 		////////////////
 
-		public PKEMeterHUD Meter;
+		public PKEMeterHUD Meter { get; private set; }
 
 
 
