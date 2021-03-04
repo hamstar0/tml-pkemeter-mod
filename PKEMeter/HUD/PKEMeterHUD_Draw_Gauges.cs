@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using HamstarHelpers.Classes.Loadable;
+using HUDElementsLib;
 
 
 namespace PKEMeter.HUD {
-	partial class PKEMeterHUD : ILoadable {
+	public partial class PKEMeterHUD : HUDElement {
 		public void DrawHUDGauges( SpriteBatch sb, Vector2 pos, float opacity, float b, float g, float y, float r ) {
 			pos.X += 22;
 			pos.Y += 28;//16;

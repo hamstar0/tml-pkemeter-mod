@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
 using HamstarHelpers.Services.Messages.Inbox;
 using PKEMeter.HUD;
+using HUDElementsLib;
 
 
 namespace PKEMeter {
@@ -16,6 +15,12 @@ namespace PKEMeter {
 		////////////////
 
 		public static PKEMeterMod Instance { get; private set; }
+
+
+
+		////////////////
+
+		public PKEMeterHUD Meter;
 
 
 
@@ -40,48 +45,14 @@ namespace PKEMeter {
 		////////////////
 
 		public override void PostSetupContent() {
+			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
+				this.Meter = new PKEMeterHUD( "PKEMeter" ); //"Vanilla: Info Accessories Bar"
+
+				HUDElementsLibAPI.AddWidget( this.Meter );
+			}
+
 			InboxMessages.SetMessage( "DraggableHUDItem", "Drag custom HUD elements around with shift+left click.", false );
-		}
-
-
-		////////////////
-
-		public override void UpdateUI( GameTime gameTime ) {
-			if( PKEMeterHUD.Instance.Update() ) {
-				Main.LocalPlayer.mouseInterface = true;
-			}
-		}
-
-
-		////////////////
-
-		public override void ModifyInterfaceLayers( List<GameInterfaceLayer> layers ) {
-			GameInterfaceDrawMethod drawHUDMeter = () => {
-				var hud = PKEMeterHUD.Instance;
-				if( hud.CanDrawPKE() ) {
-					hud.DrawHUD( Main.spriteBatch );
-				}
-				return true;
-			};
-
-			//
-
-			int infoAccBarIdx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Info Accessories Bar" ) );	//"Vanilla: Mouse Text"
-			if( infoAccBarIdx == -1 ) { return; }
-
-			var hudLayer = new LegacyGameInterfaceLayer( "PKE Meter: HUD Display",
-				drawHUDMeter,
-				InterfaceScaleType.UI );
-			layers.Insert( infoAccBarIdx, hudLayer );
-
-			//
-
-			int cursorIdx = layers.FindIndex( layer => layer.Name.Equals( "Vanilla: Cursor" ) );
-			if( cursorIdx == -1 ) { return; }
-
-			if( PKEMeterHUD.Instance.ConsumesCursor() ) {
-				layers.RemoveAt( cursorIdx );
-			}
+			//Vanilla: Info Accessories Bar
 		}
 	}
 }

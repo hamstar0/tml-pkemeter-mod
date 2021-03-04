@@ -2,11 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using HamstarHelpers.Classes.Loadable;
+using HUDElementsLib;
 
 
 namespace PKEMeter.HUD {
-	partial class PKEMeterHUD : ILoadable {
+	public partial class PKEMeterHUD : HUDElement {
 		public void DrawHUDText( SpriteBatch sb, Vector2 pos, string text, Color color, int offset ) {
 			if( text == "" || offset > (text.Length * 8) ) {
 				return;

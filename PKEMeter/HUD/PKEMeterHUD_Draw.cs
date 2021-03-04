@@ -4,15 +4,26 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-using HamstarHelpers.Classes.Loadable;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.Players;
+using HUDElementsLib;
 using PKEMeter.Items;
 using PKEMeter.Logic;
 
 
 namespace PKEMeter.HUD {
-	partial class PKEMeterHUD : ILoadable {
+	public partial class PKEMeterHUD : HUDElement {
+		public override void Draw( SpriteBatch sb ) {
+			base.Draw( sb );
+
+			if( this.CanDrawPKE() ) {
+				this.DrawHUD( sb );
+			}
+		}
+
+
+		////////////////
+
 		public bool CanDrawPKE() {
 			if( /*Main.playerInventory ||*/ Main.LocalPlayer.dead ) {
 				return false;
@@ -37,8 +48,6 @@ namespace PKEMeter.HUD {
 		////
 
 		public void DrawHUD( SpriteBatch sb ) {
-			Vector2 pos = PKEMeterHUD.GetHUDPosition();
-
 			Player plr = Main.LocalPlayer;
 			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
 
@@ -48,6 +57,8 @@ namespace PKEMeter.HUD {
 			} else {
 				this.LastVisiblePlayerColor = plrColor;
 			}
+
+			Vector2 pos = new Vector2( this.Left.Pixels, this.Top.Pixels );
 
 			//
 
@@ -62,7 +73,7 @@ namespace PKEMeter.HUD {
 				this.DrawHUDHoverText( sb, pos, plr, texts );
 			}*/
 
-			if( this.IsHovering && !this.BaseDragOffset.HasValue ) {
+			if( this.IsHovering && !this.IsDragging ) {
 				Utils.DrawBorderStringFourWay(
 					sb: sb,
 					font: Main.fontMouseText,
