@@ -8,6 +8,16 @@ using HUDElementsLib;
 
 namespace PKEMeter.HUD {
 	public partial class PKEMeterHUD : HUDElement {
+		public static PKEMeterHUD CreateDefault() {
+			Vector2 pos = PKEMeterHUD.GetBaseHUDPosition();
+			Texture2D bodyTex = PKEMeterMod.Instance.GetTexture( "HUD/MeterBody" );
+
+			return new PKEMeterHUD( "PKEMeter", pos, new Vector2(bodyTex.Width, bodyTex.Height) );
+		}
+
+
+		////////////////
+
 		public static Vector2 GetBaseHUDPosition() {
 			var config = PKEMeterConfig.Instance;
 			int posX = config.Get<int>( nameof( config.PKEMeterHUDBasePositionX ) );
@@ -40,7 +50,7 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		public PKEMeterHUD( string name ) : base( name ) {
+		private PKEMeterHUD( string name, Vector2 position, Vector2 dim ) : base( name, position, dim ) {
 			this.MinFont = PKEMeterMod.Instance.GetTexture( "HUD/MinFont" );
 			this.MeterBody = PKEMeterMod.Instance.GetTexture( "HUD/MeterBody" );
 			this.MeterDisplay = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplay" );
@@ -50,13 +60,6 @@ namespace PKEMeter.HUD {
 			this.MeterDisplayG = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayG" );
 			this.MeterDisplayY = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayY" );
 			this.MeterDisplayR = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayR" );
-
-			this.Width.Pixels = this.MeterBody.Width;
-			this.Height.Pixels = this.MeterBody.Height;
-
-			Vector2 pos = PKEMeterHUD.GetBaseHUDPosition();
-			this.Left.Pixels = pos.X;
-			this.Top.Pixels = pos.Y;
 		}
 	}
 }

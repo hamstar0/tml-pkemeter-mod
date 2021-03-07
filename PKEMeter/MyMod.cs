@@ -46,7 +46,7 @@ namespace PKEMeter {
 
 		public override void PostSetupContent() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
-				this.Meter = new PKEMeterHUD( "PKEMeter" ); //"Vanilla: Info Accessories Bar"
+				this.Meter = PKEMeterHUD.CreateDefault(); //"Vanilla: Info Accessories Bar"
 
 				HUDElementsLibAPI.AddWidget( this.Meter );
 			}
