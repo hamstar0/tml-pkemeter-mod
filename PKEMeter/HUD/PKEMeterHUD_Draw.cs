@@ -72,19 +72,6 @@ namespace PKEMeter.HUD {
 				PKETextGetter[] texts = PKEMeterAPI.GetMeterTexts();
 				this.DrawHUDHoverText( sb, pos, plr, texts );
 			}*/
-
-			if( this.IsHovering && !this.IsDragging ) {
-				Utils.DrawBorderStringFourWay(
-					sb: sb,
-					font: Main.fontMouseText,
-					text: "Alt+Click to drag",
-					x: Main.MouseScreen.X + 12,
-					y: Main.MouseScreen.Y + 16,
-					textColor: new Color( Main.mouseTextColor, Main.mouseTextColor, Main.mouseTextColor ),
-					borderColor: Color.Black,
-					origin: default
-				);
-			}
 		}
 
 
