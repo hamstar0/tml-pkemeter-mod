@@ -13,18 +13,7 @@ using PKEMeter.Logic;
 
 namespace PKEMeter.HUD {
 	public partial class PKEMeterHUD : HUDElement {
-		public override void Draw( SpriteBatch sb ) {
-			base.Draw( sb );
-
-			if( this.CanDrawPKE() ) {
-				this.DrawHUD( sb );
-			}
-		}
-
-
-		////////////////
-
-		public bool CanDrawPKE() {
+		public static bool CanDrawPKE() {
 			if( /*Main.playerInventory ||*/ Main.LocalPlayer.dead ) {
 				return false;
 			}
@@ -32,7 +21,7 @@ namespace PKEMeter.HUD {
 			int meterType = ModContent.ItemType<PKEMeterItem>();
 
 			if( PKEMeterItem.DisplayHUDMeter ) {
-				return PlayerItemFinderHelpers.CountTotalOfEach(Main.LocalPlayer, new HashSet<int> { meterType }, false) > 0;
+				return PlayerItemFinderHelpers.CountTotalOfEach( Main.LocalPlayer, new HashSet<int> { meterType }, false ) > 0;
 			}
 
 			Item heldItem = Main.LocalPlayer.HeldItem;
@@ -45,7 +34,19 @@ namespace PKEMeter.HUD {
 		}
 
 
-		////
+
+		////////////////
+
+		public override void Draw( SpriteBatch sb ) {
+			base.Draw( sb );
+
+			if( PKEMeterHUD.CanDrawPKE() ) {
+				this.DrawHUD( sb );
+			}
+		}
+
+
+		////////////////
 
 		public void DrawHUD( SpriteBatch sb ) {
 			Player plr = Main.LocalPlayer;
@@ -58,7 +59,7 @@ namespace PKEMeter.HUD {
 				this.LastVisiblePlayerColor = plrColor;
 			}
 
-			Vector2 pos = new Vector2( this.Left.Pixels, this.Top.Pixels );
+			Vector2 pos = this.GetHUDComputedPosition( true );
 
 			//
 
