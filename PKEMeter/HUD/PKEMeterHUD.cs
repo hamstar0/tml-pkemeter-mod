@@ -22,10 +22,7 @@ namespace PKEMeter.HUD {
 			var config = PKEMeterConfig.Instance;
 			int posX = config.Get<int>( nameof( config.PKEMeterHUDBasePositionX ) );
 			int posY = config.Get<int>( nameof( config.PKEMeterHUDBasePositionY ) );
-			var pos = new Vector2(
-				posX < 0 ? Main.screenWidth + posX : posX,
-				posY < 0 ? Main.screenHeight + posY : posY
-			);
+			var pos = new Vector2( posX, posY );
 
 			return pos;
 		}
