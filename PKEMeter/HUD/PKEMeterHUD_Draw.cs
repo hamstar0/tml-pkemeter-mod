@@ -37,18 +37,11 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		public override void Draw( SpriteBatch sb ) {
-			base.Draw( sb );
+		protected override void DrawSelf( SpriteBatch sb ) {
+			base.DrawSelf( sb );
 
-			if( PKEMeterHUD.CanDrawPKE() ) {
-				this.DrawHUD( sb );
-			}
-		}
+			//
 
-
-		////////////////
-
-		public void DrawHUD( SpriteBatch sb ) {
 			Player plr = Main.LocalPlayer;
 			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
 

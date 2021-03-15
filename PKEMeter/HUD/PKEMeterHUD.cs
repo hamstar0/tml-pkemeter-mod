@@ -66,7 +66,7 @@ namespace PKEMeter.HUD {
 		////////////////
 
 		public override bool IsEnabled() {
-			return !PKEMeterHUD.CanDrawPKE();
+			return PKEMeterHUD.CanDrawPKE();
 		}
 	}
 }
