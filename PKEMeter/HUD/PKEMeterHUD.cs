@@ -65,8 +65,8 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		public override bool IsInteractive() {
-			return PKEMeterHUD.CanDrawPKE();
+		public override bool IsEnabled() {
+			return !PKEMeterHUD.CanDrawPKE();
 		}
 	}
 }
