@@ -1,9 +1,9 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using HamstarHelpers.Services.Messages.Inbox;
-using PKEMeter.HUD;
+using ModLibsInterMod.Libraries.Mods.APIMirrors.ModHelpersAPIMirrors;
 using HUDElementsLib;
+using PKEMeter.HUD;
 
 
 namespace PKEMeter {
@@ -51,7 +51,7 @@ namespace PKEMeter {
 				HUDElementsLibAPI.AddWidget( this.Meter );
 			}
 
-			InboxMessages.SetMessage( "DraggableHUDItem", "Drag custom HUD elements around with shift+left click.", false );
+			InboxAPIMirrorsLibraries.SetMessage( "DraggableHUDItem", "Drag custom HUD elements around with shift+left click.", false );
 			//Vanilla: Info Accessories Bar
 		}
 	}

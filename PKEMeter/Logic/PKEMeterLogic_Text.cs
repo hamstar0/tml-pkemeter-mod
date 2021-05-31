@@ -4,9 +4,9 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using HamstarHelpers.Classes.Loadable;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Services.Timers;
+using ModLibsCore.Classes.Loadable;
+using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Services.Timers;
 using PKEMeter.Items;
 
 

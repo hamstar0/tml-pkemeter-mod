@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.Players;
+using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.Players;
 using HUDElementsLib;
 using PKEMeter.Items;
 using PKEMeter.Logic;
@@ -21,7 +21,7 @@ namespace PKEMeter.HUD {
 			int meterType = ModContent.ItemType<PKEMeterItem>();
 
 			if( PKEMeterItem.DisplayHUDMeter ) {
-				return PlayerItemFinderHelpers.CountTotalOfEach( Main.LocalPlayer, new HashSet<int> { meterType }, false ) > 0;
+				return PlayerItemFinderLibraries.CountTotalOfEach( Main.LocalPlayer, new HashSet<int> { meterType }, false ) > 0;
 			}
 
 			Item heldItem = Main.LocalPlayer.HeldItem;
