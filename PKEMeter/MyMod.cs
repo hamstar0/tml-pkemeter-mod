@@ -26,18 +26,11 @@ namespace PKEMeter {
 
 		////////////////
 
-		public PKEMeterMod() {
+		public override void Load() {
 			PKEMeterMod.Instance = this;
 		}
 
-		////
-
-		public override void Load() {
-			PKEMeterConfig.Instance = ModContent.GetInstance<PKEMeterConfig>();
-		}
-
 		public override void Unload() {
-			PKEMeterConfig.Instance = null;
 			PKEMeterMod.Instance = null;
 		}
 

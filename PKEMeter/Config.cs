@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using ModLibsCore.Classes.UI.ModConfig;
 
@@ -11,7 +12,7 @@ namespace PKEMeter {
 
 
 	public partial class PKEMeterConfig : ModConfig {
-		public static PKEMeterConfig Instance { get; internal set; }
+		public static PKEMeterConfig Instance => ModContent.GetInstance<PKEMeterConfig>();
 
 
 
