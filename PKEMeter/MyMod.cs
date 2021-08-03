@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ModLibsInterMod.Libraries.Mods.APIMirrors.ModHelpersAPIMirrors;
 using HUDElementsLib;
 using PKEMeter.HUD;
 
@@ -44,7 +43,18 @@ namespace PKEMeter {
 				HUDElementsLibAPI.AddWidget( this.Meter );
 			}
 
-			InboxAPIMirrorsLibraries.SetMessage( "DraggableHUDItem", "Drag custom HUD elements around with shift+left click.", false );
+
+			Mod msgMod = ModLoader.GetMod( "Messages" );
+			if( msgMod != null ) {
+				msgMod.Call(
+					"AddMessage",
+					"How to use Nihilism mod",	//title
+					"Drag custom HUD elements around with shift+left click.", //description
+					HUDElementsLibMod.Instance,	//modOfOrigin
+					"DraggableHUDItem",	//id
+					msgMod.Call( "GetMessage", "Messages - Mod Info" ) //parentMessage
+				);
+			}
 			//Vanilla: Info Accessories Bar
 		}
 	}
