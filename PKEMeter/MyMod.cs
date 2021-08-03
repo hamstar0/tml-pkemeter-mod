@@ -1,9 +1,10 @@
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using HUDElementsLib;
 using PKEMeter.HUD;
-using System;
+
 
 namespace PKEMeter {
 	public partial class PKEMeterMod : Mod {
@@ -14,6 +15,22 @@ namespace PKEMeter {
 		////////////////
 
 		public static PKEMeterMod Instance { get; private set; }
+
+
+
+		////////////////
+
+		private static void MessageAboutHUD() {
+			Messages.MessagesAPI.AddMessagesCategoriesInitializeEvent( () => {
+				Messages.MessagesAPI.AddMessage(
+					title: "Custom HUD elements can be repositioned",
+					description: "Drag custom HUD elements around with shift+left click.",
+					modOfOrigin: HUDElementsLibMod.Instance,
+					id: "DraggableHUDElem",
+					parentMessage: Messages.MessagesAPI.ModInfoCategoryMsg
+				);
+			} );
+		}
 
 
 
@@ -43,20 +60,8 @@ namespace PKEMeter {
 				HUDElementsLibAPI.AddWidget( this.Meter );
 			}
 
-			Mod msgMod = ModLoader.GetMod( "Messages" );
-			if( msgMod != null ) {
-				Action mycall = () => msgMod.Call(
-					"AddMessage",
-					"How to use Nihilism mod",  //title
-					"Drag custom HUD elements around with shift+left click.", //description
-					HUDElementsLibMod.Instance, //modOfOrigin
-					"DraggableHUDItem", //id
-					0,  //weight
-					msgMod.Call( "GetMessage", "Messages - Mod Info" ), //parentMessage
-					true    //alertPlayer
-				);
-
-				msgMod.Call( "AddMessagesCategoriesInitializeEvent", mycall );
+			if( ModLoader.GetMod( "Messages" ) != null ) {
+				PKEMeterMod.MessageAboutHUD();
 			}
 			//Vanilla: Info Accessories Bar
 		}
