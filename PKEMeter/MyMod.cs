@@ -51,8 +51,10 @@ namespace PKEMeter {
 					"How to use Nihilism mod",	//title
 					"Drag custom HUD elements around with shift+left click.", //description
 					HUDElementsLibMod.Instance,	//modOfOrigin
-					"DraggableHUDItem",	//id
-					msgMod.Call( "GetMessage", "Messages - Mod Info" ) //parentMessage
+					"DraggableHUDItem", //id
+					0,	//weight
+					msgMod.Call( "GetMessage", "Messages - Mod Info" ), //parentMessage
+					true	//alertPlayer
 				);
 			}
 			//Vanilla: Info Accessories Bar
