@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using HUDElementsLib;
 using PKEMeter.HUD;
-
+using System;
 
 namespace PKEMeter {
 	public partial class PKEMeterMod : Mod {
@@ -43,19 +43,20 @@ namespace PKEMeter {
 				HUDElementsLibAPI.AddWidget( this.Meter );
 			}
 
-
 			Mod msgMod = ModLoader.GetMod( "Messages" );
 			if( msgMod != null ) {
-				msgMod.Call(
+				Action mycall = () => msgMod.Call(
 					"AddMessage",
-					"How to use Nihilism mod",	//title
+					"How to use Nihilism mod",  //title
 					"Drag custom HUD elements around with shift+left click.", //description
-					HUDElementsLibMod.Instance,	//modOfOrigin
+					HUDElementsLibMod.Instance, //modOfOrigin
 					"DraggableHUDItem", //id
-					0,	//weight
+					0,  //weight
 					msgMod.Call( "GetMessage", "Messages - Mod Info" ), //parentMessage
-					true	//alertPlayer
+					true    //alertPlayer
 				);
+
+				msgMod.Call( "AddMessagesCategoriesInitializeEvent", mycall );
 			}
 			//Vanilla: Info Accessories Bar
 		}
