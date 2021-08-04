@@ -20,22 +20,6 @@ namespace PKEMeter {
 
 		////////////////
 
-		private static void MessageAboutHUD() {
-			Messages.MessagesAPI.AddMessagesCategoriesInitializeEvent( () => {
-				Messages.MessagesAPI.AddMessage(
-					title: "Custom HUD elements can be repositioned",
-					description: "Drag custom HUD elements around with shift+left click.",
-					modOfOrigin: HUDElementsLibMod.Instance,
-					id: "DraggableHUDElem",
-					parentMessage: Messages.MessagesAPI.ModInfoCategoryMsg
-				);
-			} );
-		}
-
-
-
-		////////////////
-
 		public PKEMeterHUD Meter { get; private set; }
 
 
@@ -58,10 +42,6 @@ namespace PKEMeter {
 				this.Meter = PKEMeterHUD.CreateDefault(); //"Vanilla: Info Accessories Bar"
 
 				HUDElementsLibAPI.AddWidget( this.Meter );
-			}
-
-			if( ModLoader.GetMod( "Messages" ) != null ) {
-				PKEMeterMod.MessageAboutHUD();
 			}
 			//Vanilla: Info Accessories Bar
 		}
