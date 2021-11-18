@@ -35,7 +35,7 @@ namespace PKEMeter.Logic {
 				priority = 0.5f;
 				break;
 			case NPCID.EaterofWorldsHead:
-				text = "WARNING - CLASS VI SEQUENCED NECROTIC ORGANIC";
+				text = "WARNING - CLASS VI LINEAR SEGMENTED NECROTIC ORGANIC";
 				priority = 0.6f;
 				break;
 			case NPCID.BrainofCthulhu:
@@ -55,7 +55,7 @@ namespace PKEMeter.Logic {
 				priority = 0.7f;
 				break;
 			case NPCID.TheDestroyer:
-				text = "WARNING - CLASS VII SEQUENCED CONSTRUCT";
+				text = "WARNING - CLASS VII LINEAR SEGMENTED CONSTRUCT";
 				priority = 0.7f;
 				break;
 			case NPCID.Eyezor:

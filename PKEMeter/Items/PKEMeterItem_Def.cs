@@ -13,6 +13,7 @@ namespace PKEMeter.Items {
 		internal static Func<string> GreenLabelGetter;
 		internal static Func<string> YellowLabelGetter;
 		internal static Func<string> RedLabelGetter;
+		internal static Func<string> MiscLabelGetter;
 
 
 

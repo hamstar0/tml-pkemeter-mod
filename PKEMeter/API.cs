@@ -22,6 +22,10 @@ namespace PKEMeter {
 			PKEMeterItem.RedLabelGetter = redLabelGetter;
 		}
 
+		public static void SetMiscTooltip( Func<string> miscLabelGetter ) {
+			PKEMeterItem.MiscLabelGetter = miscLabelGetter;
+		}
+
 
 		////
 
@@ -31,6 +35,16 @@ namespace PKEMeter {
 
 		public static void SetGauge( PKEGaugesGetter gauge ) {
 			PKEMeterLogic.Instance.CurrentGauge = gauge;
+		}
+
+		////
+		
+		public static PKEMiscLightsGetter GetMiscLights() {
+			return PKEMeterLogic.Instance.CurrentMiscLights;
+		}
+
+		public static void SetMiscLights( PKEMiscLightsGetter lights ) {
+			PKEMeterLogic.Instance.CurrentMiscLights = lights;
 		}
 
 		////

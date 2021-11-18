@@ -14,6 +14,8 @@ namespace PKEMeter.Logic {
 
 		public PKEGaugesGetter CurrentGauge { get; internal set; }
 
+		public PKEMiscLightsGetter CurrentMiscLights { get; internal set; }
+
 		public string CurrentMessageId { get; internal set; } = PKETextMessage.EmptyMessage.Key;
 
 		public int CurrentTextTickDuration { get; private set; } = 0;
@@ -28,6 +30,7 @@ namespace PKEMeter.Logic {
 
 		private PKEGaugeValues GaugeSnapshot = new PKEGaugeValues( 0, 0, 0, 0);
 
+		private PKEMiscLightsValues MiscLightsSnapshot = null;
 
 		////////////////
 

@@ -82,7 +82,9 @@ namespace PKEMeter.HUD {
 				color: Color.White * opacity
 			);
 
-			PKEGaugeValues gauge = logic.GetGauges( plr, plr.Center );
+			PKEGaugeValues gauge = logic.GetGaugesDynamically( plr, plr.Center );
+			PKEMiscLightsValues lights = logic.GetMiscLightsDynamically( plr, plr.Center );
+
 			this.DrawHUDGauges( sb, pos, opacity, gauge.BluePercent, gauge.GreenPercent, gauge.YellowPercent, gauge.RedPercent );
 
 			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
@@ -102,6 +104,22 @@ namespace PKEMeter.HUD {
 				yLit: gauge.YellowPercent > 0.99f,
 				rLit: gauge.RedPercent > 0.99f
 			);
+			
+			if( lights != null ) {
+				this.DrawHUDMiscLights(
+					sb: sb,
+					pos: pos,
+					c1: lights.Light1,
+					c2: lights.Light2,
+					c3: lights.Light3,
+					c4: lights.Light4,
+					c5: lights.Light5,
+					c6: lights.Light6,
+					c7: lights.Light7,
+					c8: lights.Light8,
+					c9: lights.Light9
+				);
+			}
 
 			sb.Draw(
 				texture: this.MeterWires,

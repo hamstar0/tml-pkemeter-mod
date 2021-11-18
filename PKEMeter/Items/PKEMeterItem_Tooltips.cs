@@ -29,6 +29,10 @@ namespace PKEMeter.Items {
 				string text = "Red gauge bar's label: \"[c/FF8888:"+PKEMeterItem.RedLabelGetter.Invoke()+"]\"";
 				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeRed", text ) );
 			}
+			if( PKEMeterItem.MiscLabelGetter != null ) {
+				string text = PKEMeterItem.RedLabelGetter.Invoke();
+				tooltips.Add( new TooltipLine( this.mod, "PKEMisc", text ) );
+			}
 		}
 	}
 }

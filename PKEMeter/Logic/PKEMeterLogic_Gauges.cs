@@ -54,10 +54,17 @@ namespace PKEMeter.Logic {
 
 		////
 
-		public PKEGaugeValues GetGauges( Player player, Vector2 position ) {
+		public PKEGaugeValues GetGaugesDynamically( Player player, Vector2 position ) {
 			this.GaugeSnapshot = this.CurrentGauge?.Invoke( player, position )
 				?? new PKEGaugeValues( 0f, 0f, 0f, 0f);
 			return this.GaugeSnapshot;
+		}
+
+		public PKEMiscLightsValues GetMiscLightsDynamically( Player player, Vector2 position ) {
+			this.MiscLightsSnapshot = this.CurrentMiscLights?.Invoke( player, position )
+				?? null;
+//new PKEMiscLightsValues( Color.Blue, Color.Cyan, Color.Lime, Color.HotPink, Color.DarkMagenta, Color.Red, Color.Peru, Color.White, Color.Yellow );
+			return this.MiscLightsSnapshot;
 		}
 	}
 }
