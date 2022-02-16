@@ -37,11 +37,7 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		protected override void DrawSelf( SpriteBatch sb ) {
-			base.DrawSelf( sb );
-
-			//
-
+		protected override void PostDrawSelf( bool isSelfDrawn, SpriteBatch sb ) {
 			Player plr = Main.LocalPlayer;
 			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
 
