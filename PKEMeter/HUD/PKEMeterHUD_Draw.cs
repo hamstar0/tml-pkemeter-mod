@@ -70,7 +70,7 @@ namespace PKEMeter.HUD {
 		private void DrawHUDComponents( SpriteBatch sb, Vector2 pos, Player plr, Color plrColor ) {
 			var logic = PKEMeterLogic.Instance;
 
-			float opacity = Main.playerInventory ? 0.5f : 1f;
+			float opacity = 1f;//Main.playerInventory ? 0.5f : 1f;
 
 			sb.Draw(
 				texture: this.MeterDisplay,
