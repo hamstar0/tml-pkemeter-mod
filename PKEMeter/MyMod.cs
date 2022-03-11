@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,6 +23,12 @@ namespace PKEMeter {
 
 		public PKEMeterHUD Meter { get; private set; }
 
+		////
+
+		public SoundEffectInstance PKEScanLoop { get; private set; } = null;
+
+		public SoundEffectInstance PKEScanDone { get; private set; } = null;
+
 
 
 		////////////////
@@ -39,11 +46,18 @@ namespace PKEMeter {
 
 		public override void PostSetupContent() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
+				SoundEffect scanSfx = this.GetSound( "Sounds/Custom/Scan" );
+				SoundEffect scanDoneSfx = this.GetSound( "Sounds/Custom/ScanDone" );
+
+				this.PKEScanLoop = scanSfx.CreateInstance();
+				this.PKEScanDone = scanDoneSfx.CreateInstance();
+
+				//
+				
 				this.Meter = PKEMeterHUD.CreateDefault(); //"Vanilla: Info Accessories Bar"
 
 				HUDElementsLibAPI.AddWidget( this.Meter );
 			}
-			//Vanilla: Info Accessories Bar
 		}
 	}
 }

@@ -28,7 +28,7 @@ namespace PKEMeter.Logic {
 		////////////////
 
 
-		private PKEGaugeValues GaugeSnapshot = new PKEGaugeValues( 0, 0, 0, 0);
+		private PKEGaugeValues GaugeSnapshot = new PKEGaugeValues( 0, 0, 0, 0 );
 
 		private PKEMiscLightsValues MiscLightsSnapshot = null;
 

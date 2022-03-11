@@ -31,7 +31,18 @@ namespace PKEMeter.Items {
 		public override void SetDefaults() {
 			this.item.width = 4;
 			this.item.height = 4;
+
 			this.item.holdStyle = 1;
+			this.item.useTime = 20;
+			this.item.useAnimation = 20;
+			this.item.useStyle = ItemUseStyleID.HoldingUp;
+			this.item.noMelee = true;
+			this.item.autoReuse = true;
+
+			this.item.UseSound = PKEMeterMod.Instance
+				.GetLegacySoundSlot( SoundType.Custom, "Sounds/Custom/Scan" )
+				.WithVolume( 0.35f );
+
 			this.item.value = Item.buyPrice( 0, 5, 0, 0 );
 			this.item.rare = ItemRarityID.Lime;
 		}
@@ -46,14 +57,29 @@ namespace PKEMeter.Items {
 			}
 		}
 
-		////
-		
+
+		////////////////
+
 		public override bool CanRightClick() {
 			Timers.SetTimer( "PKEMeterToggleBlocker", 2, true, () => {
 				PKEMeterItem.DisplayHUDMeter = !PKEMeterItem.DisplayHUDMeter;
 				return false;
 			} );
 			return false;
+		}
+
+
+		////////////////
+
+		public override bool CanUseItem( Player player ) {
+			return this.CanScanAt( Main.mouseX, Main.mouseY );
+		}
+
+
+		public override bool UseItem( Player player ) {
+			this.RunScanAt( Main.mouseX, Main.mouseY );
+
+			return base.UseItem( player );
 		}
 	}
 }

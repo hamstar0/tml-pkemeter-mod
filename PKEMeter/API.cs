@@ -5,7 +5,7 @@ using PKEMeter.Logic;
 
 
 namespace PKEMeter {
-	public static class PKEMeterAPI {
+	public static partial class PKEMeterAPI {
 		public static void SetPKEBlueTooltip( Func<string> blueLabelGetter ) {
 			PKEMeterItem.BlueTooltipGetter = blueLabelGetter;
 		}
