@@ -39,10 +39,6 @@ namespace PKEMeter.Items {
 			this.item.noMelee = true;
 			this.item.autoReuse = true;
 
-			this.item.UseSound = PKEMeterMod.Instance
-				.GetLegacySoundSlot( SoundType.Custom, "Sounds/Custom/Scan" )
-				.WithVolume( 0.35f );
-
 			this.item.value = Item.buyPrice( 0, 5, 0, 0 );
 			this.item.rare = ItemRarityID.Lime;
 		}

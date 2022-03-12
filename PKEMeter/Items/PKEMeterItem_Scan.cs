@@ -8,12 +8,13 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ModLibsCore.Libraries.Debug;
 using ModLibsCore.Libraries.DotNET.Extensions;
+using ModLibsCore.Services.Timers;
 using PKEMeter.Logic;
 
 
 namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
-		public static float MaxScanTicks { get; private set; } = 45f;
+		public static int MaxScanTicks { get; private set; } = 45;
 
 
 
@@ -33,13 +34,13 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public static void RunScanAt( int screenX, int screenY ) {
-			IDictionary<string, PKEScannable> scannables = PKEScannable.Scannables;
+			var mymod = PKEMeterMod.Instance;
 
 			var scanned = new List<string>();
 
 			//
 
-			foreach( (string name, PKEScannable scannable) in scannables ) {
+			foreach( (string name, PKEScannable scannable) in PKEScannable.Scannables ) {
 				Rectangle area = scannable.ScreenAreaGetter.Invoke();
 				
 				if( !area.Contains(screenX, screenY) ) {
@@ -48,12 +49,12 @@ namespace PKEMeter.Items {
 
 				//
 
-				float newPerc = scannable.ScanPercent + (1f / PKEMeterItem.MaxScanTicks);
+				float addPerc = 1f / (float)PKEMeterItem.MaxScanTicks;
 
-				if( newPerc >= 1f ) {
+				if( (scannable.ScanPercent + addPerc) >= 1f ) {
 					scanned.Add( name );
 				} else {
-					scannable.ScanPercent += newPerc;
+					scannable.ScanPercent += addPerc;
 				}
 			}
 			
@@ -62,12 +63,26 @@ namespace PKEMeter.Items {
 			foreach( string scanName in scanned ) {
 				PKEScannable.CompleteScan( scanName );
 			}
-			
+
 			//
-			
+
+			if( mymod.PKEScanLoop.State != SoundState.Playing ) {
+				mymod.PKEScanLoop.Volume = 0.2f;
+				mymod.PKEScanLoop.IsLooped = true;
+				mymod.PKEScanLoop.Play();
+			}
+
+			Timers.SetTimer( "PKEScanSoundLoopCutoff", 2, false, () => {
+				mymod.PKEScanLoop.Stop();
+				return false;
+			} );
+
+			//
+
 			if( scanned.Count > 0 ) {
-				if( PKEMeterMod.Instance.PKEScanDone.State != SoundState.Playing ) {
-					PKEMeterMod.Instance.PKEScanDone.Play();
+				if( mymod.PKEScanDone.State != SoundState.Playing ) {
+					mymod.PKEScanDone.Volume = 0.2f;
+					mymod.PKEScanDone.Play();
 				}
 			}
 		}

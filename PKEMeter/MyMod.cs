@@ -28,6 +28,8 @@ namespace PKEMeter {
 
 		////
 
+		public SoundEffectInstance PKEScanAlert { get; private set; } = null;
+
 		public SoundEffectInstance PKEScanLoop { get; private set; } = null;
 
 		public SoundEffectInstance PKEScanDone { get; private set; } = null;
@@ -49,9 +51,11 @@ namespace PKEMeter {
 		
 		public override void PostSetupContent() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
+				SoundEffect alertSfx = this.GetSound( "Sounds/Custom/ScanAlert" );
 				SoundEffect scanSfx = this.GetSound( "Sounds/Custom/Scan" );
 				SoundEffect scanDoneSfx = this.GetSound( "Sounds/Custom/ScanDone" );
 
+				this.PKEScanAlert = alertSfx.CreateInstance();
 				this.PKEScanLoop = scanSfx.CreateInstance();
 				this.PKEScanDone = scanDoneSfx.CreateInstance();
 
