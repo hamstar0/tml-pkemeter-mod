@@ -20,14 +20,16 @@ namespace PKEMeter.Items {
 
 		////////////////
 
-		public static bool CanScanAt( int screenX, int screenY ) {
-			bool Scan( PKEScannable data ) {
-				Rectangle rect = data.ScreenAreaGetter.Invoke();
-				return rect.Contains( screenX, screenY );
-			}
+		public static bool CanScanAt( int screenX, int screenY, out bool foundInInventory ) {
+			bool myFoundInInventory = false;
 
-			return PKEScannable.Scannables?.Values
-				.Any( Scan ) ?? false;
+			bool canScan = PKEScannable.Scannables?.Values
+				.Any( data => data.CanScan(screenX, screenY, out myFoundInInventory) )
+				?? false;
+
+			foundInInventory = canScan && myFoundInInventory;
+
+			return canScan;
 		}
 
 
@@ -41,9 +43,7 @@ namespace PKEMeter.Items {
 			//
 
 			foreach( (string name, PKEScannable scannable) in PKEScannable.Scannables ) {
-				Rectangle area = scannable.ScreenAreaGetter.Invoke();
-				
-				if( !area.Contains(screenX, screenY) ) {
+				if( !scannable.CanScan(screenX, screenY, out _) ) {
 					continue;
 				}
 

@@ -20,10 +20,11 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public override void SetStaticDefaults() {
-			this.DisplayName.SetDefault( "PKE Meter" );
+			this.DisplayName.SetDefault( "PKE Analysis Device" );
 			this.Tooltip.SetDefault(
-				"Detects spiritual energy signals."
+				"Analyzes psycho-kinetic (spiritual) energy signals."
 				+"\nGauges indicate signal intensity (usually due to proximity)"
+				+"\nLeft-click to scan scannable objects"
 				+"\nRight-click to toggle permanent HUD display"
 			);
 		}
@@ -68,7 +69,8 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public override bool CanUseItem( Player player ) {
-			return PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY );
+			return PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory )
+				&& !foundInInventory;
 		}
 
 		public override bool UseItem( Player player ) {

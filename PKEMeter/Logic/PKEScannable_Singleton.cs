@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using ModLibsCore.Classes.Loadable;
 using ModLibsCore.Libraries.Debug;
@@ -16,6 +17,9 @@ namespace PKEMeter.Logic {
 
 		internal static IDictionary<string, PKEScannable> Scannables
 			=> PKEScannable.Instance?.SingletonScannables;
+
+		internal static IDictionary<int, ISet<string>> ScannableItems
+			=> PKEScannable.Instance?.SingletonScannableItems;
 
 
 
@@ -34,24 +38,15 @@ namespace PKEMeter.Logic {
 		////
 
 		public static bool SetScannable( string name, PKEScannable scannable ) {
-			IDictionary<string, PKEScannable> scannables = PKEScannable.Instance.SingletonScannables;
-
-			if( scannables.ContainsKey(name) ) {
-				return false;
-			}
-
-			//
-
-			scannables[ name ] = scannable;
-
-			return true;
+			return PKEScannable.Instance.SetScannable_Singleton( name, scannable );
 		}
 
 
 		////////////////
 
 		public static bool CompleteScan( string name ) {
-			IDictionary<string, PKEScannable> scannables = PKEScannable.Instance.SingletonScannables;
+			PKEScannable singleton = PKEScannable.Instance;
+			IDictionary<string, PKEScannable> scannables = singleton.SingletonScannables;
 
 			if( !scannables.ContainsKey(name) ) {
 				return false;
@@ -61,30 +56,63 @@ namespace PKEMeter.Logic {
 
 			scannables[ name ].RunScanComplete();
 
+			//
+
+			if( scannables[name].ItemType != 0 ) {
+				singleton.SingletonScannableItems.Remove2D( scannables[name].ItemType, name );
+			}
+
+			//
+
 			return scannables.Remove( name );
 		}
+
 
 
 		////////////////
 
 		private IDictionary<string, PKEScannable> SingletonScannables = null;
 
+		private IDictionary<int, ISet<string>> SingletonScannableItems = null;
+
 
 
 		////////////////
 
 		void ILoadable.OnModsLoad() {
-			this.SingletonScannables = new Dictionary<string, PKEScannable> {
-{ "test", new PKEScannable(
-	() => new Rectangle(128, 128, 64, 96),
-	() => Main.NewText( "done" ),
-	null
-) }
-			};
+			this.SingletonScannableItems = new Dictionary<int, ISet<string>>();
+			this.SingletonScannables = new Dictionary<string, PKEScannable>();
+
+			/*this.SetScannable_Singleton( "test",
+				new PKEScannable(
+					canScan: (x, y) => Main.HoverItem.type == ItemID.Wood,
+					onScanCompleteAction: () => Main.NewText("done"),
+					itemType: ItemID.Wood
+				)
+			);*/
 		}
 
 		void ILoadable.OnPostModsLoad() { }
 
 		void ILoadable.OnModsUnload() { }
+		
+		
+		////
+
+		private bool SetScannable_Singleton( string name, PKEScannable scannable ) {
+			if( this.SingletonScannables.ContainsKey(name) ) {
+				return false;
+			}
+
+			//
+
+			this.SingletonScannables[name] = scannable;
+
+			if( scannable.ItemType != 0 ) {
+				this.SingletonScannableItems.Set2D( scannable.ItemType, name );
+			}
+
+			return true;
+		}
 	}
 }

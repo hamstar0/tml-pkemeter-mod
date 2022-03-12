@@ -1,22 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria;
 using ModLibsCore.Classes.Loadable;
 
 
 namespace PKEMeter.Logic {
 	public partial class PKEScannable : ILoadable {
-		public Func<Rectangle> ScreenAreaGetter { get; private set; }
+		public delegate bool CanScanDef( int screenX, int screenY );
 
-		public object Data { get; private set; }
-
-		////
-
-		public event Action OnScanComplete;
 
 
 		////////////////
+		
+		private CanScanDef CanScanFunc;
+
+		private int ItemType;
+
+		private Action OnScanCompleteAction;
+
+
+		////
 
 		public float ScanPercent = 0f;
 
@@ -26,18 +28,39 @@ namespace PKEMeter.Logic {
 		
 		private PKEScannable() { }
 		
-		public PKEScannable( Func<Rectangle> screenAreaGetter, Action onScanComplete, object data = null ) {
-			this.ScreenAreaGetter = screenAreaGetter;
-			this.OnScanComplete = onScanComplete;
-			this.Data = data;
+		public PKEScannable(
+					CanScanDef canScan,
+					Action onScanCompleteAction = null,
+					int itemType = 0 ) {
+			this.CanScanFunc = canScan;
+			this.ItemType = itemType;
+
+			this.OnScanCompleteAction = onScanCompleteAction;
 		}
 
+
+		////////////////
+		
+		public bool CanScan( int screenX, int screenY, out bool foundInInventory ) {
+			if( Main.HoverItem?.active == true && Main.HoverItem.type == this.ItemType ) {
+				foundInInventory = true;
+				return true;
+			}
+
+			if( this.CanScanFunc?.Invoke(screenX, screenY) ?? false ) {
+				foundInInventory = false;
+				return true;
+			}
+
+			foundInInventory = false;
+			return false;
+		}
 
 
 		////////////////
 
 		public void RunScanComplete() {
-			this.OnScanComplete?.Invoke();
+			this.OnScanCompleteAction?.Invoke();
 		}
 	}
 }

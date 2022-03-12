@@ -49,7 +49,13 @@ namespace PKEMeter {
 		 private bool _CanScanSinceLastCheck = false;
 
 		private void UpdateWhileHoldingPKEMeter() {
-			bool canScan = PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY );
+			bool canScan = PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory );
+
+			//
+
+			if( canScan && foundInInventory ) {
+				PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
+			}
 
 			//
 

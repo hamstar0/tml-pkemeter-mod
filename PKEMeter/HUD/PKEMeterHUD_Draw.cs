@@ -119,7 +119,7 @@ namespace PKEMeter.HUD {
 
 			//
 
-			if( PKEMeterItem.CanScanAt(Main.mouseX, Main.mouseY) ) {
+			if( PKEMeterItem.CanScanAt(Main.mouseX, Main.mouseY, out bool foundInInventory) && foundInInventory ) {
 				this.DrawHUDScanLightsCurrentRow( sb, pos );
 			}
 

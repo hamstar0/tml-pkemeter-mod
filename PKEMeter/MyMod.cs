@@ -1,11 +1,10 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ID;
+using Terraria.UI;
 using Terraria.ModLoader;
-using ModLibsGeneral.Libraries.Draw;
 using HUDElementsLib;
 using PKEMeter.HUD;
 
@@ -66,16 +65,5 @@ namespace PKEMeter {
 				HUDElementsLibAPI.AddWidget( this.Meter );
 			}
 		}
-
-
-public override void PostDrawInterface( SpriteBatch spriteBatch ) {
-	DrawLibraries.DrawBorderedRect(
-		spriteBatch,
-		Color.Transparent,
-		Color.Red,
-		new Rectangle(128, 128, 64, 96),
-		4
-	);
-}
 	}
 }
