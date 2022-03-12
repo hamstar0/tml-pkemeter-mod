@@ -21,9 +21,16 @@ namespace PKEMeter.Logic {
 		public float ScanPercent = 0f;
 
 
+
 		////////////////
 		
-		private IDictionary<string, PKEScannable> SingletonScannables = null;
+		private PKEScannable() { }
+		
+		public PKEScannable( Func<Rectangle> screenAreaGetter, Action onScanComplete, object data = null ) {
+			this.ScreenAreaGetter = screenAreaGetter;
+			this.OnScanComplete = onScanComplete;
+			this.Data = data;
+		}
 
 
 

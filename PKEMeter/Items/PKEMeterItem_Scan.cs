@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ModLibsCore.Libraries.Debug;
 using ModLibsCore.Libraries.DotNET.Extensions;
 using PKEMeter.Logic;
 
@@ -18,17 +19,20 @@ namespace PKEMeter.Items {
 
 		////////////////
 
-		public bool CanScanAt( int screenX, int screenY ) {
-			return PKEScannable.Scannables.Values
-				.Any( data => data.ScreenAreaGetter
-					.Invoke().Contains(screenX, screenY)
-				);
+		public static bool CanScanAt( int screenX, int screenY ) {
+			bool Scan( PKEScannable data ) {
+				Rectangle rect = data.ScreenAreaGetter.Invoke();
+				return rect.Contains( screenX, screenY );
+			}
+
+			return PKEScannable.Scannables?.Values
+				.Any( Scan ) ?? false;
 		}
 
 
 		////////////////
 
-		public void RunScanAt( int screenX, int screenY ) {
+		public static void RunScanAt( int screenX, int screenY ) {
 			IDictionary<string, PKEScannable> scannables = PKEScannable.Scannables;
 
 			var scanned = new List<string>();

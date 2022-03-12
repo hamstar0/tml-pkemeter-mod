@@ -78,19 +78,35 @@ namespace PKEMeter.HUD {
 				color: Color.White * opacity
 			);
 
+			//
+
 			PKEGaugeValues gauge = logic.GetGaugesDynamically( plr, plr.Center );
 			PKEMiscLightsValues lights = logic.GetMiscLightsDynamically( plr, plr.Center );
 
-			this.DrawHUDGauges( sb, pos, opacity, gauge.BluePercent, gauge.GreenPercent, gauge.YellowPercent, gauge.RedPercent );
+			this.DrawHUDGauges(
+				sb,
+				pos,
+				opacity,
+				gauge.BluePercent,
+				gauge.GreenPercent,
+				gauge.YellowPercent,
+				gauge.RedPercent
+			);
+
+			//
 
 			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
 			this.DrawHUDText( sb, pos, msg.text, msg.color * opacity, msg.offset );
+
+			//
 
 			sb.Draw(
 				texture: this.MeterBody,
 				position: pos,
 				color: plrColor * opacity
 			);
+
+			//
 
 			this.DrawHUDGaugeLights(
 				sb: sb,
@@ -100,6 +116,14 @@ namespace PKEMeter.HUD {
 				yLit: gauge.YellowPercent > 0.99f,
 				rLit: gauge.RedPercent > 0.99f
 			);
+
+			//
+
+			if( PKEMeterItem.CanScanAt(Main.mouseX, Main.mouseY) ) {
+				this.DrawHUDScanLightsCurrentRow( sb, pos );
+			}
+
+			//
 			
 			if( lights != null ) {
 				this.DrawHUDMiscLights(
@@ -116,6 +140,8 @@ namespace PKEMeter.HUD {
 					c9: lights.Light9
 				);
 			}
+
+			//
 
 			sb.Draw(
 				texture: this.MeterWires,

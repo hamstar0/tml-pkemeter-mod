@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using ModLibsCore.Classes.Loadable;
+using ModLibsCore.Libraries.Debug;
 using ModLibsCore.Libraries.DotNET.Extensions;
 
 
@@ -13,7 +15,7 @@ namespace PKEMeter.Logic {
 		////
 
 		internal static IDictionary<string, PKEScannable> Scannables
-			=> PKEScannable.Instance.SingletonScannables;
+			=> PKEScannable.Instance?.SingletonScannables;
 
 
 
@@ -63,11 +65,22 @@ namespace PKEMeter.Logic {
 		}
 
 
+		////////////////
+
+		private IDictionary<string, PKEScannable> SingletonScannables = null;
+
+
 
 		////////////////
 
 		void ILoadable.OnModsLoad() {
-			this.SingletonScannables = new Dictionary<string, PKEScannable>();
+			this.SingletonScannables = new Dictionary<string, PKEScannable> {
+{ "test", new PKEScannable(
+	() => new Rectangle(128, 128, 64, 96),
+	() => Main.NewText( "done" ),
+	null
+) }
+			};
 		}
 
 		void ILoadable.OnPostModsLoad() { }

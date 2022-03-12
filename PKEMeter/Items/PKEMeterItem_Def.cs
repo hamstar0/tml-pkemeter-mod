@@ -72,12 +72,11 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public override bool CanUseItem( Player player ) {
-			return this.CanScanAt( Main.mouseX, Main.mouseY );
+			return PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY );
 		}
 
-
 		public override bool UseItem( Player player ) {
-			this.RunScanAt( Main.mouseX, Main.mouseY );
+			PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
 
 			return base.UseItem( player );
 		}

@@ -7,7 +7,13 @@ using HUDElementsLib;
 
 namespace PKEMeter.HUD {
 	public partial class PKEMeterHUD : HUDElement {
-		private void DrawHUDGaugeLights( SpriteBatch sb, Vector2 pos, bool bLit, bool gLit, bool yLit, bool rLit ) {
+		private void DrawHUDGaugeLights(
+					SpriteBatch sb,
+					Vector2 pos,
+					bool bLit,
+					bool gLit,
+					bool yLit,
+					bool rLit ) {
 			if( bLit ) {
 				this.DrawHUDGaugeLight2( sb, pos, 0, new Color(16, 32, 255) );
 			}
@@ -21,17 +27,19 @@ namespace PKEMeter.HUD {
 				this.DrawHUDGaugeLight2( sb, pos, 3, Color.Red );
 			}
 
+			//
+
 			if( bLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2(), 0 );
+				this.DrawHUDGaugeLight1( sb, pos, 0 );
 			}
 			if( gLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 8, 0 ), 1 );
+				this.DrawHUDGaugeLight1( sb, pos + new Vector2(8, 0), 1 );
 			}
 			if( yLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 16, 0 ), 2 );
+				this.DrawHUDGaugeLight1( sb, pos + new Vector2(16, 0), 2 );
 			}
 			if( rLit ) {
-				this.DrawHUDGaugeLight1( sb, pos + new Vector2( 24, 0 ), 3 );
+				this.DrawHUDGaugeLight1( sb, pos + new Vector2(24, 0), 3 );
 			}
 		}
 
