@@ -67,8 +67,6 @@ namespace PKEMeter.Items {
 			//
 
 			if( mymod.PKEScanLoop.State != SoundState.Playing ) {
-				mymod.PKEScanLoop.Volume = 0.2f;
-				mymod.PKEScanLoop.IsLooped = true;
 				mymod.PKEScanLoop.Play();
 			}
 
@@ -81,7 +79,6 @@ namespace PKEMeter.Items {
 
 			if( scanned.Count > 0 ) {
 				if( mymod.PKEScanDone.State != SoundState.Playing ) {
-					mymod.PKEScanDone.Volume = 0.2f;
 					mymod.PKEScanDone.Play();
 				}
 			}

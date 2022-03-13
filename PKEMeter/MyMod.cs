@@ -58,8 +58,13 @@ namespace PKEMeter {
 				this.PKEScanLoop = scanSfx.CreateInstance();
 				this.PKEScanDone = scanDoneSfx.CreateInstance();
 
+				this.PKEScanAlert.Volume = 0.2f;
+				this.PKEScanLoop.Volume = 0.2f;
+				this.PKEScanLoop.IsLooped = true;
+				this.PKEScanDone.Volume = 0.2f;
+
 				//
-				
+
 				this.Meter = PKEMeterHUD.CreateDefault(); //"Vanilla: Info Accessories Bar"
 
 				HUDElementsLibAPI.AddWidget( this.Meter );

@@ -37,10 +37,9 @@ namespace PKEMeter {
 
 		private void UpdateLocal() {
 			Item heldItem = this.player.HeldItem;
+			bool isHoldingPKE = heldItem?.active == true && heldItem.type == ModContent.ItemType<PKEMeterItem>();
 
-			if( heldItem?.active == true && heldItem.type == ModContent.ItemType<PKEMeterItem>() ) {
-				this.UpdateWhileHoldingPKEMeter();
-			}
+			this.UpdateForPKE( isHoldingPKE );
 		}
 
 
@@ -48,12 +47,12 @@ namespace PKEMeter {
 
 		 private bool _CanScanSinceLastCheck = false;
 
-		private void UpdateWhileHoldingPKEMeter() {
+		private void UpdateForPKE( bool isHoldingPKE ) {
 			bool canScan = PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory );
 
 			//
 
-			if( canScan && foundInInventory ) {
+			if( isHoldingPKE && canScan /*&& foundInInventory*/ ) {
 				PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
 			}
 
@@ -64,7 +63,6 @@ namespace PKEMeter {
 
 				if( canScan ) {
 					if( PKEMeterMod.Instance.PKEScanAlert.State != SoundState.Playing ) {
-						PKEMeterMod.Instance.PKEScanAlert.Volume = 0.2f;
 						PKEMeterMod.Instance.PKEScanAlert.Play();
 					}
 				}

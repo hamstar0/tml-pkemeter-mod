@@ -24,7 +24,7 @@ namespace PKEMeter.Items {
 			this.Tooltip.SetDefault(
 				"Analyzes psycho-kinetic (spiritual) energy signals."
 				+"\nGauges indicate signal intensity (usually due to proximity)"
-				+"\nLeft-click to scan scannable objects"
+				//+"\nLeft-click to scan scannable objects"
 				+"\nRight-click to toggle permanent HUD display"
 			);
 		}
@@ -34,11 +34,11 @@ namespace PKEMeter.Items {
 			this.item.height = 4;
 
 			this.item.holdStyle = 1;
-			this.item.useTime = 20;
-			this.item.useAnimation = 20;
-			this.item.useStyle = ItemUseStyleID.HoldingUp;
-			this.item.noMelee = true;
-			this.item.autoReuse = true;
+			//this.item.useTime = 20;
+			//this.item.useAnimation = 20;
+			//this.item.useStyle = ItemUseStyleID.HoldingUp;
+			//this.item.noMelee = true;
+			//this.item.autoReuse = true;
 
 			this.item.value = Item.buyPrice( 0, 5, 0, 0 );
 			this.item.rare = ItemRarityID.Lime;
@@ -60,6 +60,7 @@ namespace PKEMeter.Items {
 		public override bool CanRightClick() {
 			Timers.SetTimer( "PKEMeterToggleBlocker", 2, true, () => {
 				PKEMeterItem.DisplayHUDMeter = !PKEMeterItem.DisplayHUDMeter;
+
 				return false;
 			} );
 			return false;
@@ -68,7 +69,7 @@ namespace PKEMeter.Items {
 
 		////////////////
 
-		public override bool CanUseItem( Player player ) {
+		/*public override bool CanUseItem( Player player ) {
 			return PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory )
 				&& !foundInInventory;
 		}
@@ -77,6 +78,6 @@ namespace PKEMeter.Items {
 			PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
 
 			return base.UseItem( player );
-		}
+		}*/
 	}
 }
