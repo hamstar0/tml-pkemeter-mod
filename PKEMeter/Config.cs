@@ -32,10 +32,18 @@ namespace PKEMeter {
 		public bool PKEMeterRecipeEnabled { get; set; } = true;
 
 
+		//
+
 		[DefaultValue( -128 )]
 		public int PKEMeterHUDBasePositionX { get; set; } = -128;
 
 		[DefaultValue( -144 )]
 		public int PKEMeterHUDBasePositionY { get; set; } = -96;
+
+		//
+
+		[DefaultValue( 16 * 16 )]
+		[Range( 16, 256 * 256 )]
+		public int PKEScanRange { get; set; } = 16 * 16;
 	}
 }

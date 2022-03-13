@@ -53,7 +53,14 @@ namespace PKEMeter {
 			//
 
 			if( isHoldingPKE && canScan /*&& foundInInventory*/ ) {
-				PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
+				var config = PKEMeterConfig.Instance;
+				int maxDist = config.Get<int>( nameof(config.PKEScanRange) );
+				int maxDistSqr = maxDist * maxDist;
+				float distSqr = (Main.MouseWorld - this.player.MountedCenter).LengthSquared();
+
+				if( distSqr < maxDistSqr ) {
+					PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
+				}
 			}
 
 			//
