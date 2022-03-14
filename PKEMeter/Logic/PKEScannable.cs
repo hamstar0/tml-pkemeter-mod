@@ -31,12 +31,13 @@ namespace PKEMeter.Logic {
 		private PKEScannable() { }
 		
 		public PKEScannable(
-					CanScanDef canScan,
+					CanScanDef canScan = null,
 					Action onScanCompleteAction = null,
-					IEnumerable<int> itemType = null ) {
+					IEnumerable<int> anyOfItemTypes = null ) {
 			this.CanScanFunc = canScan;
-			this.AnyOfItemTypes = itemType != null
-				? new HashSet<int>( itemType )
+
+			this.AnyOfItemTypes = anyOfItemTypes != null
+				? new HashSet<int>( anyOfItemTypes )
 				: new HashSet<int>();
 
 			this.OnScanCompleteAction = onScanCompleteAction;
