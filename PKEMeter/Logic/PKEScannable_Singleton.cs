@@ -58,8 +58,8 @@ namespace PKEMeter.Logic {
 
 			//
 
-			if( scannables[name].ItemType != 0 ) {
-				singleton.SingletonScannableItems.Remove2D( scannables[name].ItemType, name );
+			foreach( int iType in scannables[name].AnyOfItemTypes ) {
+				singleton.SingletonScannableItems.Remove2D( iType, name );
 			}
 
 			//
@@ -131,8 +131,8 @@ namespace PKEMeter.Logic {
 
 			this.SingletonScannables[name] = scannable;
 
-			if( scannable.ItemType != 0 ) {
-				this.SingletonScannableItems.Set2D( scannable.ItemType, name );
+			foreach( int iType in scannable.AnyOfItemTypes ) {
+				this.SingletonScannableItems.Set2D( iType, name );
 			}
 
 			return true;

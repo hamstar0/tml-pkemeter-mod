@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using ModLibsCore.Classes.Loadable;
 
@@ -13,9 +15,9 @@ namespace PKEMeter.Logic {
 		
 		private CanScanDef CanScanFunc;
 
-		private int ItemType;
-
 		private Action OnScanCompleteAction;
+
+		private ISet<int> AnyOfItemTypes;
 
 
 		////
@@ -31,9 +33,11 @@ namespace PKEMeter.Logic {
 		public PKEScannable(
 					CanScanDef canScan,
 					Action onScanCompleteAction = null,
-					int itemType = 0 ) {
+					IEnumerable<int> itemType = null ) {
 			this.CanScanFunc = canScan;
-			this.ItemType = itemType;
+			this.AnyOfItemTypes = itemType != null
+				? new HashSet<int>( itemType )
+				: new HashSet<int>();
 
 			this.OnScanCompleteAction = onScanCompleteAction;
 		}
@@ -42,9 +46,11 @@ namespace PKEMeter.Logic {
 		////////////////
 		
 		public bool CanScan( int screenX, int screenY, out bool foundInInventory ) {
-			if( Main.HoverItem?.active == true && Main.HoverItem.type == this.ItemType ) {
-				foundInInventory = true;
-				return true;
+			if( Main.HoverItem?.active == true ) {
+				if( this.AnyOfItemTypes.Any(iType => iType == Main.HoverItem.type) ) {
+					foundInInventory = true;
+					return true;
+				}
 			}
 
 			if( this.CanScanFunc?.Invoke(screenX, screenY) ?? false ) {
