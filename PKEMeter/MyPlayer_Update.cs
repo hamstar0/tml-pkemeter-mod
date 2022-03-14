@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ModLoader;
@@ -21,11 +21,20 @@ namespace PKEMeter {
 		}
 
 
-		////
+		////////////////
 
 		 private bool _CanScanSinceLastCheck = false;
 
 		private void UpdateForPKE( bool isHoldingPKE ) {
+			int pkeType = ModContent.ItemType<PKEMeterItem>();
+
+			this.HasInventoryPKE = Main.LocalPlayer.inventory
+				.Any( i => i?.active == true && i.type == pkeType );
+
+			//this.IsHoldingPKE = isHoldingPKE;
+
+			//
+
 			bool canScan = PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory );
 
 			//

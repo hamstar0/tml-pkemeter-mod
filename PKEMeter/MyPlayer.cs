@@ -9,6 +9,8 @@ using PKEMeter.Items;
 namespace PKEMeter {
 	public partial class PKEMeterPlayer : ModPlayer {
 		public Color MyColor { get; private set; } = default;
+		
+		public bool HasInventoryPKE { get; private set; } = false;
 
 
 		////////////////

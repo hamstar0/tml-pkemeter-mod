@@ -37,10 +37,11 @@ namespace PKEMeter {
 		////////////////
 
 		private bool DrawMousePKE_If( SpriteBatch sb ) {
-			//Item heldItem = Main.LocalPlayer.HeldItem;
-			//if( heldItem?.active != true || heldItem.type != ModContent.ItemType<PKEMeterItem>() ) {
-			//	return false;
-			//}
+			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
+			if( !myplayer.HasInventoryPKE ) {
+				return false;
+			}
+
 			if( !PKEMeterItem.CanScanAt(Main.mouseX, Main.mouseY, out _) ) {
 				return false;
 			}
