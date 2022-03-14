@@ -9,8 +9,8 @@ namespace PKEMeter {
 			return PKEScannable.GetScannable( name );
 		}
 
-		public static bool SetScannable( string name, PKEScannable scannable ) {
-			return PKEScannable.SetScannable( name, scannable );
+		public static bool SetScannable( string name, PKEScannable scannable, bool allowRepeat, bool runIfComplete ) {
+			return PKEScannable.SetScannable( name, scannable, allowRepeat, runIfComplete );
 		}
 	}
 }

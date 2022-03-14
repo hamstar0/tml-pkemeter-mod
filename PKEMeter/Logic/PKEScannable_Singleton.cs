@@ -37,8 +37,8 @@ namespace PKEMeter.Logic {
 
 		////
 
-		public static bool SetScannable( string name, PKEScannable scannable ) {
-			return PKEScannable.Instance.SetScannable_Singleton( name, scannable );
+		public static bool SetScannable( string name, PKEScannable scannable, bool allowRepeat, bool runIfComplete ) {
+			return PKEScannable.Instance.SetScannable_Singleton( name, scannable, allowRepeat, runIfComplete );
 		}
 
 
@@ -61,6 +61,11 @@ namespace PKEMeter.Logic {
 			if( scannables[name].ItemType != 0 ) {
 				singleton.SingletonScannableItems.Remove2D( scannables[name].ItemType, name );
 			}
+
+			//
+
+			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
+			myplayer.Scans.Add( name );
 
 			//
 
@@ -99,9 +104,27 @@ namespace PKEMeter.Logic {
 		
 		////
 
-		private bool SetScannable_Singleton( string name, PKEScannable scannable ) {
+		private bool SetScannable_Singleton(
+					string name,
+					PKEScannable scannable,
+					bool allowRepeat,
+					bool runIfComplete ) {
 			if( this.SingletonScannables.ContainsKey(name) ) {
 				return false;
+			}
+
+			//
+
+			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
+
+			if( myplayer.Scans.Contains(name) ) {
+				if( runIfComplete ) {
+					scannable.RunScanComplete();
+				}
+
+				if( !allowRepeat ) {
+					return false;
+				}
 			}
 
 			//

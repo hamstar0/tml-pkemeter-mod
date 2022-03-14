@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -7,73 +7,48 @@ using PKEMeter.Items;
 
 
 namespace PKEMeter {
-	public class PKEMeterPlayer : ModPlayer {
+	public partial class PKEMeterPlayer : ModPlayer {
 		public Color MyColor { get; private set; } = default;
+
+
+		////////////////
+
+		internal ISet<string> Scans = new HashSet<string>();
 
 
 
 		////////////////
 
 		public override void Load( TagCompound tag ) {
+			this.Scans.Clear();
+
+			//
+
 			if( tag.ContainsKey("pke_hud") ) {
 				PKEMeterItem.DisplayHUDMeter = tag.GetBool( "pke_hud" );
+			}
+
+			if( tag.ContainsKey("scan_count") ) {
+				int scans = tag.GetInt( "scan_count" );
+
+				for( int i=0; i<scans; i++ ) {
+					this.Scans.Add( tag.GetString("scan_"+i ) );
+				}
 			}
 		}
 
 		public override TagCompound Save() {
-			return new TagCompound {
-				{ "pke_hud", PKEMeterItem.DisplayHUDMeter }
+			var tag = new TagCompound {
+				{ "pke_hud", PKEMeterItem.DisplayHUDMeter },
+				{ "scan_count", this.Scans.Count }
 			};
-		}
 
-
-		////////////////
-
-		public override void PreUpdate() {
-			if( this.player.whoAmI == Main.myPlayer ) {
-				this.UpdateLocal();
-			}
-		}
-
-		private void UpdateLocal() {
-			Item heldItem = this.player.HeldItem;
-			bool isHoldingPKE = heldItem?.active == true && heldItem.type == ModContent.ItemType<PKEMeterItem>();
-
-			this.UpdateForPKE( isHoldingPKE );
-		}
-
-
-		////
-
-		 private bool _CanScanSinceLastCheck = false;
-
-		private void UpdateForPKE( bool isHoldingPKE ) {
-			bool canScan = PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory );
-
-			//
-
-			if( isHoldingPKE && canScan /*&& foundInInventory*/ ) {
-				var config = PKEMeterConfig.Instance;
-				int maxDist = config.Get<int>( nameof(config.PKEScanRange) );
-				int maxDistSqr = maxDist * maxDist;
-				float distSqr = (Main.MouseWorld - this.player.MountedCenter).LengthSquared();
-
-				if( distSqr < maxDistSqr ) {
-					PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
-				}
+			int i = 0;
+			foreach( string name in this.Scans ) {
+				tag[ "scan_"+i ] = name;
 			}
 
-			//
-
-			if( canScan != this._CanScanSinceLastCheck ) {
-				this._CanScanSinceLastCheck = canScan;
-
-				if( canScan ) {
-					if( PKEMeterMod.Instance.PKEScanAlert.State != SoundState.Playing ) {
-						PKEMeterMod.Instance.PKEScanAlert.Play();
-					}
-				}
-			}
+			return tag;
 		}
 
 
