@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using ModLibsCore.Services.Hooks.LoadHooks;
 using PKEMeter.Logic;
 
 
@@ -16,8 +17,10 @@ namespace PKEMeter {
 
 		////
 
-		public static bool SetScannable( string name, PKEScannable scannable, bool allowRepeat, bool runIfComplete ) {
-			return PKEScannable.SetScannable( name, scannable, allowRepeat, runIfComplete );
+		public static void SetScannable( string name, PKEScannable scannable, bool allowRepeat, bool runIfComplete ) {
+			LoadHooks.AddWorldInPlayOnceHook( () => {
+				PKEScannable.SetScannable( name, scannable, allowRepeat, runIfComplete );
+			} );
 		}
 	}
 }
