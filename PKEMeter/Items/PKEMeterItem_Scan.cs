@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ID;
@@ -21,13 +19,24 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public static bool CanScanAt( int screenX, int screenY, out bool foundInInventory ) {
-			bool myFoundInInventory = false;
+			if( PKEScannable.Scannables == null ) {
+				foundInInventory = false;
+				return false;
+			}
 
-			bool canScan = PKEScannable.Scannables?.Values
-				.Any( data => data.CanScan(screenX, screenY, out myFoundInInventory) )
-				?? false;
+			//
 
-			foundInInventory = canScan && myFoundInInventory;
+			foundInInventory = false;
+			bool canScan = false;
+
+			foreach( PKEScannable data in PKEScannable.Scannables.Values ) {
+				if( data.CanScan(screenX, screenY, out bool myFoundInInventory) ) {
+					canScan = true;
+					foundInInventory = myFoundInInventory;
+
+					break;
+				}
+			}
 
 			return canScan;
 		}

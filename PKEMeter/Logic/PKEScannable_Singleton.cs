@@ -11,44 +11,51 @@ using ModLibsCore.Libraries.DotNET.Extensions;
 
 namespace PKEMeter.Logic {
 	public partial class PKEScannable : ILoadable {
-		public static PKEScannable Instance => ModContent.GetInstance<PKEScannable>();
+		internal static PKEScannable Singleton => ModContent.GetInstance<PKEScannable>();
 
 		////
 
 		internal static IDictionary<string, PKEScannable> Scannables
-			=> PKEScannable.Instance?.SingletonScannables;
+			=> PKEScannable.Singleton?.SingletonScannables;
 
 		internal static IDictionary<int, ISet<string>> ScannableItems
-			=> PKEScannable.Instance?.SingletonScannableItems;
+			=> PKEScannable.Singleton?.SingletonScannableItems;
 
 
 
 		////////////////
-		
-		public static PKEScannable GetScannable( string name ) {
-			return PKEScannable.Scannables.GetOrDefault( name );
+
+		internal static PKEScannable GetScannable( string name ) {
+			return PKEScannable.Scannables?.GetOrDefault( name );
 		}
 
-		public static IDictionary<string, PKEScannable> GetScannables() {
-			return new Dictionary<string, PKEScannable>(
-				PKEScannable.Scannables
-			);
+		internal static IDictionary<string, PKEScannable> GetScannables() {
+			IDictionary<string, PKEScannable> scannables = PKEScannable.Scannables;
+			if( scannables == null ) {
+				return new Dictionary<string, PKEScannable>();
+			}
+
+			return new Dictionary<string, PKEScannable>( scannables );
 		}
 
 		////
 
-		public static bool SetScannable( string name, PKEScannable scannable, bool allowRepeat, bool runIfComplete ) {
-			return PKEScannable.Instance.SetScannable_Singleton( name, scannable, allowRepeat, runIfComplete );
+		internal static bool SetScannable(
+					string name,
+					PKEScannable scannable,
+					bool allowRepeat,
+					bool runIfComplete ) {
+			return PKEScannable.Singleton.SetScannable_Singleton( name, scannable, allowRepeat, runIfComplete );
 		}
 
 
 		////////////////
 
 		public static bool CompleteScan( string name ) {
-			PKEScannable singleton = PKEScannable.Instance;
-			IDictionary<string, PKEScannable> scannables = singleton.SingletonScannables;
+			PKEScannable singleton = PKEScannable.Singleton;
+			IDictionary<string, PKEScannable> scannables = singleton?.SingletonScannables;
 
-			if( !scannables.ContainsKey(name) ) {
+			if( scannables?.ContainsKey(name) ?? false ) {
 				return false;
 			}
 
