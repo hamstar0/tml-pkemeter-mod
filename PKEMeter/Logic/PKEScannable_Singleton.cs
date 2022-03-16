@@ -52,31 +52,7 @@ namespace PKEMeter.Logic {
 		////////////////
 
 		public static bool CompleteScan( string name ) {
-			PKEScannable singleton = PKEScannable.Singleton;
-			IDictionary<string, PKEScannable> scannables = singleton?.SingletonScannables;
-
-			if( scannables?.ContainsKey(name) ?? false ) {
-				return false;
-			}
-
-			//
-
-			scannables[ name ].RunScanComplete();
-
-			//
-
-			foreach( int iType in scannables[name].AnyOfItemTypes ) {
-				singleton.SingletonScannableItems.Remove2D( iType, name );
-			}
-
-			//
-
-			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
-			myplayer.Scans.Add( name );
-
-			//
-
-			return scannables.Remove( name );
+			return PKEScannable.Singleton.CompleteScan_Singleton( name );
 		}
 
 
@@ -107,16 +83,16 @@ namespace PKEMeter.Logic {
 		void ILoadable.OnPostModsLoad() { }
 
 		void ILoadable.OnModsUnload() { }
-		
-		
-		////
+
+
+		////////////////
 
 		private bool SetScannable_Singleton(
 					string name,
 					PKEScannable scannable,
 					bool allowRepeat,
 					bool runIfComplete ) {
-			if( this.SingletonScannables.ContainsKey(name) ) {
+			if( this.SingletonScannables?.ContainsKey(name) != false ) {
 				return false;
 			}
 
@@ -124,7 +100,7 @@ namespace PKEMeter.Logic {
 
 			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
 
-			if( myplayer.Scans.Contains(name) ) {
+			if( myplayer.AlreadyScanned.Contains(name) ) {
 				if( runIfComplete ) {
 					scannable.RunScanComplete();
 				}
@@ -141,6 +117,35 @@ namespace PKEMeter.Logic {
 			foreach( int iType in scannable.AnyOfItemTypes ) {
 				this.SingletonScannableItems.Set2D( iType, name );
 			}
+
+			return true;
+		}
+
+		private bool CompleteScan_Singleton( string name ) {
+			if( this.SingletonScannables?.ContainsKey(name) != true ) {
+				return false;
+			}
+
+			//
+
+			this.SingletonScannables[name].RunScanComplete();
+
+			//
+
+			if( !this.SingletonScannables.Remove( name ) ) {
+				return false;
+			}
+
+			foreach( int iType in this.SingletonScannables[name].AnyOfItemTypes ) {
+				this.SingletonScannableItems.Remove2D( iType, name );
+			}
+
+			//
+
+			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
+			myplayer.AlreadyScanned.Add( name );
+
+			//
 
 			return true;
 		}

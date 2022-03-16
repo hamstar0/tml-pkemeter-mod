@@ -45,31 +45,22 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public static void RunScanAt( int screenX, int screenY ) {
-			var mymod = PKEMeterMod.Instance;
-
-			var scanned = new List<string>();
+			if( PKEScannable.Scannables.Count == 0 ) {
+				return;
+			}
 
 			//
 
-			foreach( (string name, PKEScannable scannable) in PKEScannable.Scannables ) {
-				if( !scannable.CanScan(screenX, screenY, out _) ) {
-					continue;
-				}
+			var mymod = PKEMeterMod.Instance;
+			IList<string> completedScans;
 
-				//
-
-				float addPerc = 1f / (float)PKEMeterItem.MaxScanTicks;
-
-				if( (scannable.ScanPercent + addPerc) >= 1f ) {
-					scanned.Add( name );
-				} else {
-					scannable.ScanPercent += addPerc;
-				}
+			if( !PKEMeterItem.StepScannableScannables(screenX, screenY, out completedScans) ) {
+				return;
 			}
 			
 			//
 			
-			foreach( string scanName in scanned ) {
+			foreach( string scanName in completedScans ) {
 				PKEScannable.CompleteScan( scanName );
 			}
 
@@ -86,11 +77,46 @@ namespace PKEMeter.Items {
 
 			//
 
-			if( scanned.Count > 0 ) {
+			if( completedScans.Count > 0 ) {
 				if( mymod.PKEScanDone.State != SoundState.Playing ) {
 					mymod.PKEScanDone.Play();
 				}
 			}
+		}
+
+
+		////////////////
+
+		public static bool StepScannableScannables( int screenX, int screenY, out IList<string> completedScans ) {
+			bool hasScannables = false;
+
+			completedScans = new List<string>();
+
+			//
+
+			foreach( (string name, PKEScannable scannable) in PKEScannable.Scannables ) {
+				if( !scannable.CanScan(screenX, screenY, out _) ) {
+					continue;
+				}
+
+				//
+
+				hasScannables = true;
+
+				//
+
+				float addPerc = 1f / (float)PKEMeterItem.MaxScanTicks;
+
+				if( (scannable.ScanPercent + addPerc) >= 1f ) {
+					scannable.ScanPercent = 1f;
+
+					completedScans.Add( name );
+				} else {
+					scannable.ScanPercent += addPerc;
+				}
+			}
+
+			return hasScannables;
 		}
 	}
 }

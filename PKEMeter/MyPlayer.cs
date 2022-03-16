@@ -15,14 +15,14 @@ namespace PKEMeter {
 
 		////////////////
 
-		internal ISet<string> Scans = new HashSet<string>();
+		internal ISet<string> AlreadyScanned = new HashSet<string>();
 
 
 
 		////////////////
 
 		public override void Load( TagCompound tag ) {
-			this.Scans.Clear();
+			this.AlreadyScanned.Clear();
 
 			//
 
@@ -34,7 +34,7 @@ namespace PKEMeter {
 				int scans = tag.GetInt( "scan_count" );
 
 				for( int i=0; i<scans; i++ ) {
-					this.Scans.Add( tag.GetString("scan_"+i ) );
+					this.AlreadyScanned.Add( tag.GetString("scan_"+i ) );
 				}
 			}
 		}
@@ -42,11 +42,11 @@ namespace PKEMeter {
 		public override TagCompound Save() {
 			var tag = new TagCompound {
 				{ "pke_hud", PKEMeterItem.DisplayHUDMeter },
-				{ "scan_count", this.Scans.Count }
+				{ "scan_count", this.AlreadyScanned.Count }
 			};
 
 			int i = 0;
-			foreach( string name in this.Scans ) {
+			foreach( string name in this.AlreadyScanned ) {
 				tag[ "scan_"+i ] = name;
 			}
 

@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ModLoader;
+using ModLibsCore.Libraries.Debug;
 using PKEMeter.Items;
 
 
@@ -28,7 +29,7 @@ namespace PKEMeter {
 		private void UpdateForPKE( bool isHoldingPKE ) {
 			int pkeType = ModContent.ItemType<PKEMeterItem>();
 
-			this.HasInventoryPKE = Main.LocalPlayer.inventory
+			this.HasInventoryPKE = isHoldingPKE || Main.LocalPlayer.inventory
 				.Any( i => i?.active == true && i.type == pkeType );
 
 			//this.IsHoldingPKE = isHoldingPKE;
@@ -40,13 +41,17 @@ namespace PKEMeter {
 			//
 
 			if( isHoldingPKE && canScan ) {
-				var config = PKEMeterConfig.Instance;
-				int maxDist = config.Get<int>( nameof(config.PKEScanRange) );
-				int maxDistSqr = maxDist * maxDist;
-				float distSqr = (Main.MouseWorld - this.player.MountedCenter).LengthSquared();
-
-				if( distSqr < maxDistSqr ) {
+				if( foundInInventory ) {
 					PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
+				} else {
+					var config = PKEMeterConfig.Instance;
+					int maxDist = config.Get<int>( nameof(config.PKEScanRange) );
+					int maxDistSqr = maxDist * maxDist;
+					float distSqr = (Main.MouseWorld - this.player.MountedCenter).LengthSquared();
+
+					if( distSqr < maxDistSqr ) {
+						PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
+					}
 				}
 			}
 
