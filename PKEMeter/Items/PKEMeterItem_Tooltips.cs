@@ -30,7 +30,7 @@ namespace PKEMeter.Items {
 				tooltips.Add( new TooltipLine( this.mod, "PKEGaugeRed", text ) );
 			}
 			if( PKEMeterItem.MiscLabelGetter != null ) {
-				string text = PKEMeterItem.RedLabelGetter.Invoke();
+				string text = PKEMeterItem.MiscLabelGetter.Invoke();
 				tooltips.Add( new TooltipLine( this.mod, "PKEMisc", text ) );
 			}
 		}

@@ -111,7 +111,9 @@ namespace PKEMeter.Logic {
 
 		private void InitializeDefaultText() {
 			if( this.TextSources == null ) {
-				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay( out PKEMeterItem.RedLabelGetter );
+				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay(
+					out PKEMeterItem.RedLabelGetter
+				);
 			}
 		}
 
