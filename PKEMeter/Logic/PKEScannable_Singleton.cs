@@ -121,6 +121,9 @@ namespace PKEMeter.Logic {
 			return true;
 		}
 
+
+		////
+
 		private bool CompleteScan_Singleton( string name ) {
 			if( this.SingletonScannables?.ContainsKey(name) != true ) {
 				return false;
@@ -128,16 +131,18 @@ namespace PKEMeter.Logic {
 
 			//
 
-			this.SingletonScannables[name].RunScanComplete();
+			var scannable = this.SingletonScannables[name];
+
+			scannable.RunScanComplete();
 
 			//
 
-			if( !this.SingletonScannables.Remove( name ) ) {
-				return false;
+			foreach( int iType in scannable.AnyOfItemTypes ) {
+				this.SingletonScannableItems.Remove2D( iType, name );
 			}
 
-			foreach( int iType in this.SingletonScannables[name].AnyOfItemTypes ) {
-				this.SingletonScannableItems.Remove2D( iType, name );
+			if( !this.SingletonScannables.Remove(name) ) {
+				return false;
 			}
 
 			//

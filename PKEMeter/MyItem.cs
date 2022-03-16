@@ -19,7 +19,9 @@ namespace PKEMeter {
 			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
 
 			if( myplayer.HasInventoryPKE ) {
-				if( PKEScannable.ScannableItems.ContainsKey(item.type) ) {
+				var scanItems = PKEScannable.ScannableItems;
+
+				if( scanItems.ContainsKey(item.type) && scanItems[item.type].Count > 0 ) {
 					float pulse = (float)Main.mouseTextColor / 255f;
 
 					Utils.DrawBorderStringFourWay(
