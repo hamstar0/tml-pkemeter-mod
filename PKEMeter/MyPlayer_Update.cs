@@ -57,7 +57,7 @@ namespace PKEMeter {
 
 			//
 
-			if( canScan != this._CanScanSinceLastCheck ) {
+			if( this.HasInventoryPKE && canScan != this._CanScanSinceLastCheck ) {
 				this._CanScanSinceLastCheck = canScan;
 
 				if( canScan ) {
