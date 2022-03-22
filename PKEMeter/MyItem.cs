@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
+using ModLibsCore.Libraries.TModLoader;
 using PKEMeter.Logic;
 
 
@@ -16,7 +17,7 @@ namespace PKEMeter {
 					Color itemColor,
 					Vector2 origin,
 					float scale ) {
-			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
+			var myplayer = TmlLibraries.SafelyGetModPlayer<PKEMeterPlayer>( Main.LocalPlayer );
 
 			if( myplayer.HasInventoryPKE ) {
 				var scanItems = PKEScannable.ScannableItems;
