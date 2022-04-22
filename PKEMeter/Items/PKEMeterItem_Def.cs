@@ -58,7 +58,7 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public override bool CanRightClick() {
-			Timers.SetTimer( "PKEMeterToggleBlocker", 2, true, () => {
+			Timers.SetTimer( "PKEMeterToggleBlocker", 3, true, () => {
 				PKEMeterItem.DisplayHUDMeter = !PKEMeterItem.DisplayHUDMeter;
 
 				return false;
