@@ -1,6 +1,6 @@
 displayName = P.K.E Analyzer Device
 author = hamstar
-version = 2.0.0.2
+version = 2.0.0.3
 modReferences = ModLibsCore@1.2.0, ModLibsGeneral@1.2.0, HUDElementsLib@4.0.0
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
 homepage = https://github.com/hamstar0/tml-pkemeter-mod

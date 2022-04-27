@@ -48,12 +48,13 @@ namespace PKEMeter {
 
 			//
 
-			Vector2 pos = Main.MouseScreen + new Vector2(-32f, -16f);
+			Vector2 pos = Main.MouseScreen + new Vector2(-16f, -24f);   //new Vector2(-32f, -16f);
+			float pulse = (float)Main.mouseTextColor / 255f;
 
 			sb.Draw(
 				texture: ModContent.GetTexture("PKEMeter/Items/PKEMeterItem"),
 				position: pos,
-				color: Color.White * 0.5f
+				color: Color.White * 0.5f * pulse
 			);
 
 			//
