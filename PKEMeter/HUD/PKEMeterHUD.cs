@@ -48,7 +48,8 @@ namespace PKEMeter.HUD {
 
 		////////////////
 		
-		private PKEMeterHUD( string name, Vector2 position, Vector2 dim ) : base( name, position, dim ) {
+		private PKEMeterHUD( string name, Vector2 position, Vector2 dim ) 
+					: base( name, position, dim, () => PKEMeterHUD.CanDrawPKE() ) {
 			this.MinFont = PKEMeterMod.Instance.GetTexture( "HUD/MinFont" );
 			this.MeterBody = PKEMeterMod.Instance.GetTexture( "HUD/MeterBody" );
 			this.MeterDisplay = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplay" );
@@ -59,13 +60,6 @@ namespace PKEMeter.HUD {
 			this.MeterDisplayG = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayG" );
 			this.MeterDisplayY = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayY" );
 			this.MeterDisplayR = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayR" );
-		}
-
-
-		////////////////
-
-		public override bool IsEnabled() {
-			return PKEMeterHUD.CanDrawPKE();
 		}
 	}
 }
