@@ -8,13 +8,6 @@ using PKEMeter.Logic;
 
 namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
-		private bool _CanScanSinceLastCheck = false;
-		private PKEGaugeType _PreviousAlertedGauge = 0;
-
-
-
-		////////////////
-
 		public void UpdateForHeldPKE_Local( bool canScan, bool scannableInInventory ) {
 			if( !canScan ) {
 				return;
@@ -38,19 +31,48 @@ namespace PKEMeter.Items {
 		////////////////
 
 		public void UpdateForInventoryPKE( Player player, bool isHeld, bool canScan ) {
-			var mymod = PKEMeterMod.Instance;
+			this.UpdateForScanState( isHeld, canScan );
+			this.UpdateForNearbyReadings( player );
+		}
 
-			if( !isHeld ) {
-				if( canScan != this._CanScanSinceLastCheck ) {
-					this._CanScanSinceLastCheck = canScan;
 
-					if( canScan ) {
-						if( mymod.PKEScanAlert.State != SoundState.Playing ) {
-							mymod.PKEScanAlert.Play();
-						}
-					}
+		////
+
+		 private bool _CanScanSinceLastCheck = false;
+
+		public void UpdateForScanState( bool isHeld, bool canScan ) {
+			if( isHeld ) {
+				return;
+			}
+
+			//
+
+			if( canScan == this._CanScanSinceLastCheck ) {
+				return;
+			}
+
+			this._CanScanSinceLastCheck = canScan;
+
+			//
+
+			if( canScan ) {
+				var mymod = PKEMeterMod.Instance;
+
+				if( mymod.PKEScanAlert.State != SoundState.Playing ) {
+					mymod.PKEScanAlert.Play();
 				}
 			}
+		}
+
+
+		////
+
+		 private PKEGaugeType _CurrentSignificantGauge = 0;
+
+		private void UpdateForNearbyReadings( Player player ) {
+			float minGaugeAlertPercent = 0.65f;
+
+			var mymod = PKEMeterMod.Instance;
 
 			//
 
@@ -58,15 +80,28 @@ namespace PKEMeter.Items {
 			PKEGaugeValues gaugesValues = gaugesGetter.Invoke( player, player.MountedCenter );
 
 			PKEGaugeType significantGauge = gaugesValues.GetSignificantGauge();
+			float gaugeValue = gaugesValues.GetGaugeValue( significantGauge );
 
-			if( gaugesValues.GetGaugeValue(significantGauge) > 0.65f ) {
-				if( this._PreviousAlertedGauge != significantGauge ) {
-					this._PreviousAlertedGauge = significantGauge;
+			// Alert to readings nearby (any)
+			if( gaugeValue > minGaugeAlertPercent ) {
+				if( this._CurrentSignificantGauge == 0 ) {
 
 					if( mymod.PKEScanAlertNear.State != SoundState.Playing ) {
 						mymod.PKEScanAlertNear.Play();
 					}
 				}
+
+				this._CurrentSignificantGauge = significantGauge;
+			} else {
+				this._CurrentSignificantGauge = 0;
+			}
+
+			// Display lights corresponding to nearby readings
+			if( this._CurrentSignificantGauge != 0 ) {
+				float scanAlertPercent = gaugeValue - minGaugeAlertPercent;
+				scanAlertPercent /= (1f - minGaugeAlertPercent);
+
+				mymod.Meter.SetProximityLights_If( this._CurrentSignificantGauge, scanAlertPercent );
 			}
 		}
 	}

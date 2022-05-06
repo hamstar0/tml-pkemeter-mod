@@ -20,7 +20,7 @@ namespace PKEMeter {
 			if( checkMouseItem ) {
 				if( Main.mouseItem?.active == true && Main.mouseItem.type == pkeType ) {
 					isInventoryOnly = false;
-					return player.HeldItem;
+					return Main.mouseItem;
 				}
 			}
 

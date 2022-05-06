@@ -14,21 +14,26 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		private void DrawHUDScanLightsCurrentRow( SpriteBatch sb, Vector2 pos ) {
-			if( this.ScanLightsRowTimer++ > 5 ) {
+		private void DrawHUDScanLightsCurrentRow( SpriteBatch sb, Vector2 pos, Color color, float intensityPercent ) {
+			float invPercent = 1f - intensityPercent;
+			int tickRate = 5 + (int)(invPercent * 10f);
+
+			//
+
+			if( this.ScanLightsRowTimer++ > tickRate ) {
 				this.ScanLightsRowTimer = 0;
 
-				this.ScanLightsRow = this.ScanLightsRow + 1 >= 3
+				this.ScanLightsRow = (this.ScanLightsRow + 1) >= 3
 					? 0
 					: this.ScanLightsRow + 1;
 			}
 
 			//
 
-			this.DrawHUDScanLightsRow( sb, pos, this.ScanLightsRow );
+			this.DrawHUDScanLightsRow( sb, pos, this.ScanLightsRow, color );
 		}
 
-		private void DrawHUDScanLightsRow( SpriteBatch sb, Vector2 pos, int row ) {
+		private void DrawHUDScanLightsRow( SpriteBatch sb, Vector2 pos, int row, Color color ) {
 			int posX = (int)pos.X;
 			int posY = (int)pos.Y;
 			int rowOffY = row * 8;
@@ -41,7 +46,7 @@ namespace PKEMeter.HUD {
 				texture: this.MeterScanLightsRow,
 				destinationRectangle: new Rectangle(x, y, wid, hei),
 				//position: pos + new Vector2(4f, 12f),
-				color: Color.White
+				color: Color.Lerp( color, Color.White, 0.6f )
 			);
 
 			//
@@ -49,7 +54,11 @@ namespace PKEMeter.HUD {
 			int lGlowX = posX + 2;
 			int rGlowX = posX + 64;
 			int glowY = posY + 10 + rowOffY;
-			Color glowColor = new Color(255, 240, 192) * 0.1f;
+			
+			Color glowColor = color == Color.White
+				? new Color( 255, 240, 192 )
+				: color;
+			glowColor *= 0.15f;
 
 			sb.Draw(
 				texture: Main.magicPixel,

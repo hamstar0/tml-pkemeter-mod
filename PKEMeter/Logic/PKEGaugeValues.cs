@@ -23,6 +23,25 @@ namespace PKEMeter.Logic {
 	////////////////
 
 	public class PKEGaugeValues {
+		public static Color? GetColor( PKEGaugeType gauge ) {
+			switch( gauge ) {
+			case PKEGaugeType.Blue:
+				return new Color(0, 0, 255);
+			case PKEGaugeType.Green:
+				return new Color( 0, 255, 0 );
+			case PKEGaugeType.Yellow:
+				return new Color( 255, 255, 0 );
+			case PKEGaugeType.Red:
+				return new Color( 255, 0, 0 );
+			default:
+				return null;
+			}
+		}
+
+
+
+		////////////////
+
 		public float BluePercent { get; set; }
 		public float GreenPercent { get; set; }
 		public float YellowPercent { get; set; }
@@ -31,7 +50,7 @@ namespace PKEMeter.Logic {
 
 
 		////////////////
-
+		
 		public PKEGaugeValues( float b, float g, float y, float r ) {
 			this.BluePercent = b;
 			this.GreenPercent = g;

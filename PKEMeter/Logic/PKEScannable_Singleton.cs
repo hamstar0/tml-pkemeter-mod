@@ -11,15 +11,15 @@ using ModLibsCore.Libraries.DotNET.Extensions;
 
 namespace PKEMeter.Logic {
 	public partial class PKEScannable : ILoadable {
-		internal static PKEScannable Singleton => ModContent.GetInstance<PKEScannable>();
+		internal static PKEScannable Instance => ModContent.GetInstance<PKEScannable>();
 
 		////
 
 		internal static IDictionary<string, PKEScannable> Scannables
-			=> PKEScannable.Singleton?.SingletonScannables;
+			=> PKEScannable.Instance?.SingletonScannables;
 
 		internal static IDictionary<int, ISet<string>> ScannableItems
-			=> PKEScannable.Singleton?.SingletonScannableItems;
+			=> PKEScannable.Instance?.SingletonScannableItems;
 
 
 
@@ -45,14 +45,14 @@ namespace PKEMeter.Logic {
 					PKEScannable scannable,
 					bool allowRepeat,
 					bool runIfComplete ) {
-			return PKEScannable.Singleton.SetScannable_Singleton( name, scannable, allowRepeat, runIfComplete );
+			return PKEScannable.Instance.SetScannable_Singleton( name, scannable, allowRepeat, runIfComplete );
 		}
 
 
 		////////////////
 
 		public static bool CompleteScan( string name ) {
-			return PKEScannable.Singleton.CompleteScan_Singleton( name );
+			return PKEScannable.Instance.CompleteScan_Singleton( name );
 		}
 
 

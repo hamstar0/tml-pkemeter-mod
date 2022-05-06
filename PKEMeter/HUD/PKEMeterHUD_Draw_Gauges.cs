@@ -49,6 +49,7 @@ namespace PKEMeter.HUD {
 
 			float tickFrac = ticks - (float)(int)ticks;
 
+			// Set the fractional amount to flicker according to its significance
 			if( Main.rand.NextFloat() < tickFrac ) {
 				rect.Y -= 6;
 

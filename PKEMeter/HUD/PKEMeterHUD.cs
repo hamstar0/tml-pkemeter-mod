@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using ModLibsCore.Libraries.Debug;
 using HUDElementsLib;
+using PKEMeter.Logic;
+using PKEMeter.Items;
 
 
 namespace PKEMeter.HUD {
@@ -44,6 +46,9 @@ namespace PKEMeter.HUD {
 
 		private Color LastVisiblePlayerColor;
 
+		private PKEGaugeType LastSignificantGaugeNearby;
+		private float LastSignificantGaugeNearbyPercent;
+
 
 
 		////////////////
@@ -60,6 +65,30 @@ namespace PKEMeter.HUD {
 			this.MeterDisplayG = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayG" );
 			this.MeterDisplayY = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayY" );
 			this.MeterDisplayR = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayR" );
+		}
+
+
+		////////////////
+
+		public void SetProximityLights_If( PKEGaugeType gauge, float percent ) {
+			this.LastSignificantGaugeNearby = gauge;
+			this.LastSignificantGaugeNearbyPercent = percent;
+		}
+
+
+		public Color? GetProximityLightColor_Local( out float scanLightPercent ) {
+			bool canScan = PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory );
+
+			// Manual scannables always override custom "nearby readings" lights
+			if( canScan && foundInInventory ) {
+				scanLightPercent = 1f;
+				return Color.White;
+			}
+
+			//
+
+			scanLightPercent = this.LastSignificantGaugeNearbyPercent;
+			return PKEGaugeValues.GetColor( this.LastSignificantGaugeNearby );
 		}
 	}
 }

@@ -63,7 +63,7 @@ namespace PKEMeter {
 				this.PKEScanDone = scanDoneSfx.CreateInstance();
 
 				this.PKEScanAlert.Volume = 0.1f;
-				this.PKEScanAlertNear.Volume = 0.1f;
+				this.PKEScanAlertNear.Volume = 0.05f;
 				this.PKEScanLoop.Volume = 0.2f;
 				this.PKEScanLoop.IsLooped = true;
 				this.PKEScanDone.Volume = 0.2f;

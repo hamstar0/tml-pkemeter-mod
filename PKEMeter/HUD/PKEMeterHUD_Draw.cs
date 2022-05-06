@@ -74,14 +74,14 @@ namespace PKEMeter.HUD {
 
 		////
 
-		private void DrawHUDComponents( SpriteBatch sb, Vector2 pos, Player plr, Color plrColor ) {
+		private void DrawHUDComponents( SpriteBatch sb, Vector2 scrPos, Player plr, Color lightColor ) {
 			var logic = PKEMeterLogic.Instance;
 
 			float opacity = 1f;//Main.playerInventory ? 0.5f : 1f;
 
 			sb.Draw(
 				texture: this.MeterDisplay,
-				position: pos,
+				position: scrPos,
 				color: Color.White * opacity
 			);
 
@@ -92,7 +92,7 @@ namespace PKEMeter.HUD {
 
 			this.DrawHUDGauges(
 				sb,
-				pos,
+				scrPos,
 				opacity,
 				gauge.BluePercent,
 				gauge.GreenPercent,
@@ -103,21 +103,21 @@ namespace PKEMeter.HUD {
 			//
 
 			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
-			this.DrawHUDText( sb, pos, msg.text, msg.color * opacity, msg.offset );
+			this.DrawHUDText( sb, scrPos, msg.text, msg.color * opacity, msg.offset );
 
 			//
 
 			sb.Draw(
 				texture: this.MeterBody,
-				position: pos,
-				color: plrColor * opacity
+				position: scrPos,
+				color: lightColor * opacity
 			);
 
 			//
 
 			this.DrawHUDGaugeLights(
 				sb: sb,
-				pos: pos,
+				pos: scrPos,
 				bLit: gauge.BluePercent > 0.99f,
 				gLit: gauge.GreenPercent > 0.99f,
 				yLit: gauge.YellowPercent > 0.99f,
@@ -126,8 +126,10 @@ namespace PKEMeter.HUD {
 
 			//
 
-			if( PKEMeterItem.CanScanAt(Main.mouseX, Main.mouseY, out bool foundInInventory) && foundInInventory ) {
-				this.DrawHUDScanLightsCurrentRow( sb, pos );
+			Color? scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
+
+			if( scanLightColor.HasValue ) {
+				this.DrawHUDScanLightsCurrentRow( sb, scrPos, scanLightColor.Value, scanLightPercent );
 			}
 
 			//
@@ -135,7 +137,7 @@ namespace PKEMeter.HUD {
 			if( lights != null ) {
 				this.DrawHUDMiscLights(
 					sb: sb,
-					pos: pos,
+					pos: scrPos,
 					c1: lights.Light1,
 					c2: lights.Light2,
 					c3: lights.Light3,
@@ -152,8 +154,8 @@ namespace PKEMeter.HUD {
 
 			sb.Draw(
 				texture: this.MeterWires,
-				position: pos,
-				color: plrColor * opacity
+				position: scrPos,
+				color: lightColor * opacity
 			);
 		}
 
