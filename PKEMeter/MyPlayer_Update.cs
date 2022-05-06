@@ -9,14 +9,28 @@ using PKEMeter.Items;
 namespace PKEMeter {
 	public partial class PKEMeterPlayer : ModPlayer {
 		public override void PreUpdate() {
-			if( this.player.whoAmI == Main.myPlayer ) {
-				this.UpdateLocal();
+			if( !this.player.dead && this.player.whoAmI == Main.myPlayer ) {
+				this.Update_Local();
 			}
 		}
 
-		private void UpdateLocal() {
+		public override void UpdateAutopause() {
+			if( !this.player.dead && this.player.whoAmI == Main.myPlayer ) {
+				this.Update_Local();
+			}
+		}
+
+
+		////////////////
+
+		private void Update_Local() {
+			int pkeType = ModContent.ItemType<PKEMeterItem>();
 			Item heldItem = this.player.HeldItem;
-			bool isHoldingPKE = heldItem?.active == true && heldItem.type == ModContent.ItemType<PKEMeterItem>();
+
+			bool isHoldingPKE = heldItem?.active == true && heldItem.type == pkeType;
+			isHoldingPKE |= Main.mouseItem?.active == true && Main.mouseItem.type == pkeType;
+
+			//
 
 			this.UpdateForPKE( isHoldingPKE );
 		}

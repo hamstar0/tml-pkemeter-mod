@@ -17,7 +17,7 @@ namespace PKEMeter {
 
 		internal ISet<string> AlreadyScanned = new HashSet<string>();
 
-
+		
 
 		////////////////
 

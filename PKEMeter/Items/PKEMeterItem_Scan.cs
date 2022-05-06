@@ -70,7 +70,7 @@ namespace PKEMeter.Items {
 				mymod.PKEScanLoop.Play();
 			}
 
-			Timers.SetTimer( "PKEScanSoundLoopCutoff", 2, false, () => {
+			Timers.SetTimer( "PKEScanSoundLoopCutoff", 2, true, () => {
 				mymod.PKEScanLoop.Stop();
 				return false;
 			} );
