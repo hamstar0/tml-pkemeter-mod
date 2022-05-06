@@ -29,6 +29,8 @@ namespace PKEMeter {
 
 		public SoundEffectInstance PKEScanAlert { get; private set; } = null;
 
+		public SoundEffectInstance PKEScanAlertNear { get; private set; } = null;
+
 		public SoundEffectInstance PKEScanLoop { get; private set; } = null;
 
 		public SoundEffectInstance PKEScanDone { get; private set; } = null;
@@ -51,14 +53,17 @@ namespace PKEMeter {
 		public override void PostSetupContent() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
 				SoundEffect alertSfx = this.GetSound( "Sounds/Custom/ScanAlert" );
+				SoundEffect alertNearSfx = this.GetSound( "Sounds/Custom/ScanAlertNear" );
 				SoundEffect scanSfx = this.GetSound( "Sounds/Custom/Scan" );
 				SoundEffect scanDoneSfx = this.GetSound( "Sounds/Custom/ScanDone" );
 
 				this.PKEScanAlert = alertSfx.CreateInstance();
+				this.PKEScanAlertNear = alertNearSfx.CreateInstance();
 				this.PKEScanLoop = scanSfx.CreateInstance();
 				this.PKEScanDone = scanDoneSfx.CreateInstance();
 
 				this.PKEScanAlert.Volume = 0.1f;
+				this.PKEScanAlertNear.Volume = 0.1f;
 				this.PKEScanLoop.Volume = 0.2f;
 				this.PKEScanLoop.IsLooped = true;
 				this.PKEScanDone.Volume = 0.2f;

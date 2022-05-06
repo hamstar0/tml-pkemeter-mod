@@ -7,7 +7,7 @@ using ModLibsCore.Services.Timers;
 
 namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
-		public static bool DisplayHUDMeter { get; internal set; } = false;
+		public static bool DisplayHUDMeter { get; internal set; } = true;
 
 		internal static Func<string> BlueTooltipGetter;
 		internal static Func<string> GreenLabelGetter;

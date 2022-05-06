@@ -21,8 +21,15 @@ namespace PKEMeter.HUD {
 			int meterType = ModContent.ItemType<PKEMeterItem>();
 
 			if( PKEMeterItem.DisplayHUDMeter ) {
-				return PlayerItemFinderLibraries.CountTotalOfEach( Main.LocalPlayer, new HashSet<int> { meterType }, false ) > 0;
+				return PlayerItemFinderLibraries
+					.CountTotalOfEach(
+						Main.LocalPlayer,
+						new HashSet<int> { meterType },
+						false
+					) > 0;
 			}
+
+			//
 
 			Item heldItem = Main.LocalPlayer.HeldItem;
 			heldItem = heldItem?.active == true ? heldItem : null;

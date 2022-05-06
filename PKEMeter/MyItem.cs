@@ -19,7 +19,7 @@ namespace PKEMeter {
 					float scale ) {
 			var myplayer = TmlLibraries.SafelyGetModPlayer<PKEMeterPlayer>( Main.LocalPlayer );
 
-			if( myplayer.HasInventoryPKE ) {
+			if( myplayer.HasPKESinceLastCheck ) {
 				var scanItems = PKEScannable.ScannableItems;
 
 				if( scanItems.ContainsKey(item.type) && scanItems[item.type].Count > 0 ) {

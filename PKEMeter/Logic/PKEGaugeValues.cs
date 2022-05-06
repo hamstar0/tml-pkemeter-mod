@@ -5,8 +5,18 @@ using ModLibsCore.Libraries.Debug;
 
 
 namespace PKEMeter.Logic {
-	public delegate PKEGaugeValues PKEGaugesGetter( Player player, Vector2 position );
+	public enum PKEGaugeType {
+		Blue = 1,
+		Green = 2,
+		Yellow = 4,
+		Red = 8
+	}
 
+
+
+	////////////////
+	
+	public delegate PKEGaugeValues PKEGaugesGetter( Player player, Vector2 position );
 
 
 
@@ -51,6 +61,48 @@ namespace PKEMeter.Logic {
 				+ this.GreenPercent.GetHashCode()
 				+ this.YellowPercent.GetHashCode()
 				+ this.RedPercent.GetHashCode();
+		}
+
+		////////////////
+
+		public PKEGaugeType GetSignificantGauge() {
+			if( this.BluePercent >= this.GreenPercent ) {
+				if( this.BluePercent >= this.YellowPercent ) {
+					if( this.BluePercent >= this.RedPercent ) {
+						return PKEGaugeType.Blue;
+					}
+				} else {
+					if( this.YellowPercent >= this.RedPercent ) {
+						return PKEGaugeType.Yellow;
+					}
+				}
+			} else {
+				if( this.GreenPercent >= this.YellowPercent ) {
+					if( this.GreenPercent >= this.RedPercent ) {
+						return PKEGaugeType.Green;
+					}
+				} else {
+					if( this.YellowPercent >= this.RedPercent ) {
+						return PKEGaugeType.Yellow;
+					}
+				}
+			}
+			return PKEGaugeType.Red;
+		}
+
+		public float GetGaugeValue( PKEGaugeType gauge ) {
+			switch( gauge ) {
+			case PKEGaugeType.Blue:
+				return this.BluePercent;
+			case PKEGaugeType.Green:
+				return this.GreenPercent;
+			case PKEGaugeType.Yellow:
+				return this.YellowPercent;
+			case PKEGaugeType.Red:
+				return this.RedPercent;
+			default:
+				throw new NotImplementedException( "Unspecified gauge type." );
+			}
 		}
 	}
 }

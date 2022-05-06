@@ -38,7 +38,7 @@ namespace PKEMeter {
 
 		private bool DrawMousePKE_If( SpriteBatch sb ) {
 			var myplayer = Main.LocalPlayer.GetModPlayer<PKEMeterPlayer>();
-			if( !myplayer.HasInventoryPKE ) {
+			if( !myplayer.HasPKESinceLastCheck ) {
 				return false;
 			}
 

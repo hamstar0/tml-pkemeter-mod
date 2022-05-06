@@ -42,6 +42,9 @@ namespace PKEMeter.Logic {
 		}
 
 
+
+		////////////////
+
 		private void InitializeDefaultGauge() {
 			float b = 0, g = 0, y = 0, r = 0;
 			int proxCheckTimer = 0;
