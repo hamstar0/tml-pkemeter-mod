@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using ModLibsCore.Services.Timers;
 using HUDElementsLib;
 
 
@@ -10,28 +11,38 @@ namespace PKEMeter.HUD {
 		private int ScanLightsRow = 0;
 		private int ScanLightsRowTimer = 0;
 
+		private int StartTimerTicks = 0;
+
 
 
 		////////////////
 
-		private void DrawHUDScanLightsCurrentRow( SpriteBatch sb, Vector2 pos, Color color, float intensityPercent ) {
-			float invPercent = 1f - intensityPercent;
-			int tickRate = 5 + (int)(invPercent * 10f);
+		private void DrawHUDScanLights_If( SpriteBatch sb, Vector2 pos, Color color, float intensityPercent ) {
+			// Grace period before 
+			if( this.StartTimerTicks < 60 ) {
+				this.StartTimerTicks++;
+
+				return;
+			}
 
 			//
 
-			if( this.ScanLightsRowTimer++ > tickRate ) {
-				this.ScanLightsRowTimer = 0;
+			Timers.SetTimer( "PKE Scan Lights Off", 60, true, () => {
+				this.StartTimerTicks = 0;
+				return false;
+			} );
 
-				this.ScanLightsRow = (this.ScanLightsRow + 1) >= 3
-					? 0
-					: this.ScanLightsRow + 1;
-			}
+			//
+
+			this.UpdateHUDScanLightCurrentRow( intensityPercent );
 
 			//
 
 			this.DrawHUDScanLightsRow( sb, pos, this.ScanLightsRow, color );
 		}
+
+
+		////////////////
 
 		private void DrawHUDScanLightsRow( SpriteBatch sb, Vector2 pos, int row, Color color ) {
 			int posX = (int)pos.X;
@@ -71,6 +82,24 @@ namespace PKEMeter.HUD {
 				destinationRectangle: new Rectangle(rGlowX, glowY, 8, 10),
 				color: glowColor
 			);
+		}
+
+
+		////////////////
+
+		private void UpdateHUDScanLightCurrentRow( float intensityPercent ) {
+			float invPercent = 1f - intensityPercent;
+			int tickRate = 4 + (int)( invPercent * 16f );
+
+			//
+
+			if( this.ScanLightsRowTimer++ > tickRate ) {
+				this.ScanLightsRowTimer = 0;
+
+				this.ScanLightsRow = ( this.ScanLightsRow + 1 ) >= 3
+					? 0
+					: this.ScanLightsRow + 1;
+			}
 		}
 	}
 }

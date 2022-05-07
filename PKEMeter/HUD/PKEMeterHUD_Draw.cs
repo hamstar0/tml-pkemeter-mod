@@ -94,10 +94,10 @@ namespace PKEMeter.HUD {
 				sb,
 				scrPos,
 				opacity,
-				gauge.BluePercent,
-				gauge.GreenPercent,
-				gauge.YellowPercent,
-				gauge.RedPercent
+				gauge.BlueSeenPercent,
+				gauge.GreenSeenPercent,
+				gauge.YellowSeenPercent,
+				gauge.RedSeenPercent
 			);
 
 			//
@@ -118,10 +118,10 @@ namespace PKEMeter.HUD {
 			this.DrawHUDGaugeLights(
 				sb: sb,
 				pos: scrPos,
-				bLit: gauge.BluePercent > 0.99f,
-				gLit: gauge.GreenPercent > 0.99f,
-				yLit: gauge.YellowPercent > 0.99f,
-				rLit: gauge.RedPercent > 0.99f
+				bLit: gauge.BlueSeenPercent > 0.99f,
+				gLit: gauge.GreenSeenPercent > 0.99f,
+				yLit: gauge.YellowSeenPercent > 0.99f,
+				rLit: gauge.RedSeenPercent > 0.99f
 			);
 
 			//
@@ -129,7 +129,7 @@ namespace PKEMeter.HUD {
 			Color? scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
 
 			if( scanLightColor.HasValue ) {
-				this.DrawHUDScanLightsCurrentRow( sb, scrPos, scanLightColor.Value, scanLightPercent );
+				this.DrawHUDScanLights_If( sb, scrPos, scanLightColor.Value, scanLightPercent );
 			}
 
 			//

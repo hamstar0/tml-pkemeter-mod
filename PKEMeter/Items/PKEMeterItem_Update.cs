@@ -80,7 +80,7 @@ namespace PKEMeter.Items {
 			PKEGaugeValues gaugesValues = gaugesGetter.Invoke( player, player.MountedCenter );
 
 			PKEGaugeType significantGauge = gaugesValues.GetSignificantGauge();
-			float gaugeValue = gaugesValues.GetGaugeValue( significantGauge );
+			float gaugeValue = gaugesValues.GetGaugeValue( significantGauge, true );
 
 			// Alert to readings nearby (any)
 			if( gaugeValue > minGaugeAlertPercent ) {
@@ -96,7 +96,7 @@ namespace PKEMeter.Items {
 				this._CurrentSignificantGauge = 0;
 			}
 
-			// Display lights corresponding to nearby readings
+			// Display scanner lights corresponding to nearby readings
 			if( this._CurrentSignificantGauge != 0 ) {
 				float scanAlertPercent = gaugeValue - minGaugeAlertPercent;
 				scanAlertPercent /= (1f - minGaugeAlertPercent);

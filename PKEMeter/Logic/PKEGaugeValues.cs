@@ -42,66 +42,87 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public float BluePercent { get; set; }
-		public float GreenPercent { get; set; }
-		public float YellowPercent { get; set; }
-		public float RedPercent { get; set; }
+		public float BlueRealPercent { get; set; }
+		public float GreenRealPercent { get; set; }
+		public float YellowRealPercent { get; set; }
+		public float RedRealPercent { get; set; }
+
+		public float BlueSeenPercent { get; set; }
+		public float GreenSeenPercent { get; set; }
+		public float YellowSeenPercent { get; set; }
+		public float RedSeenPercent { get; set; }
 
 
 
 		////////////////
 		
 		public PKEGaugeValues( float b, float g, float y, float r ) {
-			this.BluePercent = b;
-			this.GreenPercent = g;
-			this.YellowPercent = y;
-			this.RedPercent = r;
+			this.BlueRealPercent = b;
+			this.GreenRealPercent = g;
+			this.YellowRealPercent = y;
+			this.RedRealPercent = r;
+			this.BlueSeenPercent = b;
+			this.GreenSeenPercent = g;
+			this.YellowSeenPercent = y;
+			this.RedSeenPercent = r;
 		}
 
 		public PKEGaugeValues( PKEGaugeValues msg ) {
-			this.BluePercent = msg.BluePercent;
-			this.GreenPercent = msg.GreenPercent;
-			this.YellowPercent = msg.YellowPercent;
-			this.RedPercent = msg.RedPercent;
+			this.BlueRealPercent = msg.BlueRealPercent;
+			this.GreenRealPercent = msg.GreenRealPercent;
+			this.YellowRealPercent = msg.YellowRealPercent;
+			this.RedRealPercent = msg.RedRealPercent;
+			this.BlueSeenPercent = msg.BlueSeenPercent;
+			this.GreenSeenPercent = msg.GreenSeenPercent;
+			this.YellowSeenPercent = msg.YellowSeenPercent;
+			this.RedSeenPercent = msg.RedSeenPercent;
 		}
 
 		////
 
 		public override bool Equals( object obj ) {
 			var myobj = obj as PKEGaugeValues;
-			return myobj?.BluePercent == this.BluePercent
-				&& myobj.GreenPercent == this.GreenPercent
-				&& myobj.YellowPercent == this.YellowPercent
-				&& myobj.RedPercent == this.RedPercent;
+			return myobj?.BlueRealPercent == this.BlueRealPercent
+				&& myobj.GreenRealPercent == this.GreenRealPercent
+				&& myobj.YellowRealPercent == this.YellowRealPercent
+				&& myobj.RedRealPercent == this.RedRealPercent
+				&& myobj.BlueSeenPercent == this.BlueSeenPercent
+				&& myobj.GreenSeenPercent == this.GreenSeenPercent
+				&& myobj.YellowSeenPercent == this.YellowSeenPercent
+				&& myobj.RedSeenPercent == this.RedSeenPercent;
 		}
 
 		public override int GetHashCode() {
-			return this.BluePercent.GetHashCode()
-				+ this.GreenPercent.GetHashCode()
-				+ this.YellowPercent.GetHashCode()
-				+ this.RedPercent.GetHashCode();
+			return this.BlueRealPercent.GetHashCode()
+				+ this.GreenRealPercent.GetHashCode()
+				+ this.YellowRealPercent.GetHashCode()
+				+ this.RedRealPercent.GetHashCode()
+				+ this.BlueSeenPercent.GetHashCode()
+				+ this.GreenSeenPercent.GetHashCode()
+				+ this.YellowSeenPercent.GetHashCode()
+				+ this.RedSeenPercent.GetHashCode();
 		}
 
 		////////////////
 
 		public PKEGaugeType GetSignificantGauge() {
-			if( this.BluePercent >= this.GreenPercent ) {
-				if( this.BluePercent >= this.YellowPercent ) {
-					if( this.BluePercent >= this.RedPercent ) {
+			if( this.BlueRealPercent >= this.GreenRealPercent ) {
+				if( this.BlueRealPercent >= this.YellowRealPercent ) {
+					if( this.BlueRealPercent >= this.RedRealPercent ) {
 						return PKEGaugeType.Blue;
 					}
 				} else {
-					if( this.YellowPercent >= this.RedPercent ) {
+					if( this.YellowRealPercent >= this.RedRealPercent ) {
 						return PKEGaugeType.Yellow;
 					}
 				}
 			} else {
-				if( this.GreenPercent >= this.YellowPercent ) {
-					if( this.GreenPercent >= this.RedPercent ) {
+				if( this.GreenRealPercent >= this.YellowRealPercent ) {
+					if( this.GreenRealPercent >= this.RedRealPercent ) {
 						return PKEGaugeType.Green;
 					}
 				} else {
-					if( this.YellowPercent >= this.RedPercent ) {
+					if( this.YellowRealPercent >= this.RedRealPercent ) {
 						return PKEGaugeType.Yellow;
 					}
 				}
@@ -109,16 +130,16 @@ namespace PKEMeter.Logic {
 			return PKEGaugeType.Red;
 		}
 
-		public float GetGaugeValue( PKEGaugeType gauge ) {
+		public float GetGaugeValue( PKEGaugeType gauge, bool actualValue ) {
 			switch( gauge ) {
 			case PKEGaugeType.Blue:
-				return this.BluePercent;
+				return actualValue ? this.BlueRealPercent : this.BlueSeenPercent;
 			case PKEGaugeType.Green:
-				return this.GreenPercent;
+				return actualValue ? this.GreenRealPercent : this.GreenSeenPercent;
 			case PKEGaugeType.Yellow:
-				return this.YellowPercent;
+				return actualValue ? this.YellowRealPercent : this.YellowSeenPercent;
 			case PKEGaugeType.Red:
-				return this.RedPercent;
+				return actualValue ? this.RedRealPercent : this.RedSeenPercent;
 			default:
 				throw new NotImplementedException( "Unspecified gauge type." );
 			}
