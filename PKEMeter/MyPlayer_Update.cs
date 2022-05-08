@@ -24,7 +24,7 @@ namespace PKEMeter {
 
 		private void Update_Local() {
 			Item pke = PKEMeterPlayer.GetPreferredPKE( this.player, true, out bool isPKEInventoryOnly );
-			var mypke = pke.modItem as PKEMeterItem;
+			var mypke = pke?.modItem as PKEMeterItem;
 
 			//
 
