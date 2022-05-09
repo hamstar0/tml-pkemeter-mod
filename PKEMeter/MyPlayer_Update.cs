@@ -1,5 +1,6 @@
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using ModLibsCore.Libraries.Debug;
 using PKEMeter.Items;
@@ -8,13 +9,13 @@ using PKEMeter.Items;
 namespace PKEMeter {
 	public partial class PKEMeterPlayer : ModPlayer {
 		public override void PreUpdate() {
-			if( !this.player.dead && this.player.whoAmI == Main.myPlayer ) {
+			if( !this.player.dead ) {
 				this.Update_Local();
 			}
 		}
 
 		public override void UpdateAutopause() {
-			if( !this.player.dead && this.player.whoAmI == Main.myPlayer ) {
+			if( !this.player.dead ) {
 				this.Update_Local();
 			}
 		}
@@ -23,6 +24,15 @@ namespace PKEMeter {
 		////////////////
 
 		private void Update_Local() {
+			if( Main.dedServ || Main.netMode == NetmodeID.Server ) {
+				return;
+			}
+			if( this.player.whoAmI != Main.myPlayer ) {
+				return;
+			}
+
+			//
+
 			Item pke = PKEMeterPlayer.GetPreferredPKE( this.player, true, out bool isPKEInventoryOnly );
 			var mypke = pke?.modItem as PKEMeterItem;
 

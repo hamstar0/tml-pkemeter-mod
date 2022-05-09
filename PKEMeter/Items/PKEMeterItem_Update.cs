@@ -32,6 +32,7 @@ namespace PKEMeter.Items {
 
 		public void UpdateForInventoryPKE( Player player, bool isHeld, bool canScan ) {
 			this.UpdateForScanState( isHeld, canScan );
+
 			this.UpdateForNearbyReadings( player );
 		}
 
