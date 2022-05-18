@@ -53,7 +53,7 @@ namespace PKEMeter {
 			}
 
 			if( this.HasPKESinceLastCheck ) {
-				mypke.UpdateForInventoryPKE( this.player, !isPKEInventoryOnly, canScan );
+				mypke.UpdateForInventoryPKE_Local( !isPKEInventoryOnly, canScan );
 			}
 		}
 	}

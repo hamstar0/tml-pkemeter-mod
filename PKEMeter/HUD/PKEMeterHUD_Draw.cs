@@ -107,8 +107,12 @@ namespace PKEMeter.HUD {
 
 			//
 
+			float significantGuageIntenisty = PKEMeterLogic.GetSignificantGaugeIntensityPercent_Local( out _ );
+
 			sb.Draw(
-				texture: this.MeterBody,
+				texture: significantGuageIntenisty >= 0f
+					? this.MeterBodyScan
+					: this.MeterBody,
 				position: scrPos,
 				color: lightColor * opacity
 			);

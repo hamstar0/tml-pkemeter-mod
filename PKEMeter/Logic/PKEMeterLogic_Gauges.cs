@@ -41,6 +41,21 @@ namespace PKEMeter.Logic {
 			return new PKEGaugeValues( b, g, y, r );
 		}
 
+		public static float GetSignificantGaugeIntensityPercent_Local( out PKEGaugeType significantGauge ) {
+			float minGaugeAlertPercent = 0.65f;
+
+			PKEGaugesGetter gaugesGetter = PKEMeterAPI.GetGauge();
+			PKEGaugeValues gaugesValues = gaugesGetter.Invoke( Main.LocalPlayer, Main.LocalPlayer.MountedCenter );
+
+			significantGauge = gaugesValues.GetSignificantGauge();
+
+			float gaugeValue = gaugesValues.GetGaugeValue( significantGauge, true );
+			float gaugeIntensity = gaugeValue - minGaugeAlertPercent;
+			gaugeIntensity /= 1f - minGaugeAlertPercent;
+
+			return gaugeIntensity;
+		}
+
 
 
 		////////////////

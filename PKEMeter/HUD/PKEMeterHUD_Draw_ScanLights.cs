@@ -50,11 +50,11 @@ namespace PKEMeter.HUD {
 			int rowOffY = row * 8;
 			int x = posX + 4;
 			int y = posY + 12 + rowOffY;
-			int wid = this.MeterScanLightsRow.Width;
-			int hei = this.MeterScanLightsRow.Height;
+			int wid = this.MeterScanLightsRow1.Width;
+			int hei = this.MeterScanLightsRow1.Height;
 
 			sb.Draw(
-				texture: this.MeterScanLightsRow,
+				texture: this.MeterScanLightsRow1,
 				destinationRectangle: new Rectangle(x, y, wid, hei),
 				//position: pos + new Vector2(4f, 12f),
 				color: Color.Lerp( color, Color.White, 0.6f )

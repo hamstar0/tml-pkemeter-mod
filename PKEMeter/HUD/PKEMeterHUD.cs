@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using ModLibsCore.Libraries.Debug;
+using ModLibsGeneral.Libraries.XNA;
 using HUDElementsLib;
 using PKEMeter.Logic;
 using PKEMeter.Items;
@@ -40,10 +41,12 @@ namespace PKEMeter.HUD {
 
 		private Texture2D MinFont;
 		private Texture2D MeterBody;
+		private Texture2D MeterBodyScan;
 		private Texture2D MeterDisplay;
 		private Texture2D MeterWires;
 		private Texture2D MeterLights;
-		private Texture2D MeterScanLightsRow;
+		private Texture2D MeterScanLightsRow1;
+		private Texture2D MeterScanLightsRow2;
 		private Texture2D MeterDisplayB;
 		private Texture2D MeterDisplayG;
 		private Texture2D MeterDisplayY;
@@ -57,19 +60,24 @@ namespace PKEMeter.HUD {
 
 
 		////////////////
-		
-		private PKEMeterHUD( string name, Vector2 positionOffset, Vector2 positionPercent, Vector2 dim ) 
+
+		private PKEMeterHUD( string name, Vector2 positionOffset, Vector2 positionPercent, Vector2 dim )
 					: base( name, positionOffset, positionPercent, dim, () => PKEMeterHUD.CanDrawPKE() ) {
 			this.MinFont = PKEMeterMod.Instance.GetTexture( "HUD/MinFont" );
 			this.MeterBody = PKEMeterMod.Instance.GetTexture( "HUD/MeterBody" );
+			this.MeterBodyScan = PKEMeterMod.Instance.GetTexture( "HUD/MeterBodyScan" );
 			this.MeterDisplay = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplay" );
 			this.MeterWires = PKEMeterMod.Instance.GetTexture( "HUD/MeterWires" );
 			this.MeterLights = PKEMeterMod.Instance.GetTexture( "HUD/MeterLights" );
-			this.MeterScanLightsRow = PKEMeterMod.Instance.GetTexture( "HUD/MeterScanLightsRow" );
+			this.MeterScanLightsRow1 = PKEMeterMod.Instance.GetTexture( "HUD/MeterScanLightsRow1" );
+			this.MeterScanLightsRow2 = PKEMeterMod.Instance.GetTexture( "HUD/MeterScanLightsRow2" );
 			this.MeterDisplayB = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayB" );
 			this.MeterDisplayG = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayG" );
 			this.MeterDisplayY = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayY" );
 			this.MeterDisplayR = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayR" );
+
+			XNALibraries.PremultiplyTexture( this.MeterScanLightsRow1 );
+			XNALibraries.PremultiplyTexture( this.MeterScanLightsRow2 );
 		}
 
 
@@ -93,6 +101,7 @@ namespace PKEMeter.HUD {
 			//
 
 			scanLightPercent = this.LastSignificantGaugeNearbyPercent;
+
 			return PKEGaugeValues.GetColor( this.LastSignificantGaugeNearby );
 		}
 	}

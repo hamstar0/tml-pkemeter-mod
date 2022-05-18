@@ -31,10 +31,10 @@ namespace PKEMeter.Items {
 
 		////////////////
 
-		public void UpdateForInventoryPKE( Player player, bool isHeld, bool canScan ) {
-			this.UpdateForScanState( isHeld, canScan );
+		public void UpdateForInventoryPKE_Local( bool isHeld, bool canScan ) {
+			this.UpdateForScanState_Local( isHeld, canScan );
 
-			this.UpdateForNearbyReadings( player );
+			this.UpdateForNearbyReadings_Local();
 		}
 
 
@@ -42,7 +42,7 @@ namespace PKEMeter.Items {
 
 		 private bool _CanScanSinceLastCheck = false;
 
-		public void UpdateForScanState( bool isHeld, bool canScan ) {
+		public void UpdateForScanState_Local( bool isHeld, bool canScan ) {
 			//if( isHeld ) {
 			//	return;
 			//}

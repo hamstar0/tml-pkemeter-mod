@@ -15,21 +15,17 @@ namespace PKEMeter.Items {
 
 		////////////////
 
-		private void UpdateForNearbyReadings( Player player ) {
-			float minGaugeAlertPercent = 0.65f;
-
+		private void UpdateForNearbyReadings_Local() {
 			var mymod = PKEMeterMod.Instance;
 
 			//
 
-			PKEGaugesGetter gaugesGetter = PKEMeterAPI.GetGauge();
-			PKEGaugeValues gaugesValues = gaugesGetter.Invoke( player, player.MountedCenter );
-
-			PKEGaugeType significantGauge = gaugesValues.GetSignificantGauge();
-			float gaugeValue = gaugesValues.GetGaugeValue( significantGauge, true );
+			float significantGuageIntenisty = PKEMeterLogic.GetSignificantGaugeIntensityPercent_Local(
+				out PKEGaugeType significantGauge
+			);
 
 			// Alert to readings nearby (any)
-			if( gaugeValue > minGaugeAlertPercent ) {
+			if( significantGuageIntenisty > 0f ) {
 				if( this._CurrentSignificantGauge == 0 ) {
 
 					if( mymod.PKEScanAlertNear.State != SoundState.Playing ) {
@@ -43,11 +39,8 @@ namespace PKEMeter.Items {
 			}
 
 			// Apply repeating alert sounds
-			if( gaugeValue > minGaugeAlertPercent ) {
-				float gaugeIntensity = gaugeValue - minGaugeAlertPercent;
-				gaugeIntensity /= 1f - minGaugeAlertPercent;
-
-				int fxTickRate = 15 + (int)((1f - gaugeIntensity) * 105f);
+			if( significantGuageIntenisty > 0f ) {
+				int fxTickRate = 15 + (int)((1f - significantGuageIntenisty) * 105f);
 
 				if( Timers.GetTimerTickDuration( "PKEPingLoop" ) <= 0 ) {
 					Timers.SetTimer( "PKEPingLoop", fxTickRate, false, () => {
@@ -60,10 +53,7 @@ namespace PKEMeter.Items {
 
 			// Display scanner lights corresponding to nearby readings
 			if( this._CurrentSignificantGauge != 0 ) {
-				float scanAlertPercent = gaugeValue - minGaugeAlertPercent;
-				scanAlertPercent /= (1f - minGaugeAlertPercent);
-
-				mymod.Meter.SetProximityLights_If( this._CurrentSignificantGauge, scanAlertPercent );
+				mymod.Meter.SetProximityLights_If( this._CurrentSignificantGauge, significantGuageIntenisty );
 			}
 		}
 	}
