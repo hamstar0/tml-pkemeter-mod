@@ -89,6 +89,9 @@ namespace PKEMeter.HUD {
 
 			PKEGaugeValues gauge = logic.GetGaugesDynamically( plr, plr.Center );
 			PKEMiscLightsValues lights = logic.GetMiscLightsDynamically( plr, plr.Center );
+			Color scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
+
+			//
 
 			this.DrawHUDGauges(
 				sb,
@@ -102,15 +105,8 @@ namespace PKEMeter.HUD {
 
 			//
 
-			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
-			this.DrawHUDText( sb, scrPos, msg.text, msg.color * opacity, msg.offset );
-
-			//
-
-			float significantGuageIntenisty = PKEMeterLogic.GetSignificantGaugeIntensityPercent_Local( out _ );
-
 			sb.Draw(
-				texture: significantGuageIntenisty >= 0f
+				texture: scanLightPercent > 0f
 					? this.MeterBodyScan
 					: this.MeterBody,
 				position: scrPos,
@@ -130,10 +126,8 @@ namespace PKEMeter.HUD {
 
 			//
 
-			Color? scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
-
-			if( scanLightColor.HasValue ) {
-				this.DrawHUDScanLights_If( sb, scrPos, scanLightColor.Value, scanLightPercent );
+			if( scanLightPercent > 0f ) {
+				this.DrawHUDScanLights_If( sb, scrPos, scanLightColor, scanLightPercent );
 			}
 
 			//
@@ -153,6 +147,12 @@ namespace PKEMeter.HUD {
 					c9: lights.Light9
 				);
 			}
+
+			//
+
+			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
+
+			this.DrawHUDText( sb, scrPos, msg.text, msg.color * opacity, msg.offset );
 
 			//
 

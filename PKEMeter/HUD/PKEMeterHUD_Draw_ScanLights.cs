@@ -11,65 +11,64 @@ namespace PKEMeter.HUD {
 		private int ScanLightsRow = 0;
 		private int ScanLightsRowTimer = 0;
 
-		private int StartTimerTicks = 0;
+		private int ReactivationBufferTimer = 0;
 
 
 
 		////////////////
 
 		private void DrawHUDScanLights_If( SpriteBatch sb, Vector2 pos, Color color, float intensityPercent ) {
-			// Grace period before 
-			if( this.StartTimerTicks < 60 ) {
-				this.StartTimerTicks++;
+			// Grace period before scan begins
+			if( this.ReactivationBufferTimer < 60 ) {
+				this.ReactivationBufferTimer++;
 
 				return;
 			}
 
-			//
-
-			Timers.SetTimer( "PKE Scan Lights Off", 60, true, () => {
-				this.StartTimerTicks = 0;
+			Timers.SetTimer( "PKE Scan Lights Off", 60, true, () => {	// <- Timer (re)starts from scratch
+				this.ReactivationBufferTimer = 0;	// If scan lights stop for a full second, reactivation time needed again
 				return false;
 			} );
 
 			//
 
-			this.UpdateHUDScanLightCurrentRow( intensityPercent );
+			if( intensityPercent > 0f ) {
+				this.UpdateHUDScanLightCurrentRow( intensityPercent );
 
-			//
+				//
 
-			this.DrawHUDScanLightsRow( sb, pos, this.ScanLightsRow, color );
+				this.DrawHUDScanLightsRow( sb, pos, this.ScanLightsRow, color );
+			}
 		}
 
 
 		////////////////
 
-		private void DrawHUDScanLightsRow( SpriteBatch sb, Vector2 pos, int row, Color color ) {
-			int posX = (int)pos.X;
-			int posY = (int)pos.Y;
+		private void DrawHUDScanLightsRow( SpriteBatch sb, Vector2 scannerPos, int row, Color color ) {
 			int rowOffY = row * 8;
-			int x = posX + 4;
-			int y = posY + 12 + rowOffY;
-			int wid = this.MeterScanLightsRow1.Width;
-			int hei = this.MeterScanLightsRow1.Height;
+
+			Vector2 rowPos = scannerPos + new Vector2(0, 12 + rowOffY);
+
+			//
 
 			sb.Draw(
-				texture: this.MeterScanLightsRow1,
-				destinationRectangle: new Rectangle(x, y, wid, hei),
-				//position: pos + new Vector2(4f, 12f),
+				texture: this.MeterScanLightsRow,
+				position: rowPos,
 				color: Color.Lerp( color, Color.White, 0.6f )
 			);
 
 			//
 
-			int lGlowX = posX + 2;
-			int rGlowX = posX + 64;
-			int glowY = posY + 10 + rowOffY;
+			int lGlowX = (int)rowPos.X - 2;
+			int rGlowX = (int)rowPos.X + this.MeterScanLightsRow.Width - 8;
+			int glowY = (int)rowPos.Y - 2;
 			
 			Color glowColor = color == Color.White
 				? new Color( 255, 240, 192 )
 				: color;
 			glowColor *= 0.15f;
+
+			//
 
 			sb.Draw(
 				texture: Main.magicPixel,

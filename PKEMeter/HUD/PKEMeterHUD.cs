@@ -45,8 +45,7 @@ namespace PKEMeter.HUD {
 		private Texture2D MeterDisplay;
 		private Texture2D MeterWires;
 		private Texture2D MeterLights;
-		private Texture2D MeterScanLightsRow1;
-		private Texture2D MeterScanLightsRow2;
+		private Texture2D MeterScanLightsRow;
 		private Texture2D MeterDisplayB;
 		private Texture2D MeterDisplayG;
 		private Texture2D MeterDisplayY;
@@ -69,27 +68,25 @@ namespace PKEMeter.HUD {
 			this.MeterDisplay = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplay" );
 			this.MeterWires = PKEMeterMod.Instance.GetTexture( "HUD/MeterWires" );
 			this.MeterLights = PKEMeterMod.Instance.GetTexture( "HUD/MeterLights" );
-			this.MeterScanLightsRow1 = PKEMeterMod.Instance.GetTexture( "HUD/MeterScanLightsRow1" );
-			this.MeterScanLightsRow2 = PKEMeterMod.Instance.GetTexture( "HUD/MeterScanLightsRow2" );
+			this.MeterScanLightsRow = PKEMeterMod.Instance.GetTexture( "HUD/MeterScanLightsRow" );
 			this.MeterDisplayB = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayB" );
 			this.MeterDisplayG = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayG" );
 			this.MeterDisplayY = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayY" );
 			this.MeterDisplayR = PKEMeterMod.Instance.GetTexture( "HUD/MeterDisplayR" );
 
-			XNALibraries.PremultiplyTexture( this.MeterScanLightsRow1 );
-			XNALibraries.PremultiplyTexture( this.MeterScanLightsRow2 );
+			XNALibraries.PremultiplyTexture( this.MeterScanLightsRow );
 		}
 
 
 		////////////////
 
-		public void SetProximityLights_If( PKEGaugeType gauge, float percent ) {
+		public void SetProximityLights( PKEGaugeType gauge, float percent ) {
 			this.LastSignificantGaugeNearby = gauge;
 			this.LastSignificantGaugeNearbyPercent = percent;
 		}
 
 
-		public Color? GetProximityLightColor_Local( out float scanLightPercent ) {
+		public Color GetProximityLightColor_Local( out float scanLightPercent ) {
 			bool canScan = PKEMeterItem.CanScanAt( Main.mouseX, Main.mouseY, out bool foundInInventory );
 
 			// Manual scannables always override custom "nearby readings" lights
@@ -102,7 +99,8 @@ namespace PKEMeter.HUD {
 
 			scanLightPercent = this.LastSignificantGaugeNearbyPercent;
 
-			return PKEGaugeValues.GetColor( this.LastSignificantGaugeNearby );
+			return PKEGaugeValues.GetColor( this.LastSignificantGaugeNearby )
+				?? Color.White;
 		}
 	}
 }

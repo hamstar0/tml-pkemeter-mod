@@ -71,7 +71,7 @@ namespace PKEMeter {
 				this.PKEScanLoop.Volume = 0.2f;
 				this.PKEScanLoop.IsLooped = true;
 				this.PKEScanDone.Volume = 0.2f;
-				this.PKEScanPing.Volume = 0.05f;
+				this.PKEScanPing.Volume = 0.015f;
 
 				//
 

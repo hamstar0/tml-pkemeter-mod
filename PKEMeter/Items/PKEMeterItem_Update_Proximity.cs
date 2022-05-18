@@ -52,9 +52,7 @@ namespace PKEMeter.Items {
 			}
 
 			// Display scanner lights corresponding to nearby readings
-			if( this._CurrentSignificantGauge != 0 ) {
-				mymod.Meter.SetProximityLights_If( this._CurrentSignificantGauge, significantGuageIntenisty );
-			}
+			mymod.Meter.SetProximityLights( this._CurrentSignificantGauge, significantGuageIntenisty );
 		}
 	}
 }
