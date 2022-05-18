@@ -35,6 +35,8 @@ namespace PKEMeter {
 
 		public SoundEffectInstance PKEScanDone { get; private set; } = null;
 
+		public SoundEffectInstance PKEScanPing { get; private set; } = null;
+
 
 
 		////////////////
@@ -56,17 +58,20 @@ namespace PKEMeter {
 				SoundEffect alertNearSfx = this.GetSound( "Sounds/Custom/ScanAlertNear" );
 				SoundEffect scanSfx = this.GetSound( "Sounds/Custom/Scan" );
 				SoundEffect scanDoneSfx = this.GetSound( "Sounds/Custom/ScanDone" );
+				SoundEffect scanPingSfx = this.GetSound( "Sounds/Custom/ScanPing" );
 
 				this.PKEScanAlert = alertSfx.CreateInstance();
 				this.PKEScanAlertNear = alertNearSfx.CreateInstance();
 				this.PKEScanLoop = scanSfx.CreateInstance();
 				this.PKEScanDone = scanDoneSfx.CreateInstance();
+				this.PKEScanPing = scanPingSfx.CreateInstance();
 
 				this.PKEScanAlert.Volume = 0.1f;
 				this.PKEScanAlertNear.Volume = 0.05f;
 				this.PKEScanLoop.Volume = 0.2f;
 				this.PKEScanLoop.IsLooped = true;
 				this.PKEScanDone.Volume = 0.2f;
+				this.PKEScanPing.Volume = 0.05f;
 
 				//
 

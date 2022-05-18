@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using ModLibsCore.Services.Timers;
 using PKEMeter.Logic;
 
 
@@ -42,25 +43,21 @@ namespace PKEMeter.Items {
 		 private bool _CanScanSinceLastCheck = false;
 
 		public void UpdateForScanState( bool isHeld, bool canScan ) {
-			if( isHeld ) {
-				return;
-			}
+			//if( isHeld ) {
+			//	return;
+			//}
 
 			//
 
-			if( canScan == this._CanScanSinceLastCheck ) {
-				return;
-			}
+			if( canScan != this._CanScanSinceLastCheck ) {
+				this._CanScanSinceLastCheck = canScan;
 
-			this._CanScanSinceLastCheck = canScan;
+				if( canScan ) {
+					var mymod = PKEMeterMod.Instance;
 
-			//
-
-			if( canScan ) {
-				var mymod = PKEMeterMod.Instance;
-
-				if( mymod.PKEScanAlert.State != SoundState.Playing ) {
-					mymod.PKEScanAlert.Play();
+					if( mymod.PKEScanAlert.State != SoundState.Playing ) {
+						mymod.PKEScanAlert.Play();
+					}
 				}
 			}
 		}
@@ -95,6 +92,22 @@ namespace PKEMeter.Items {
 				this._CurrentSignificantGauge = significantGauge;
 			} else {
 				this._CurrentSignificantGauge = 0;
+			}
+
+			// Apply repeating alert sounds
+			if( gaugeValue > minGaugeAlertPercent ) {
+				float gaugeIntensity = gaugeValue - minGaugeAlertPercent;
+				gaugeIntensity /= 1f - minGaugeAlertPercent;
+
+				int fxTickRate = 15 + (int)((1f - gaugeIntensity) * 105f);
+
+				if( Timers.GetTimerTickDuration( "PKEPingLoop" ) <= 0 ) {
+					Timers.SetTimer( "PKEPingLoop", fxTickRate, false, () => {
+						return false;
+					} );
+
+					mymod.PKEScanPing.Play();
+				}
 			}
 
 			// Display scanner lights corresponding to nearby readings
