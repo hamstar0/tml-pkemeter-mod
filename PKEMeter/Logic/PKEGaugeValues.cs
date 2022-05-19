@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using ModLibsCore.Libraries.Debug;
+using ModLibsCore.Classes.Errors;
 
 
 namespace PKEMeter.Logic {
@@ -52,6 +53,11 @@ namespace PKEMeter.Logic {
 		public float YellowSeenPercent { get; set; }
 		public float RedSeenPercent { get; set; }
 
+		public bool IsBlueInsignificant { get; set; } = true;
+		public bool IsGreenInsignificant { get; set; } = true;
+		public bool IsYellowInsignificant { get; set; } = true;
+		public bool IsRedInsignificant { get; set; } = true;
+
 
 
 		////////////////
@@ -76,6 +82,10 @@ namespace PKEMeter.Logic {
 			this.GreenSeenPercent = msg.GreenSeenPercent;
 			this.YellowSeenPercent = msg.YellowSeenPercent;
 			this.RedSeenPercent = msg.RedSeenPercent;
+			this.IsBlueInsignificant = msg.IsBlueInsignificant;
+			this.IsGreenInsignificant = msg.IsGreenInsignificant;
+			this.IsYellowInsignificant = msg.IsYellowInsignificant;
+			this.IsRedInsignificant = msg.IsRedInsignificant;
 		}
 
 		////
@@ -89,7 +99,11 @@ namespace PKEMeter.Logic {
 				&& myobj.BlueSeenPercent == this.BlueSeenPercent
 				&& myobj.GreenSeenPercent == this.GreenSeenPercent
 				&& myobj.YellowSeenPercent == this.YellowSeenPercent
-				&& myobj.RedSeenPercent == this.RedSeenPercent;
+				&& myobj.RedSeenPercent == this.RedSeenPercent
+				&& myobj.IsBlueInsignificant == this.IsBlueInsignificant
+				&& myobj.IsGreenInsignificant == this.IsGreenInsignificant
+				&& myobj.IsYellowInsignificant == this.IsYellowInsignificant
+				&& myobj.IsRedInsignificant == this.IsRedInsignificant;
 		}
 
 		public override int GetHashCode() {
@@ -100,29 +114,76 @@ namespace PKEMeter.Logic {
 				+ this.BlueSeenPercent.GetHashCode()
 				+ this.GreenSeenPercent.GetHashCode()
 				+ this.YellowSeenPercent.GetHashCode()
-				+ this.RedSeenPercent.GetHashCode();
+				+ this.RedSeenPercent.GetHashCode()
+				+ (this.IsBlueInsignificant ? 1 : 0)
+				+ (this.IsGreenInsignificant ? 2 : 0)
+				+ (this.IsYellowInsignificant ? 4 : 0)
+				+ (this.IsRedInsignificant ? 8 : 0);
 		}
+
+
+		////////////////
+		
+		public void SetGaugeSignificance( PKEGaugeType gaugeType, bool isSignificant ) {
+			switch( gaugeType ) {
+			case PKEGaugeType.Blue:
+				this.IsBlueInsignificant = !isSignificant;
+				break;
+			case PKEGaugeType.Green:
+				this.IsGreenInsignificant = !isSignificant;
+				break;
+			case PKEGaugeType.Yellow:
+				this.IsYellowInsignificant = !isSignificant;
+				break;
+			case PKEGaugeType.Red:
+				this.IsRedInsignificant = !isSignificant;
+				break;
+			default:
+				throw new ModLibsException( "Invalid gauge type" );
+			}
+		}
+		
+		public bool GetGaugeSignificance( PKEGaugeType gaugeType ) {
+			switch( gaugeType ) {
+			case PKEGaugeType.Blue:
+				return this.IsBlueInsignificant;
+			case PKEGaugeType.Green:
+				return this.IsGreenInsignificant;
+			case PKEGaugeType.Yellow:
+				return this.IsYellowInsignificant;
+			case PKEGaugeType.Red:
+				return this.IsRedInsignificant;
+			default:
+				throw new ModLibsException( "Invalid gauge type" );
+			}
+		}
+
 
 		////////////////
 
-		public PKEGaugeType GetSignificantGauge() {
-			if( this.BlueRealPercent >= this.GreenRealPercent ) {
-				if( this.BlueRealPercent >= this.YellowRealPercent ) {
-					if( this.BlueRealPercent >= this.RedRealPercent ) {
+		public PKEGaugeType GetSignificantGauge( bool checkIfInsignificant ) {
+			float b = (checkIfInsignificant && this.IsBlueInsignificant) ? 0f : this.BlueRealPercent;
+			float g = (checkIfInsignificant && this.IsGreenInsignificant) ? 0f : this.GreenRealPercent;
+			float y = (checkIfInsignificant && this.IsYellowInsignificant) ? 0f : this.YellowRealPercent;
+			float r = (checkIfInsignificant && this.IsRedInsignificant) ? 0f : this.RedRealPercent;
+
+			if( b >= g ) {
+				if( b >= y ) {
+					if( b >= r ) {
 						return PKEGaugeType.Blue;
 					}
 				} else {
-					if( this.YellowRealPercent >= this.RedRealPercent ) {
+					if( y >= r ) {
 						return PKEGaugeType.Yellow;
 					}
 				}
 			} else {
-				if( this.GreenRealPercent >= this.YellowRealPercent ) {
-					if( this.GreenRealPercent >= this.RedRealPercent ) {
+				if( g >= y ) {
+					if( g >= r ) {
 						return PKEGaugeType.Green;
 					}
 				} else {
-					if( this.YellowRealPercent >= this.RedRealPercent ) {
+					if( y >= r ) {
 						return PKEGaugeType.Yellow;
 					}
 				}

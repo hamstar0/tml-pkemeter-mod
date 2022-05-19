@@ -49,7 +49,7 @@ namespace PKEMeter.Logic {
 			PKEGaugesGetter gaugesGetter = PKEMeterAPI.GetGauge();
 			PKEGaugeValues gaugesValues = gaugesGetter.Invoke( Main.LocalPlayer, Main.LocalPlayer.MountedCenter );
 
-			significantGauge = gaugesValues.GetSignificantGauge();
+			significantGauge = gaugesValues.GetSignificantGauge( true );
 
 			float gaugeValue = gaugesValues.GetGaugeValue( significantGauge, true );
 			float gaugeIntensity = gaugeValue - minGaugeAlertPercent;
