@@ -43,102 +43,55 @@ namespace PKEMeter.HUD {
 
 
 		////////////////
+		
+		protected override void PostDrawSelf( bool isSelfDrawn, SpriteBatch sb ) {
+			Player plr = Main.LocalPlayer;
+			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
 
-		private void DrawHUDComponents(
-					SpriteBatch sb,
-					Vector2 scrPos,
-					Player plr,
-					Color lightColor,
-					PKEGaugeValues gauges,
-					PKEMiscLightsValues lights,
-					Color scanLightColor,
-					float scanLightPercent,
-					PKETextMessage displayText,
-					int displayTextOffset,
-					out (Rectangle b, Rectangle g, Rectangle y, Rectangle r) gaugeRects,
-					out Rectangle marqueeRect ) {
-			float opacity = 1f;//Main.playerInventory ? 0.5f : 1f;
-
-			sb.Draw(
-				texture: this.MeterDisplay,
-				position: scrPos,
-				color: Color.White * opacity
-			);
-
-			//
-
-			gaugeRects = this.DrawHUDGauges(
-				sb: sb,
-				pos: scrPos,
-				opacity: opacity,
-				b: gauges.BlueSeenPercent,
-				g: gauges.GreenSeenPercent,
-				y: gauges.YellowSeenPercent,
-				r: gauges.RedSeenPercent
-			);
-
-			//
-
-			sb.Draw(
-				texture: scanLightPercent > 0f
-					? this.MeterBodyScan
-					: this.MeterBody,
-				position: scrPos,
-				color: lightColor * opacity
-			);
-
-			//
-
-			this.DrawHUDGaugeLights(
-				sb: sb,
-				pos: scrPos,
-				bLit: gauges.BlueSeenPercent > 0.99f,
-				gLit: gauges.GreenSeenPercent > 0.99f,
-				yLit: gauges.YellowSeenPercent > 0.99f,
-				rLit: gauges.RedSeenPercent > 0.99f
-			);
-
-			//
-
-			if( scanLightPercent > 0f ) {
-				this.DrawHUDScanLights_If( sb, scrPos, scanLightColor, scanLightPercent );
+			Color plrColor = myplayer.MyColor;
+			if( plrColor.A < 255 ) {
+				plrColor = this.LastVisiblePlayerColor;
+			} else {
+				this.LastVisiblePlayerColor = plrColor;
 			}
+
+			Vector2 widgetPos = this.GetHUDComputedPosition( true );
+
+			//
+
+			var logic = PKEMeterLogic.Instance;
+
+			PKEGaugeValues gauges = logic.GetGaugesDynamically( plr, plr.Center );
+			PKEMiscLightsValues lights = logic.GetMiscLightsDynamically( plr, plr.Center );
+			Color scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
+			(PKETextMessage displayText, int displayTextOffset) = logic.GetText( plr, plr.Center );
 
 			//
 			
-			if( lights != null ) {
-				this.DrawHUDMiscLights(
-					sb: sb,
-					pos: scrPos,
-					c1: lights.Light1,
-					c2: lights.Light2,
-					c3: lights.Light3,
-					c4: lights.Light4,
-					c5: lights.Light5,
-					c6: lights.Light6,
-					c7: lights.Light7,
-					c8: lights.Light8,
-					c9: lights.Light9
-				);
+			this.DrawHUDComponents(
+				sb: sb,
+				scrPos: widgetPos,
+				plr: plr,
+				lightColor: plrColor,
+				gauges: gauges,
+				lights: lights,
+				scanLightColor: scanLightColor,
+				scanLightPercent: scanLightPercent,
+				displayText: displayText,
+				displayTextOffset: displayTextOffset,
+				out (Rectangle, Rectangle, Rectangle, Rectangle) gaugeRects,
+				out Rectangle marqueeRect
+			);
+
+			//
+
+			var meterArea = new Rectangle( (int)widgetPos.X, (int)widgetPos.Y, this.MeterBody.Width, this.MeterBody.Height );
+
+			if( meterArea.Contains(Main.MouseScreen.ToPoint()) ) {
+				PKEGaugeValues values = PKEMeterAPI.GetGauge().Invoke( plr, plr.MountedCenter );
+
+				this.DrawHUDHoverTextAt_If( sb, widgetPos, plr, gaugeRects, marqueeRect, values );
 			}
-
-			//
-
-			marqueeRect = this.DrawHUDText_If(
-				sb,
-				scrPos,
-				displayText.Message,
-				displayText.Color * opacity,
-				displayTextOffset
-			);
-
-			//
-
-			sb.Draw(
-				texture: this.MeterWires,
-				position: scrPos,
-				color: lightColor * opacity
-			);
 		}
 	}
 }

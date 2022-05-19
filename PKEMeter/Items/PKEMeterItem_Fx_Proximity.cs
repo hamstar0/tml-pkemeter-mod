@@ -9,30 +9,6 @@ using PKEMeter.Logic;
 
 namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
-		private PKEGaugeType _CurrentSignificantGauge = 0;
-
-
-
-		////////////////
-
-		private void UpdateForNearbyReadings_Local() {
-			var mymod = PKEMeterMod.Instance;
-
-			float significantGuageIntenisty = PKEMeterLogic.GetSignificantGaugeIntensityPercent_Local(
-				out PKEGaugeType significantGauge
-			);
-
-			//
-
-			this.ApplyProxmityFx_If( significantGauge, significantGuageIntenisty );
-
-			// Display scanner lights corresponding to nearby readings
-			mymod.MeterWidget.SetProximityLights( this._CurrentSignificantGauge, significantGuageIntenisty );
-		}
-
-
-		////////////////
-
 		private void ApplyProxmityFx_If( PKEGaugeType significantGauge, float signalPercent ) {
 			var mymod = PKEMeterMod.Instance;
 

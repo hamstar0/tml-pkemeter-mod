@@ -102,58 +102,5 @@ namespace PKEMeter.HUD {
 			return PKEGaugeValues.GetColor( this.LastSignificantGaugeNearby )
 				?? Color.White;
 		}
-
-
-		////////////////
-
-		protected override void PostDrawSelf( bool isSelfDrawn, SpriteBatch sb ) {
-			Player plr = Main.LocalPlayer;
-			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
-
-			Color plrColor = myplayer.MyColor;
-			if( plrColor.A < 255 ) {
-				plrColor = this.LastVisiblePlayerColor;
-			} else {
-				this.LastVisiblePlayerColor = plrColor;
-			}
-
-			Vector2 widgetPos = this.GetHUDComputedPosition( true );
-
-			//
-
-			var logic = PKEMeterLogic.Instance;
-
-			PKEGaugeValues gauges = logic.GetGaugesDynamically( plr, plr.Center );
-			PKEMiscLightsValues lights = logic.GetMiscLightsDynamically( plr, plr.Center );
-			Color scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
-			(PKETextMessage displayText, int displayTextOffset) = logic.GetText( plr, plr.Center );
-
-			//
-			
-			this.DrawHUDComponents(
-				sb: sb,
-				scrPos: widgetPos,
-				plr: plr,
-				lightColor: plrColor,
-				gauges: gauges,
-				lights: lights,
-				scanLightColor: scanLightColor,
-				scanLightPercent: scanLightPercent,
-				displayText: displayText,
-				displayTextOffset: displayTextOffset,
-				out (Rectangle, Rectangle, Rectangle, Rectangle) gaugeRects,
-				out Rectangle marqueeRect
-			);
-
-			//
-
-			var meterArea = new Rectangle( (int)widgetPos.X, (int)widgetPos.Y, this.MeterBody.Width, this.MeterBody.Height );
-
-			if( meterArea.Contains(Main.MouseScreen.ToPoint()) ) {
-				PKEGaugeValues values = PKEMeterAPI.GetGauge().Invoke( plr, plr.MountedCenter );
-
-				this.DrawHUDHoverTextAt_If( sb, widgetPos, plr, gaugeRects, marqueeRect, values );
-			}
-		}
 	}
 }
