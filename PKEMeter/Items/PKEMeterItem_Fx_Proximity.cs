@@ -30,7 +30,7 @@ namespace PKEMeter.Items {
 
 			// Apply repeating alert sounds
 			if( signalPercent > 0f ) {
-				// Cap intensity to make ambiguate results
+				// Cap intensity to ambiguate results
 				float fxIntensityPecent = signalPercent;
 				if( fxIntensityPecent > 0.7f ) {
 					fxIntensityPecent = 0.7f;
@@ -38,7 +38,7 @@ namespace PKEMeter.Items {
 
 				int fxTickRate = 15 + (int)((1f - fxIntensityPecent) * 105f);
 
-				if( Timers.GetTimerTickDuration( "PKEPingLoop" ) <= 0 ) {
+				if( Timers.GetTimerTickDuration("PKEPingLoop") <= 0 ) {
 					Timers.SetTimer( "PKEPingLoop", fxTickRate, false, () => {
 						return false;
 					} );

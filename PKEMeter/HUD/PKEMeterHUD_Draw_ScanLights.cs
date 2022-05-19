@@ -17,7 +17,7 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		private void DrawHUDScanLights_If( SpriteBatch sb, Vector2 pos, Color color, float intensityPercent ) {
+		private void DrawHUDScanLights_If( SpriteBatch sb, Vector2 pos, Color color, float signalPercent ) {
 			// Grace period before scan begins
 			if( this.ReactivationBufferTimer < 60 ) {
 				this.ReactivationBufferTimer++;
@@ -32,13 +32,17 @@ namespace PKEMeter.HUD {
 
 			//
 
-			if( intensityPercent > 0f ) {
-				// Cap intensity to make ambiguate results
-				if( intensityPercent > 0.8f ) {
-					intensityPercent = 0.8f;
+			if( signalPercent > 0f ) {
+				float fxIntensityPecent = signalPercent;
+
+				// Cap intensity to ambiguate results
+				if( fxIntensityPecent > 0.7f ) {
+					fxIntensityPecent = 0.7f;
 				}
 
-				this.UpdateHUDScanLightCurrentRow( intensityPercent );
+				//
+
+				this.UpdateHUDScanLightCurrentRow( fxIntensityPecent );
 
 				//
 
