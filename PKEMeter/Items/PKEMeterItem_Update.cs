@@ -21,15 +21,15 @@ namespace PKEMeter.Items {
 			}
 
 			if( scannableInInventory ) {
-				PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
+				PKEMeterItem.RunScanAt_If( Main.mouseX, Main.mouseY );
 			} else {
 				var config = PKEMeterConfig.Instance;
-				int maxDist = config.Get<int>( nameof( config.PKEScanRange ) );
+				int maxDist = config.Get<int>( nameof(config.PKEScanRange) );
 				int maxDistSqr = maxDist * maxDist;
 				float distSqr = (Main.MouseWorld - Main.LocalPlayer.MountedCenter).LengthSquared();
 
 				if( distSqr < maxDistSqr ) {
-					PKEMeterItem.RunScanAt( Main.mouseX, Main.mouseY );
+					PKEMeterItem.RunScanAt_If( Main.mouseX, Main.mouseY );
 				}
 			}
 		}
@@ -49,21 +49,22 @@ namespace PKEMeter.Items {
 		 private bool _CanScanSinceLastCheck = false;
 
 		public void UpdateForScanState_Local( bool isHeld, bool canScan ) {
-			//if( isHeld ) {
-			//	return;
-			//}
+			if( isHeld ) {
+				return;
+			}
+
+			if( canScan == this._CanScanSinceLastCheck ) {
+				return;
+			}
+			this._CanScanSinceLastCheck = canScan;
 
 			//
 
-			if( canScan != this._CanScanSinceLastCheck ) {
-				this._CanScanSinceLastCheck = canScan;
+			if( canScan ) {
+				var mymod = PKEMeterMod.Instance;
 
-				if( canScan ) {
-					var mymod = PKEMeterMod.Instance;
-
-					if( mymod.PKEScanAlert.State != SoundState.Playing ) {
-						mymod.PKEScanAlert.Play();
-					}
+				if( mymod.PKEScanAlert.State != SoundState.Playing ) {
+					mymod.PKEScanAlert.Play();
 				}
 			}
 		}

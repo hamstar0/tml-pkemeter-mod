@@ -44,7 +44,7 @@ namespace PKEMeter.Items {
 
 		////////////////
 
-		public static void RunScanAt( int screenX, int screenY ) {
+		public static void RunScanAt_If( int screenX, int screenY ) {
 			if( PKEScannable.Scannables.Count == 0 ) {
 				return;
 			}
