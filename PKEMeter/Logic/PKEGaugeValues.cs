@@ -21,7 +21,7 @@ namespace PKEMeter.Logic {
 
 
 	////////////////
-
+	
 	public class PKEGaugeValues {
 		public static Color? GetColor( PKEGaugeType gauge ) {
 			switch( gauge ) {

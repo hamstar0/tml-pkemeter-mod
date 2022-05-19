@@ -12,7 +12,14 @@ namespace PKEMeter.HUD {
 
 
 
-		public void DrawHUDGauges( SpriteBatch sb, Vector2 pos, float opacity, float b, float g, float y, float r ) {
+		public (Rectangle bRect, Rectangle gRect, Rectangle yRect, Rectangle rRect) DrawHUDGauges(
+					SpriteBatch sb,
+					Vector2 pos,
+					float opacity,
+					float b,
+					float g,
+					float y,
+					float r ) {
 			pos.X += PKEMeterHUD.GaugesOffsetX;
 			pos.Y += PKEMeterHUD.GaugesOffsetY;
 
@@ -32,22 +39,29 @@ namespace PKEMeter.HUD {
 			float yTicks = 7f * y;
 			float rTicks = 7f * r;
 
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayB, opacity, bDestRect, bTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, opacity, gDestRect, gTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, opacity, yDestRect, yTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, opacity, rDestRect, rTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayB, opacity, ref bDestRect, bTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, opacity, ref gDestRect, gTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, opacity, ref yDestRect, yTicks );
+			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, opacity, ref rDestRect, rTicks );
+
+			return (bDestRect, gDestRect, yDestRect, rDestRect);
 		}
 
 
 		////
 
-		private void DrawHUDGaugeTicks( SpriteBatch sb, Texture2D tickTex, float opacity, Rectangle rect, float ticks ) {
+		private void DrawHUDGaugeTicks(
+					SpriteBatch sb,
+					Texture2D tickTex,
+					float opacity,
+					ref Rectangle bottomRect,
+					float ticks ) {
 			for( int i=0; i<(int)ticks; i++ ) {
-				rect.Y -= 6;
+				bottomRect.Y -= 6;
 
 				sb.Draw(
 					texture: tickTex,
-					destinationRectangle: rect,
+					destinationRectangle: bottomRect,
 					color: Color.White * opacity
 				);
 			}
@@ -56,11 +70,11 @@ namespace PKEMeter.HUD {
 
 			// Set the fractional amount to flicker according to its significance
 			if( Main.rand.NextFloat() < tickFrac ) {
-				rect.Y -= 6;
+				bottomRect.Y -= 6;
 
 				sb.Draw(
 					texture: tickTex,
-					destinationRectangle: rect,
+					destinationRectangle: bottomRect,
 					color: Color.White * opacity
 				);
 			}

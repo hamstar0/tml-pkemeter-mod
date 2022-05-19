@@ -12,17 +12,17 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public PKEGaugesGetter CurrentGauge { get; internal set; }
+		public PKEGaugesGetter CurrentGaugesGetter { get; internal set; }
 
-		public PKEMiscLightsGetter CurrentMiscLights { get; internal set; }
+		public PKEMiscLightsGetter CurrentMiscLightsGetter { get; internal set; }
 
-		public PKEGaugeType CurrentMessageId { get; internal set; } = PKEGaugeType.Red;
+		public PKEGaugeType CurrentMessageGauge { get; internal set; } = PKEGaugeType.Red;
 
 		public int CurrentTextTickDuration { get; private set; } = 0;
 
 		////
 
-		public IDictionary<PKEGaugeType, PKETextGetter> TextSources { get; internal set; }
+		public IDictionary<PKEGaugeType, PKETextGetter> GaugeTextsGetter { get; internal set; }
 			= new Dictionary<PKEGaugeType, PKETextGetter>();
 
 

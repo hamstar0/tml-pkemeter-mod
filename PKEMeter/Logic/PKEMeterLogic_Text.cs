@@ -110,8 +110,8 @@ namespace PKEMeter.Logic {
 		////////////////
 
 		private void InitializeDefaultText() {
-			if( this.TextSources.Count == 0 ) {
-				this.TextSources[ PKEGaugeType.Red ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay(
+			if( this.GaugeTextsGetter.Count == 0 ) {
+				this.GaugeTextsGetter[ PKEGaugeType.Red ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay(
 					out PKEMeterItem.RedLabelGetter
 				);
 			}
@@ -127,8 +127,8 @@ namespace PKEMeter.Logic {
 
 		////////////////
 
-		public (string text, Color color, int offset) GetText( Player player, Vector2 position ) {
-			IDictionary<PKEGaugeType, PKETextMessage> msgs = this.TextSources.ToDictionary(
+		public (PKETextMessage msg, int offset) GetText( Player player, Vector2 position ) {
+			IDictionary<PKEGaugeType, PKETextMessage> msgs = this.GaugeTextsGetter.ToDictionary(
 				kv => kv.Key,
 				kv => kv.Value.Invoke( player, position, this.GaugeSnapshot )
 			);
@@ -142,13 +142,13 @@ namespace PKEMeter.Logic {
 				);
 			} else {
 				priorityMsg = new KeyValuePair<PKEGaugeType, PKETextMessage>(
-					this.CurrentMessageId,
+					this.CurrentMessageGauge,
 					PKETextMessage.EmptyMessage
 				);
 			}
 
 			PKETextMessage existingMsg;
-			if( !msgs.TryGetValue(this.CurrentMessageId, out existingMsg) ) {
+			if( !msgs.TryGetValue(this.CurrentMessageGauge, out existingMsg) ) {
 				existingMsg = PKETextMessage.EmptyMessage;
 			}
 
@@ -156,10 +156,10 @@ namespace PKEMeter.Logic {
 
 			//
 
-			if( priorityMsg.Key != this.CurrentMessageId ) {
+			if( priorityMsg.Key != this.CurrentMessageGauge ) {
 				if( priorityMsg.Value.Priority > existingMsg.Priority || this.CurrentTextTickDuration <= 0 ) {
 					this.CurrentTextTickDuration = 60 * 3;
-					this.CurrentMessageId = priorityMsg.Key;
+					this.CurrentMessageGauge = priorityMsg.Key;
 
 					newMessage = priorityMsg.Value;
 				}
@@ -176,7 +176,7 @@ namespace PKEMeter.Logic {
 
 			//
 
-			return (newMessage.Message, newMessage.Color, this.TextScrollPos );
+			return (newMessage, this.TextScrollPos );
 		}
 	}
 }

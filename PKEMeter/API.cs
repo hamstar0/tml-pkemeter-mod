@@ -33,43 +33,43 @@ namespace PKEMeter {
 		////
 
 		public static PKEGaugesGetter GetGauge() {
-			return PKEMeterLogic.Instance.CurrentGauge;
+			return PKEMeterLogic.Instance.CurrentGaugesGetter;
 		}
 
 		public static void SetGauge( PKEGaugesGetter gauge ) {
-			PKEMeterLogic.Instance.CurrentGauge = gauge;
+			PKEMeterLogic.Instance.CurrentGaugesGetter = gauge;
 		}
 
 		////
 		
 		public static PKEMiscLightsGetter GetMiscLights() {
-			return PKEMeterLogic.Instance.CurrentMiscLights;
+			return PKEMeterLogic.Instance.CurrentMiscLightsGetter;
 		}
 
 		public static void SetMiscLights( PKEMiscLightsGetter lights ) {
-			PKEMeterLogic.Instance.CurrentMiscLights = lights;
+			PKEMeterLogic.Instance.CurrentMiscLightsGetter = lights;
 		}
 
 		////
 
-		public static (string text, Color color, int offset) GetCurrentMeterText() {
+		public static (PKETextMessage message, int offset) GetCurrentMeterText() {
 			var logic = PKEMeterLogic.Instance;
 			return logic.GetText( Main.LocalPlayer, Main.LocalPlayer.Center );
 		}
 
 		public static IDictionary<PKEGaugeType, PKETextGetter> GetMeterTexts() {
-			return PKEMeterLogic.Instance.TextSources.ToDictionary(
+			return PKEMeterLogic.Instance.GaugeTextsGetter.ToDictionary(
 				kv => kv.Key,
 				kv => kv.Value
 			);
 		}
 		
 		public static void SetMeterText( PKEGaugeType gauge, PKETextGetter text ) {
-			PKEMeterLogic.Instance.TextSources[ gauge ] = text;
+			PKEMeterLogic.Instance.GaugeTextsGetter[ gauge ] = text;
 		}
 
 		public static bool RemoveMeterText( PKEGaugeType gauge ) {
-			return PKEMeterLogic.Instance.TextSources.Remove( gauge );
+			return PKEMeterLogic.Instance.GaugeTextsGetter.Remove( gauge );
 		}
 	}
 }

@@ -44,7 +44,13 @@ namespace PKEMeter.HUD {
 
 		////////////////
 
-		private void DrawHUDComponents( SpriteBatch sb, Vector2 scrPos, Player plr, Color lightColor ) {
+		private void DrawHUDComponents(
+					SpriteBatch sb,
+					Vector2 scrPos,
+					Player plr,
+					Color lightColor,
+					out (Rectangle b, Rectangle g, Rectangle y, Rectangle r) gaugeRects,
+					out Rectangle marqueeRect ) {
 			var logic = PKEMeterLogic.Instance;
 
 			float opacity = 1f;//Main.playerInventory ? 0.5f : 1f;
@@ -63,7 +69,7 @@ namespace PKEMeter.HUD {
 
 			//
 
-			this.DrawHUDGauges(
+			gaugeRects = this.DrawHUDGauges(
 				sb: sb,
 				pos: scrPos,
 				opacity: opacity,
@@ -120,9 +126,9 @@ namespace PKEMeter.HUD {
 
 			//
 
-			(string text, Color color, int offset) msg = logic.GetText( plr, plr.Center );
+			(PKETextMessage msg, int textOffset) = logic.GetText( plr, plr.Center );
 
-			this.DrawHUDText( sb, scrPos, msg.text, msg.color * opacity, msg.offset );
+			marqueeRect = this.DrawHUDText_If( sb, scrPos, msg.Message, msg.Color * opacity, textOffset );
 
 			//
 

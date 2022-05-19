@@ -64,8 +64,8 @@ namespace PKEMeter.Logic {
 			float b = 0, g = 0, y = 0, r = 0;
 			int proxCheckTimer = 0;
 
-			if( this.CurrentGauge == null ) {
-				this.CurrentGauge = ( _, __ ) => PKEMeterLogic.DefaultGaugeGet( ref proxCheckTimer, b, g, y, r );
+			if( this.CurrentGaugesGetter == null ) {
+				this.CurrentGaugesGetter = ( _, __ ) => PKEMeterLogic.DefaultGaugeGet( ref proxCheckTimer, b, g, y, r );
 			}
 		}
 
@@ -73,13 +73,13 @@ namespace PKEMeter.Logic {
 		////
 
 		public PKEGaugeValues GetGaugesDynamically( Player player, Vector2 position ) {
-			this.GaugeSnapshot = this.CurrentGauge?.Invoke( player, position )
+			this.GaugeSnapshot = this.CurrentGaugesGetter?.Invoke( player, position )
 				?? new PKEGaugeValues( 0f, 0f, 0f, 0f);
 			return this.GaugeSnapshot;
 		}
 
 		public PKEMiscLightsValues GetMiscLightsDynamically( Player player, Vector2 position ) {
-			this.MiscLightsSnapshot = this.CurrentMiscLights?.Invoke( player, position )
+			this.MiscLightsSnapshot = this.CurrentMiscLightsGetter?.Invoke( player, position )
 				?? null;
 //new PKEMiscLightsValues( Color.Blue, Color.Cyan, Color.Lime, Color.HotPink, Color.DarkMagenta, Color.Red, Color.Peru, Color.White, Color.Yellow );
 			return this.MiscLightsSnapshot;

@@ -7,23 +7,30 @@ using HUDElementsLib;
 
 namespace PKEMeter.HUD {
 	public partial class PKEMeterHUD : HUDElement {
-		public void DrawHUDText( SpriteBatch sb, Vector2 pos, string text, Color color, int offset ) {
-			if( text == "" || offset > (text.Length * 8) ) {
-				return;
-			}
-
-			text = text.ToUpper();
-
+		public Rectangle DrawHUDText_If( SpriteBatch sb, Vector2 pos, string text, Color color, int offset ) {
 			pos.X += 22;
 			pos.Y += 16;
+			Rectangle area = new Rectangle( (int)pos.X, (int)pos.Y, 42, 12 );
+			
+			//
+
+			if( text == "" || offset > (text.Length * 8) ) {
+				return area;
+			}
+
+			//
+
+			text = text.ToUpper();
 
 			for( int i=0; i<text.Length; i++ ) {
 				int charOffset = (i * 8) - offset;
 
-				if( !this.DrawHUDTextCharacter(sb, pos, text[i], color, charOffset ) ) {
+				if( !this.DrawHUDTextCharacter(sb, pos, text[i], color, charOffset) ) {
 					break;
 				}
 			}
+
+			return area;
 		}
 
 

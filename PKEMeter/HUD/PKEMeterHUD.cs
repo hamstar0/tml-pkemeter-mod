@@ -121,7 +121,9 @@ namespace PKEMeter.HUD {
 
 			//
 
-			this.DrawHUDComponents( sb, widgetPos, plr, plrColor );
+			(Rectangle, Rectangle, Rectangle, Rectangle) gaugeRects;
+			Rectangle marqueeRect;
+			this.DrawHUDComponents( sb, widgetPos, plr, plrColor, out gaugeRects, out marqueeRect );
 
 			//
 
@@ -130,7 +132,7 @@ namespace PKEMeter.HUD {
 			if( meterArea.Contains(Main.MouseScreen.ToPoint()) ) {
 				PKEGaugeValues values = PKEMeterAPI.GetGauge().Invoke( plr, plr.MountedCenter );
 
-				this.DrawHUDHoverText( sb, widgetPos, plr, values );
+				this.DrawHUDHoverTextAt_If( sb, widgetPos, plr, gaugeRects, marqueeRect, values );
 			}
 		}
 	}
