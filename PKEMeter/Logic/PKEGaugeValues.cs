@@ -53,10 +53,10 @@ namespace PKEMeter.Logic {
 		public float YellowSeenPercent { get; set; }
 		public float RedSeenPercent { get; set; }
 
-		public bool IsBlueInsignificant { get; set; } = true;
-		public bool IsGreenInsignificant { get; set; } = true;
-		public bool IsYellowInsignificant { get; set; } = true;
-		public bool IsRedInsignificant { get; set; } = true;
+		public bool IsBlueInsignificant { get; set; } = false;
+		public bool IsGreenInsignificant { get; set; } = false;
+		public bool IsYellowInsignificant { get; set; } = false;
+		public bool IsRedInsignificant { get; set; } = false;
 
 
 
@@ -119,43 +119,6 @@ namespace PKEMeter.Logic {
 				+ (this.IsGreenInsignificant ? 2 : 0)
 				+ (this.IsYellowInsignificant ? 4 : 0)
 				+ (this.IsRedInsignificant ? 8 : 0);
-		}
-
-
-		////////////////
-		
-		public void SetGaugeSignificance( PKEGaugeType gaugeType, bool isSignificant ) {
-			switch( gaugeType ) {
-			case PKEGaugeType.Blue:
-				this.IsBlueInsignificant = !isSignificant;
-				break;
-			case PKEGaugeType.Green:
-				this.IsGreenInsignificant = !isSignificant;
-				break;
-			case PKEGaugeType.Yellow:
-				this.IsYellowInsignificant = !isSignificant;
-				break;
-			case PKEGaugeType.Red:
-				this.IsRedInsignificant = !isSignificant;
-				break;
-			default:
-				throw new ModLibsException( "Invalid gauge type" );
-			}
-		}
-		
-		public bool GetGaugeSignificance( PKEGaugeType gaugeType ) {
-			switch( gaugeType ) {
-			case PKEGaugeType.Blue:
-				return this.IsBlueInsignificant;
-			case PKEGaugeType.Green:
-				return this.IsGreenInsignificant;
-			case PKEGaugeType.Yellow:
-				return this.IsYellowInsignificant;
-			case PKEGaugeType.Red:
-				return this.IsRedInsignificant;
-			default:
-				throw new ModLibsException( "Invalid gauge type" );
-			}
 		}
 
 
