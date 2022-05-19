@@ -49,10 +49,14 @@ namespace PKEMeter.HUD {
 					Vector2 scrPos,
 					Player plr,
 					Color lightColor,
+					PKEGaugeValues gauges,
+					PKEMiscLightsValues lights,
+					Color scanLightColor,
+					float scanLightPercent,
+					PKETextMessage displayText,
+					int displayTextOffset,
 					out (Rectangle b, Rectangle g, Rectangle y, Rectangle r) gaugeRects,
 					out Rectangle marqueeRect ) {
-			var logic = PKEMeterLogic.Instance;
-
 			float opacity = 1f;//Main.playerInventory ? 0.5f : 1f;
 
 			sb.Draw(
@@ -63,20 +67,14 @@ namespace PKEMeter.HUD {
 
 			//
 
-			PKEGaugeValues gauge = logic.GetGaugesDynamically( plr, plr.Center );
-			PKEMiscLightsValues lights = logic.GetMiscLightsDynamically( plr, plr.Center );
-			Color scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
-
-			//
-
 			gaugeRects = this.DrawHUDGauges(
 				sb: sb,
 				pos: scrPos,
 				opacity: opacity,
-				b: gauge.BlueSeenPercent,
-				g: gauge.GreenSeenPercent,
-				y: gauge.YellowSeenPercent,
-				r: gauge.RedSeenPercent
+				b: gauges.BlueSeenPercent,
+				g: gauges.GreenSeenPercent,
+				y: gauges.YellowSeenPercent,
+				r: gauges.RedSeenPercent
 			);
 
 			//
@@ -94,10 +92,10 @@ namespace PKEMeter.HUD {
 			this.DrawHUDGaugeLights(
 				sb: sb,
 				pos: scrPos,
-				bLit: gauge.BlueSeenPercent > 0.99f,
-				gLit: gauge.GreenSeenPercent > 0.99f,
-				yLit: gauge.YellowSeenPercent > 0.99f,
-				rLit: gauge.RedSeenPercent > 0.99f
+				bLit: gauges.BlueSeenPercent > 0.99f,
+				gLit: gauges.GreenSeenPercent > 0.99f,
+				yLit: gauges.YellowSeenPercent > 0.99f,
+				rLit: gauges.RedSeenPercent > 0.99f
 			);
 
 			//
@@ -126,9 +124,13 @@ namespace PKEMeter.HUD {
 
 			//
 
-			(PKETextMessage msg, int textOffset) = logic.GetText( plr, plr.Center );
-
-			marqueeRect = this.DrawHUDText_If( sb, scrPos, msg.Message, msg.Color * opacity, textOffset );
+			marqueeRect = this.DrawHUDText_If(
+				sb,
+				scrPos,
+				displayText.Message,
+				displayText.Color * opacity,
+				displayTextOffset
+			);
 
 			//
 

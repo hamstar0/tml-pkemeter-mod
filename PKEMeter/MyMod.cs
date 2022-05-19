@@ -23,7 +23,7 @@ namespace PKEMeter {
 
 		////////////////
 
-		public PKEMeterHUD Meter { get; private set; }
+		public PKEMeterHUD MeterWidget { get; private set; }
 
 		////
 
@@ -75,9 +75,9 @@ namespace PKEMeter {
 
 				//
 
-				this.Meter = PKEMeterHUD.CreateDefault(); //"Vanilla: Info Accessories Bar"
+				this.MeterWidget = PKEMeterHUD.CreateDefault(); //"Vanilla: Info Accessories Bar"
 
-				HUDElementsLibAPI.AddWidget( this.Meter );
+				HUDElementsLibAPI.AddWidget( this.MeterWidget );
 			}
 		}
 	}

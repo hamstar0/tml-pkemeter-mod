@@ -121,9 +121,29 @@ namespace PKEMeter.HUD {
 
 			//
 
-			(Rectangle, Rectangle, Rectangle, Rectangle) gaugeRects;
-			Rectangle marqueeRect;
-			this.DrawHUDComponents( sb, widgetPos, plr, plrColor, out gaugeRects, out marqueeRect );
+			var logic = PKEMeterLogic.Instance;
+
+			PKEGaugeValues gauges = logic.GetGaugesDynamically( plr, plr.Center );
+			PKEMiscLightsValues lights = logic.GetMiscLightsDynamically( plr, plr.Center );
+			Color scanLightColor = this.GetProximityLightColor_Local( out float scanLightPercent );
+			(PKETextMessage displayText, int displayTextOffset) = logic.GetText( plr, plr.Center );
+
+			//
+			
+			this.DrawHUDComponents(
+				sb: sb,
+				scrPos: widgetPos,
+				plr: plr,
+				lightColor: plrColor,
+				gauges: gauges,
+				lights: lights,
+				scanLightColor: scanLightColor,
+				scanLightPercent: scanLightPercent,
+				displayText: displayText,
+				displayTextOffset: displayTextOffset,
+				out (Rectangle, Rectangle, Rectangle, Rectangle) gaugeRects,
+				out Rectangle marqueeRect
+			);
 
 			//
 

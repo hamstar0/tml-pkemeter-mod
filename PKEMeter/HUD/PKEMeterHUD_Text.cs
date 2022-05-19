@@ -10,7 +10,7 @@ namespace PKEMeter.HUD {
 		public Rectangle DrawHUDText_If( SpriteBatch sb, Vector2 pos, string text, Color color, int offset ) {
 			pos.X += 22;
 			pos.Y += 16;
-			Rectangle area = new Rectangle( (int)pos.X, (int)pos.Y, 42, 12 );
+			var area = new Rectangle( (int)pos.X, (int)pos.Y, 42, 12 );
 			
 			//
 

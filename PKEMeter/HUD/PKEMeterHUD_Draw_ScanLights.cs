@@ -33,6 +33,11 @@ namespace PKEMeter.HUD {
 			//
 
 			if( intensityPercent > 0f ) {
+				// Cap intensity to make ambiguate results
+				if( intensityPercent > 0.8f ) {
+					intensityPercent = 0.8f;
+				}
+
 				this.UpdateHUDScanLightCurrentRow( intensityPercent );
 
 				//
@@ -88,7 +93,7 @@ namespace PKEMeter.HUD {
 
 		private void UpdateHUDScanLightCurrentRow( float intensityPercent ) {
 			float invPercent = 1f - intensityPercent;
-			int tickRate = 4 + (int)( invPercent * 16f );
+			int tickRate = 4 + (int)( invPercent * 14f );
 
 			//
 

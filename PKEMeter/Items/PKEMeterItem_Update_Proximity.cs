@@ -18,14 +18,28 @@ namespace PKEMeter.Items {
 		private void UpdateForNearbyReadings_Local() {
 			var mymod = PKEMeterMod.Instance;
 
-			//
-
 			float significantGuageIntenisty = PKEMeterLogic.GetSignificantGaugeIntensityPercent_Local(
 				out PKEGaugeType significantGauge
 			);
 
+			//
+
+			this.ApplyProxmityFx_If( significantGauge, significantGuageIntenisty );
+
+			// Display scanner lights corresponding to nearby readings
+			mymod.MeterWidget.SetProximityLights( this._CurrentSignificantGauge, significantGuageIntenisty );
+		}
+
+
+		////////////////
+
+		private void ApplyProxmityFx_If( PKEGaugeType significantGauge, float signalPercent ) {
+			var mymod = PKEMeterMod.Instance;
+
+			//
+
 			// Alert to readings nearby (any)
-			if( significantGuageIntenisty > 0f ) {
+			if( signalPercent > 0f ) {
 				if( this._CurrentSignificantGauge == 0 ) {
 
 					if( mymod.PKEScanAlertNear.State != SoundState.Playing ) {
@@ -39,8 +53,14 @@ namespace PKEMeter.Items {
 			}
 
 			// Apply repeating alert sounds
-			if( significantGuageIntenisty > 0f ) {
-				int fxTickRate = 15 + (int)((1f - significantGuageIntenisty) * 105f);
+			if( signalPercent > 0f ) {
+				// Cap intensity to make ambiguate results
+				float fxIntensityPecent = signalPercent;
+				if( fxIntensityPecent > 0.7f ) {
+					fxIntensityPecent = 0.7f;
+				}
+
+				int fxTickRate = 15 + (int)((1f - fxIntensityPecent) * 105f);
 
 				if( Timers.GetTimerTickDuration( "PKEPingLoop" ) <= 0 ) {
 					Timers.SetTimer( "PKEPingLoop", fxTickRate, false, () => {
@@ -52,7 +72,7 @@ namespace PKEMeter.Items {
 			}
 
 			// Display scanner lights corresponding to nearby readings
-			mymod.Meter.SetProximityLights( this._CurrentSignificantGauge, significantGuageIntenisty );
+			mymod.MeterWidget.SetProximityLights( this._CurrentSignificantGauge, signalPercent );
 		}
 	}
 }
