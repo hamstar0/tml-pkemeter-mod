@@ -7,9 +7,14 @@ using HUDElementsLib;
 
 namespace PKEMeter.HUD {
 	public partial class PKEMeterHUD : HUDElement {
+		public const int GaugesOffsetX = 30;
+		public const int GaugesOffsetY = 28;//16;
+
+
+
 		public void DrawHUDGauges( SpriteBatch sb, Vector2 pos, float opacity, float b, float g, float y, float r ) {
-			pos.X += 22;
-			pos.Y += 28;//16;
+			pos.X += PKEMeterHUD.GaugesOffsetX;
+			pos.Y += PKEMeterHUD.GaugesOffsetY;
 
 			var destRect = new Rectangle( (int)pos.X, (int)pos.Y + 42, 6, 4 );
 			var bDestRect = destRect;

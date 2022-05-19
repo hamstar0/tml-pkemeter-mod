@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
+using Terraria;
 using PKEMeter.Items;
 using PKEMeter.Logic;
 
@@ -49,16 +52,24 @@ namespace PKEMeter {
 
 		////
 
-		public static PKETextGetter[] GetMeterTexts() {
-			return PKEMeterLogic.Instance.TextSources.Values.ToArray();
+		public static (string text, Color color, int offset) GetCurrentMeterText() {
+			var logic = PKEMeterLogic.Instance;
+			return logic.GetText( Main.LocalPlayer, Main.LocalPlayer.Center );
 		}
 
-		public static void SetMeterText( string id, PKETextGetter text ) {
-			PKEMeterLogic.Instance.TextSources[ id ] = text;
+		public static IDictionary<PKEGaugeType, PKETextGetter> GetMeterTexts() {
+			return PKEMeterLogic.Instance.TextSources.ToDictionary(
+				kv => kv.Key,
+				kv => kv.Value
+			);
+		}
+		
+		public static void SetMeterText( PKEGaugeType gauge, PKETextGetter text ) {
+			PKEMeterLogic.Instance.TextSources[ gauge ] = text;
 		}
 
-		public static bool RemoveMeterText( string id ) {
-			return PKEMeterLogic.Instance.TextSources.Remove( id );
+		public static bool RemoveMeterText( PKEGaugeType gauge ) {
+			return PKEMeterLogic.Instance.TextSources.Remove( gauge );
 		}
 	}
 }

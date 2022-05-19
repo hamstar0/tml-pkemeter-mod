@@ -18,8 +18,7 @@ namespace PKEMeter.Logic {
 	////////////////
 
 	public class PKETextMessage {
-		public static KeyValuePair<string, PKETextMessage> EmptyMessage { get; }
-				= new KeyValuePair<string, PKETextMessage>( "Default", new PKETextMessage( "", Color.White, 0f ) );
+		public static PKETextMessage EmptyMessage { get; } = new PKETextMessage( "", Color.White, 0f );
 
 
 

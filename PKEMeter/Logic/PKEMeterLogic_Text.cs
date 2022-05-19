@@ -12,13 +12,13 @@ using PKEMeter.Items;
 
 namespace PKEMeter.Logic {
 	partial class PKEMeterLogic : ILoadable {
-		private static PKETextMessage DefaultTextDisplay( out Func<string> redTooltipGetter ) {
-			Color color = Color.Red * ( 0.5f + ( Main.rand.NextFloat() * 0.5f ) );
+		private static PKETextMessage DefaultTextDisplay( out Func<string> tooltipGetter ) {
+			Color color = Color.Red * (0.5f + (Main.rand.NextFloat() * 0.5f));
 			string text = "";
 
 			NPC bossNpc = Main.npc.FirstOrDefault(
 				n => n?.active == true
-				&& ( n.boss || n.type == NPCID.EaterofWorldsHead )
+				&& (n.boss || n.type == NPCID.EaterofWorldsHead)
 			);
 
 			float priority = 0f;
@@ -101,7 +101,7 @@ namespace PKEMeter.Logic {
 				break;
 			}
 
-			redTooltipGetter = () => "DOMINANT ENTITIES";
+			tooltipGetter = () => "DOMINANT ENTITIES";
 			return new PKETextMessage( text, color, priority );
 		}
 
@@ -110,8 +110,8 @@ namespace PKEMeter.Logic {
 		////////////////
 
 		private void InitializeDefaultText() {
-			if( this.TextSources == null ) {
-				this.TextSources[ "Default" ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay(
+			if( this.TextSources.Count == 0 ) {
+				this.TextSources[ PKEGaugeType.Red ] = (_, __, ___) => PKEMeterLogic.DefaultTextDisplay(
 					out PKEMeterItem.RedLabelGetter
 				);
 			}
@@ -128,25 +128,28 @@ namespace PKEMeter.Logic {
 		////////////////
 
 		public (string text, Color color, int offset) GetText( Player player, Vector2 position ) {
-			IDictionary<string, PKETextMessage> msgs = this.TextSources.ToDictionary(
+			IDictionary<PKEGaugeType, PKETextMessage> msgs = this.TextSources.ToDictionary(
 				kv => kv.Key,
 				kv => kv.Value.Invoke( player, position, this.GaugeSnapshot )
 			);
 
 			//
 
-			KeyValuePair<string, PKETextMessage> priorityMsg;
+			KeyValuePair<PKEGaugeType, PKETextMessage> priorityMsg;
 			if( msgs.Count() > 0 ) {
-				priorityMsg = msgs.Aggregate(
-					( kvL, kvR ) => kvL.Value.Priority > kvR.Value.Priority ? kvL : kvR
+				priorityMsg = msgs.Aggregate( (kvL, kvR) =>
+					kvL.Value.Priority > kvR.Value.Priority ? kvL : kvR
 				);
 			} else {
-				priorityMsg = PKETextMessage.EmptyMessage;
+				priorityMsg = new KeyValuePair<PKEGaugeType, PKETextMessage>(
+					this.CurrentMessageId,
+					PKETextMessage.EmptyMessage
+				);
 			}
 
 			PKETextMessage existingMsg;
 			if( !msgs.TryGetValue(this.CurrentMessageId, out existingMsg) ) {
-				existingMsg = PKETextMessage.EmptyMessage.Value;
+				existingMsg = PKETextMessage.EmptyMessage;
 			}
 
 			PKETextMessage newMessage = existingMsg;
@@ -157,6 +160,7 @@ namespace PKEMeter.Logic {
 				if( priorityMsg.Value.Priority > existingMsg.Priority || this.CurrentTextTickDuration <= 0 ) {
 					this.CurrentTextTickDuration = 60 * 3;
 					this.CurrentMessageId = priorityMsg.Key;
+
 					newMessage = priorityMsg.Value;
 				}
 			}

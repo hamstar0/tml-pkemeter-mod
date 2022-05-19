@@ -16,13 +16,14 @@ namespace PKEMeter.Logic {
 
 		public PKEMiscLightsGetter CurrentMiscLights { get; internal set; }
 
-		public string CurrentMessageId { get; internal set; } = PKETextMessage.EmptyMessage.Key;
+		public PKEGaugeType CurrentMessageId { get; internal set; } = PKEGaugeType.Red;
 
 		public int CurrentTextTickDuration { get; private set; } = 0;
 
 		////
 
-		public IDictionary<string, PKETextGetter> TextSources { get; internal set; } = new Dictionary<string, PKETextGetter>();
+		public IDictionary<PKEGaugeType, PKETextGetter> TextSources { get; internal set; }
+			= new Dictionary<PKEGaugeType, PKETextGetter>();
 
 
 		////////////////

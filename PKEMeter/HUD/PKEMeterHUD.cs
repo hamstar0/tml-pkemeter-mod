@@ -79,7 +79,7 @@ namespace PKEMeter.HUD {
 
 
 		////////////////
-
+		
 		public void SetProximityLights( PKEGaugeType gauge, float percent ) {
 			this.LastSignificantGaugeNearby = gauge;
 			this.LastSignificantGaugeNearbyPercent = percent;
@@ -101,6 +101,37 @@ namespace PKEMeter.HUD {
 
 			return PKEGaugeValues.GetColor( this.LastSignificantGaugeNearby )
 				?? Color.White;
+		}
+
+
+		////////////////
+
+		protected override void PostDrawSelf( bool isSelfDrawn, SpriteBatch sb ) {
+			Player plr = Main.LocalPlayer;
+			var myplayer = plr.GetModPlayer<PKEMeterPlayer>();
+
+			Color plrColor = myplayer.MyColor;
+			if( plrColor.A < 255 ) {
+				plrColor = this.LastVisiblePlayerColor;
+			} else {
+				this.LastVisiblePlayerColor = plrColor;
+			}
+
+			Vector2 widgetPos = this.GetHUDComputedPosition( true );
+
+			//
+
+			this.DrawHUDComponents( sb, widgetPos, plr, plrColor );
+
+			//
+
+			var meterArea = new Rectangle( (int)widgetPos.X, (int)widgetPos.Y, this.MeterBody.Width, this.MeterBody.Height );
+
+			if( meterArea.Contains(Main.MouseScreen.ToPoint()) ) {
+				PKEGaugeValues values = PKEMeterAPI.GetGauge().Invoke( plr, plr.MountedCenter );
+
+				this.DrawHUDHoverText( sb, widgetPos, plr, values );
+			}
 		}
 	}
 }
