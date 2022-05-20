@@ -9,23 +9,18 @@ using PKEMeter.Logic;
 
 namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
-		private void ApplyProxmityFx_If( PKEGaugeType significantGauge, float signalPercent ) {
+		private void ApplyProxmityFx( PKEGaugeType significantGauge, float signalPercent, bool isNewSignal ) {
 			var mymod = PKEMeterMod.Instance;
 
 			//
 
 			// Alert to readings nearby (any)
 			if( signalPercent > 0f ) {
-				if( this._CurrentSignificantGauge == 0 ) {
-
+				if( isNewSignal ) {
 					if( mymod.PKEScanAlertNear.State != SoundState.Playing ) {
 						mymod.PKEScanAlertNear.Play();
 					}
 				}
-
-				this._CurrentSignificantGauge = significantGauge;
-			} else {
-				this._CurrentSignificantGauge = 0;
 			}
 
 			// Apply repeating alert sounds
@@ -48,7 +43,7 @@ namespace PKEMeter.Items {
 			}
 
 			// Display scanner lights corresponding to nearby readings
-			mymod.MeterWidget.SetProximityLights( this._CurrentSignificantGauge, signalPercent );
+			mymod.MeterWidget.SetProximityLights( significantGauge, signalPercent );
 		}
 	}
 }

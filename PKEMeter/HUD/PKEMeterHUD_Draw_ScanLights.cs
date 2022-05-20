@@ -36,8 +36,8 @@ namespace PKEMeter.HUD {
 				float fxIntensityPecent = signalPercent;
 
 				// Cap intensity to ambiguate results
-				if( fxIntensityPecent > 0.7f ) {
-					fxIntensityPecent = 0.7f;
+				if( fxIntensityPecent > 0.8f ) {
+					fxIntensityPecent = 0.8f;
 				}
 
 				//

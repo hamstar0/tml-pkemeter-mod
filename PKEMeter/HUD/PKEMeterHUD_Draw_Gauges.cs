@@ -23,41 +23,46 @@ namespace PKEMeter.HUD {
 			pos.X += PKEMeterHUD.GaugesOffsetX;
 			pos.Y += PKEMeterHUD.GaugesOffsetY;
 
-			var destRect = new Rectangle( (int)pos.X, (int)pos.Y + 42, 6, 4 );
-			var bDestRect = destRect;
-			var gDestRect = destRect;
-			var yDestRect = destRect;
-			var rDestRect = destRect;
+			var baseRect = new Rectangle( (int)pos.X, (int)pos.Y + 42, 6, 4 );
+			var bRect = baseRect;
+			var gRect = baseRect;
+			var yRect = baseRect;
+			var rRect = baseRect;
 
 			//bDestRect.X += 0;
-			gDestRect.X += 8;
-			yDestRect.X += 16;
-			rDestRect.X += 24;
+			gRect.X += 8;
+			yRect.X += 16;
+			rRect.X += 24;
 
 			float bTicks = 7f * b;
 			float gTicks = 7f * g;
 			float yTicks = 7f * y;
 			float rTicks = 7f * r;
 
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayB, opacity, ref bDestRect, bTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, opacity, ref gDestRect, gTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, opacity, ref yDestRect, yTicks );
-			this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, opacity, ref rDestRect, rTicks );
+			bRect = this.DrawHUDGaugeTicks( sb, this.MeterDisplayB, opacity, bRect, bTicks );
+			gRect = this.DrawHUDGaugeTicks( sb, this.MeterDisplayG, opacity, gRect, gTicks );
+			yRect = this.DrawHUDGaugeTicks( sb, this.MeterDisplayY, opacity, yRect, yTicks );
+			rRect = this.DrawHUDGaugeTicks( sb, this.MeterDisplayR, opacity, rRect, rTicks );
 
-			return (bDestRect, gDestRect, yDestRect, rDestRect);
+			return (bRect, gRect, yRect, rRect);
 		}
 
 
 		////
 
-		private void DrawHUDGaugeTicks(
+		private Rectangle DrawHUDGaugeTicks(
 					SpriteBatch sb,
 					Texture2D tickTex,
 					float opacity,
-					ref Rectangle bottomRect,
+					Rectangle bottomRect,
 					float ticks ) {
+			Rectangle totalArea = bottomRect;
+
 			for( int i=0; i<(int)ticks; i++ ) {
 				bottomRect.Y -= 6;
+
+				totalArea.Y -= 6;
+				totalArea.Height += 6;
 
 				sb.Draw(
 					texture: tickTex,
@@ -72,12 +77,17 @@ namespace PKEMeter.HUD {
 			if( Main.rand.NextFloat() < tickFrac ) {
 				bottomRect.Y -= 6;
 
+				totalArea.Y -= 6;
+				totalArea.Height += 6;
+
 				sb.Draw(
 					texture: tickTex,
 					destinationRectangle: bottomRect,
 					color: Color.White * opacity
 				);
 			}
+
+			return totalArea;
 		}
 	}
 }

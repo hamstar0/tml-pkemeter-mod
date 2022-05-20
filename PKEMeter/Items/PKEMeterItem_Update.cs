@@ -9,12 +9,6 @@ using PKEMeter.Logic;
 
 namespace PKEMeter.Items {
 	public partial class PKEMeterItem : ModItem {
-		private PKEGaugeType _CurrentSignificantGauge = 0;
-
-
-
-		////////////////
-
 		public void UpdateForHeldPKE_Local( bool canScan, bool scannableInInventory ) {
 			if( !canScan ) {
 				return;
@@ -72,6 +66,8 @@ namespace PKEMeter.Items {
 
 		////////////////
 
+		 private PKEGaugeType? _CurrentSignificantGauge = null;
+
 		private void UpdateForNearbyReadings_Local() {
 			var mymod = PKEMeterMod.Instance;
 
@@ -81,10 +77,17 @@ namespace PKEMeter.Items {
 
 			//
 
-			this.ApplyProxmityFx_If( significantGauge, significantGuageIntenisty );
+			this.ApplyProxmityFx(
+				significantGauge: significantGauge,
+				signalPercent: significantGuageIntenisty,
+				isNewSignal: !this._CurrentSignificantGauge.HasValue || this._CurrentSignificantGauge.Value != significantGauge
+			);
 
-			// Display scanner lights corresponding to nearby readings
-			mymod.MeterWidget.SetProximityLights( this._CurrentSignificantGauge, significantGuageIntenisty );
+			mymod.MeterWidget.SetProximityLights( significantGauge, significantGuageIntenisty );
+
+			//
+
+			this._CurrentSignificantGauge = significantGauge;
 		}
 	}
 }
