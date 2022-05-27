@@ -77,11 +77,19 @@ namespace PKEMeter.Items {
 
 			//
 
-			this.ApplyProxmityFx(
-				significantGauge: significantGauge,
-				signalPercent: significantGuageIntenisty,
-				isNewSignal: !this._CurrentSignificantGauge.HasValue || this._CurrentSignificantGauge.Value != significantGauge
-			);
+			if( PKEMeterItem.DisplayHUDMeter ) {
+				bool isNewSignal = !this._CurrentSignificantGauge.HasValue
+								|| this._CurrentSignificantGauge.Value != significantGauge;
+//if( isNewSignal ) {
+//	Main.NewText( $"old significant gauge {this._CurrentSignificantGauge}, new sig gauge {significantGauge}" );
+//}
+
+				this.ApplyProxmityFx(
+					significantGauge: significantGauge,
+					signalPercent: significantGuageIntenisty,
+					isNewSignal: isNewSignal
+				);
+			}
 
 			mymod.MeterWidget.SetProximityLights( significantGauge, significantGuageIntenisty );
 

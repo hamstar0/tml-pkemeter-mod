@@ -42,7 +42,7 @@ namespace PKEMeter.Logic {
 		}
 
 		public static float GetSignificantGaugeIntensityPercent_Local( out PKEGaugeType significantGauge ) {
-			float minGaugeAlertPercent = 0.5f;
+			float minGaugeAlertPercent = 0.6f;
 
 			//
 

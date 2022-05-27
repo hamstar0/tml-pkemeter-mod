@@ -27,11 +27,12 @@ namespace PKEMeter.Items {
 			if( signalPercent > 0f ) {
 				// Cap intensity to ambiguate results
 				float fxIntensityPecent = signalPercent;
-				if( fxIntensityPecent > 0.7f ) {
-					fxIntensityPecent = 0.7f;
+				if( fxIntensityPecent > 0.75f ) {
+					fxIntensityPecent = 0.75f;
 				}
+				float invFxIntensityPerc = 1f - fxIntensityPecent;
 
-				int fxTickRate = 15 + (int)((1f - fxIntensityPecent) * 105f);
+				int fxTickRate = 15 + (int)(invFxIntensityPerc * 135f);
 
 				if( Timers.GetTimerTickDuration("PKEPingLoop") <= 0 ) {
 					Timers.SetTimer( "PKEPingLoop", fxTickRate, false, () => {
